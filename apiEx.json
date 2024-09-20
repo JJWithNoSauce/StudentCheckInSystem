@@ -1,0 +1,41 @@
+// GET : /api/students
+{
+    "students":[
+        {
+        "student":{
+            "name" : "JJ is Gay",
+            "stdID" : "001"
+        }},
+
+        {"student":{
+            "name" : "JJ is Gay",
+            "stdID" : "001"
+        }}
+    
+        ]
+
+}
+
+// POST : /api/check
+//body
+{
+    "subjectID": "001",
+
+    "students":[
+        {
+        "student":{
+            "stdID" : "001",
+            "status" : "check",
+            "note" : ""
+        }},
+
+        {
+        "student":{
+            "stdID" : "002",
+            "status" : "late",
+            "note" : ""
+        }},
+    
+        ]
+
+}

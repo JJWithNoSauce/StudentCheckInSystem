@@ -21,4 +21,12 @@ public class Subject {
     public String getSbjID(){
         return this.sbjID;
     }
+
+    public Student getStudent(String stdID){
+        for (Student student : students) {
+            if(student.getStdID() == stdID) 
+                return student;
+        }
+        return null;
+    }
 }
