@@ -1,15 +1,59 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<h1>Please select user type</h1>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select User Type</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
 
-<button type="button" onclick="window.location.replace('?lang=ru');">
-    Teacher
-  </button>
-<button type="button" onclick="window.location.replace('?lang=ru');">
-    Teacher Assistant
-  </button>
-<button type="button" onclick="window.location.replace('?lang=ru');">
-    Admin
-  </button>
+        .container {
+            text-align: center;
+            background-color: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+        }
 
+        h1 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        button {
+            padding: 15px 25px;
+            margin: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Please Select User Type</h1>
+    <button type="button" onclick="window.location.replace('?lang=ru');">Teacher</button>
+    <button type="button" onclick="window.location.replace('?lang=ru');">Admin</button>
+</div>
+
+</body>
 </html>
+
