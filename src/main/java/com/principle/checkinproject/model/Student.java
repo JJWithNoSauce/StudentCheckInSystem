@@ -1,4 +1,4 @@
-package com.principle.checkinproject;
+package com.principle.checkinproject.model;
 
 public class Student {
     private String stdID;

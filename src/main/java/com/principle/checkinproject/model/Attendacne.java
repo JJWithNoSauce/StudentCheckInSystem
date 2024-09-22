@@ -1,6 +1,8 @@
-package com.principle.checkinproject;
+package com.principle.checkinproject.model;
 
 public class Attendacne {
+    private String id;
+    private CheckIn checkIn;
     private Student std;
     private String staus;
     private String note;

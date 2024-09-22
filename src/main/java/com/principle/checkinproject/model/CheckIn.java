@@ -1,4 +1,4 @@
-package com.principle.checkinproject;
+package com.principle.checkinproject.model;
 
 import java.util.ArrayList;
 import java.util.List;
