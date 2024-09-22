@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teacher Dashboard</title>
+    <title>Student Manager</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -13,7 +13,7 @@
         }
 
         header {
-            background-color: #4CAF50;
+            background-color: #258292;
             color: white;
             padding: 10px;
             text-align: center;
@@ -35,7 +35,7 @@
         button {
             padding: 10px 15px;
             margin: 10px 5px;
-            background-color: #4CAF50;
+            background-color: #258292;
             color: white;
             border: none;
             border-radius: 5px;
@@ -44,7 +44,7 @@
         }
 
         button:hover {
-            background-color: #45a049;
+            background-color: rgb(42, 163, 179);
         }
 
         table {
@@ -80,39 +80,44 @@
 <body>
 
 <header>
-    <h1>Teacher Dashboard</h1>
+    <h1>Admin Dashboard</h1>
 </header>
 
 <div class="container">
-    <h1>Current Teacher: *name*</h1>
+    <h1>Logged in as admin</h1>
     <button type="button" onclick="window.location.replace('?lang=ru');">Logout</button>
 
-    <h1>Class List</h1>
-    
-    <div class="action-buttons">
-        <button type="button" onclick="window.location.replace('?lang=ru');">Add Class</button>
-        <button type="button" onclick="window.location.replace('?lang=ru');">Remove Class</button>
-    </div>
+    <h1>Selected Class : ${item.name}</h1>
+    <button type="button" onclick="window.location.replace('?lang=ru');">Back to main page</button>
+    <button type="button" onclick="window.location.replace('?lang=ru');">Manage Students</button>
+
 
     <table>
         <thead>
             <tr>
-                <th>Class Id</th>
-                <th>Class Name</th>
+                <th>Item</th>
+                <th>Detail</th>
             </tr>
         </thead>
         <tbody>
-            <c:forEach items="${items}" var="item">
-                <tr>
-                    <td>${item.id}</td>
-                    <td>${item.name} Class of balls
-                        <button type="button" onclick="window.location.replace('?lang=ru');">Attendant</button>
-                        <button type="button" onclick="window.location.replace('?lang=ru');">Manage</button>
-                    </td>
-                </tr>
-            </c:forEach>
+            <tr>
+                <td>ID</td>
+                <td><input type="text" id="ClassID" name="ClassID" value=${item.id} disabled>
+                </td>
+            </tr>
+            <tr>
+                <td>Name</td>
+                <td><input type="text" id="ClassName" name="ClassName" value=${item.name}>
+                </td>
+            </tr>
+            <tr>
+                <td>Time</td>
+                <td><input type="text" id="ClassTime" name="ClassTime" value=${item.time}>
+                </td>
+            </tr>
         </tbody>
     </table>
+    <button type="button" onclick="window.location.replace('?lang=ru');">Commit Changes</button>
 </div>
 
 </body>

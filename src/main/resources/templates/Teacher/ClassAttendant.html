@@ -87,37 +87,45 @@
     <h1>Current Teacher: *name*</h1>
     <button type="button" onclick="window.location.replace('?lang=ru');">Logout</button>
 
-    <h2>Managing students within selected class : ${item.name}</h2>
-    <button type="button" onclick="window.location.replace('?lang=ru');">Back to class management</button>
+    <h1>Attendant for class : ${item.name}</h1>
+    <button type="button" onclick="window.location.replace('?lang=ru');">Back to main page</button>
 
-    <h3>Add student to : ${item.name}</h3>
-    <tr>
-        <td>Student ID : </td>
-        <td><input type="text" id="ClassID" name="ClassID" value=${item.id}>
-            <button type="button" onclick="window.location.replace('?lang=ru');">Add</button>
-        </td>
-    </tr>
-    
-
-    <h4>List of student within : ${item.name}</h4>
+    <h2>Time for attendant</h2>
     <table>
         <thead>
             <tr>
+                <th>Item</th>
+                <th>Detail</th>
+            </tr>
+                <td>Time</td>
+                <td><input type="text" id="ClassTime" name="ClassTime">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>Student check for attendant</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Present Status</th>
                 <th>Student ID</th>
                 <th>Student Name</th>
-                <th>Action</th>
+                <th>Note</th>
             </tr>
         </thead>
         <tbody>
             <c:forEach students="${students}" var="student">
                 <tr>
+                    <td><input type="checkbox" id=${student.id} name=${student.id}></td>
                     <td>${student.id}</td>
                     <td>${student.name}</td>
-                    <td><button type="button" onclick="window.location.replace('?lang=ru');">Remove Student</button></td>
+                    <td><input type="text" id=${student.id.note} name=${student.id.note}></td>
                 </tr>
             </c:forEach>
         </tbody>
     </table>
+    <button type="button" onclick="window.location.replace('?lang=ru');">Commit Attendant</button>
 </div>
 
 </body>

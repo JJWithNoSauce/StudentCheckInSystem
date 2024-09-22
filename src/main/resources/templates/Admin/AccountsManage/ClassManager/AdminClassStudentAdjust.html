@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teacher Dashboard</title>
+    <title>Student Manager</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -13,7 +13,7 @@
         }
 
         header {
-            background-color: #4CAF50;
+            background-color: #258292;
             color: white;
             padding: 10px;
             text-align: center;
@@ -35,7 +35,7 @@
         button {
             padding: 10px 15px;
             margin: 10px 5px;
-            background-color: #4CAF50;
+            background-color: #258292;
             color: white;
             border: none;
             border-radius: 5px;
@@ -44,7 +44,7 @@
         }
 
         button:hover {
-            background-color: #45a049;
+            background-color: rgb(42, 163, 179);
         }
 
         table {
@@ -80,13 +80,12 @@
 <body>
 
 <header>
-    <h1>Teacher Dashboard</h1>
+    <h1>Admin Dashboard</h1>
 </header>
 
 <div class="container">
-    <h1>Current Teacher: *name*</h1>
+    <h1>Logged in as admin</h1>
     <button type="button" onclick="window.location.replace('?lang=ru');">Logout</button>
-
     <h2>Managing students within selected class : ${item.name}</h2>
     <button type="button" onclick="window.location.replace('?lang=ru');">Back to class management</button>
 
