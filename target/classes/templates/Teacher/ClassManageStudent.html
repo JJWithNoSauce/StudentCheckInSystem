@@ -87,37 +87,28 @@
     <h1>Current Teacher: *name*</h1>
     <button type="button" onclick="window.location.replace('?lang=ru');">Logout</button>
 
-    <h1>Selected Class : ${item.name}</h1>
-    <button type="button" onclick="window.location.replace('?lang=ru');">Back to main page</button>
-    <button type="button" onclick="window.location.replace('?lang=ru');">Manage Students</button>
+    <h1>Manage students within selected class : ${item.name}</h1>
+    <button type="button" onclick="window.location.replace('?lang=ru');">Back to class management</button>
 
 
     <table>
         <thead>
             <tr>
-                <th>Item</th>
-                <th>Detail</th>
+                <th>Student ID</th>
+                <th>Student Name</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>ID</td>
-                <td><input type="text" id="ClassID" name="ClassID" value=${item.id} disabled>
-                </td>
-            </tr>
-            <tr>
-                <td>Name</td>
-                <td><input type="text" id="ClassName" name="ClassName" value=${item.name}>
-                </td>
-            </tr>
-            <tr>
-                <td>Time</td>
-                <td><input type="text" id="ClassTime" name="ClassTime" value=${item.time}>
-                </td>
-            </tr>
+            <c:forEach students="${students}" var="student">
+                <tr>
+                    <td>${student.id}</td>
+                    <td>${student.name}
+                        <button type="button" onclick="window.location.replace('?lang=ru');">Remove Student</button>
+                    </td>
+                </tr>
+            </c:forEach>
         </tbody>
     </table>
-    <button type="button" onclick="window.location.replace('?lang=ru');">Commit Changes</button>
 </div>
 
 </body>
