@@ -8,7 +8,8 @@ import jakarta.persistence.JoinColumn;
 
 @Entity
 public class Teacher extends AInstructor{
-	@Column(name="teacherID")
+	@Id
+    @Column(name = "teacherID")
     private String teacherID;
 
     @Column(name = "name")
@@ -17,7 +18,7 @@ public class Teacher extends AInstructor{
     @OneToOne(mappedBy = "teacher")
     @JoinColumn(name = "classroom_id")
     private ClassRoom classRoom;
-
+	
     public Teacher() {}
 
     public Teacher(String teacherID, String name) {

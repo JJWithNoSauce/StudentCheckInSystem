@@ -25,9 +25,9 @@ public class StudentController {
 
 
     @GetMapping("/{studentId}")
-    public Student getstudentById(@PathVariable String stdID){
-        return studentManage.getStudentById(stdID)
-                .orElseThrow(() -> new RuntimeException("Student not found with ID: " + stdID));
+    public Student getstudentById(@PathVariable String studentId){
+        return studentManage.getStudentById(studentId)
+                .orElseThrow(() -> new RuntimeException("Student not found with ID: " + studentId));
     }
 
     

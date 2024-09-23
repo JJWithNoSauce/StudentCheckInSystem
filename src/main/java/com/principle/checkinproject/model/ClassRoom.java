@@ -6,17 +6,20 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 
 @Entity
 public class ClassRoom {
+    @Id
 	@Column(name="classID")
-    private String classID;
+    private Long classID;
 	
-	@OneToMany(mappedBy = "classroom")
+	@OneToMany(mappedBy = "classroom", cascade = CascadeType.ALL)
     private List<Subject> subjects;
 	
 	@OneToOne
@@ -63,10 +66,10 @@ public class ClassRoom {
     }
 
     public Long getId() {
-        return id;
+        return classID;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setId(Long classID) {
+        this.classID = classID;
     }
 }
