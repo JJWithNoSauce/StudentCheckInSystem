@@ -24,7 +24,7 @@ public class ClassRoom {
     @JoinColumn(name = "classID") 
     private List<Subject> subjects;
     
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE,CascadeType.REMOVE})
     @JoinColumn(name = "teacher", referencedColumnName = "teacherID")
     @JsonIgnoreProperties("classRoom")
     private Teacher teacher;
