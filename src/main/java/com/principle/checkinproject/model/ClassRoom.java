@@ -4,21 +4,23 @@ import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 
 @Entity
 public class ClassRoom {
-	@Column(name="classID")
+	@Id
+    @Column(name="classID")
     private String classID;
-	
-	@OneToMany(mappedBy = "classroom")
+    
+    @OneToMany(mappedBy = "classRoom")
     private List<Subject> subjects;
-	
-	@OneToOne
-	@JoinColumn(name = "teacher",nullable = false,referencedColumnName = "teacherID")
-	private Teacher teacher;
+    
+    @OneToOne
+    @JoinColumn(name = "teacher",nullable = false,referencedColumnName = "teacherID")
+    private Teacher teacher;
 
 
     public ClassRoom(){}

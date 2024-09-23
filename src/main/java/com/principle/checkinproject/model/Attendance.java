@@ -2,12 +2,14 @@ package com.principle.checkinproject.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
 @Entity
 public class Attendance {
+	@Id
 	@Column(name="id")
     private String id;
 	@Column(name="status")	

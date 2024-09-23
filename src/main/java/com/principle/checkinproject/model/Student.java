@@ -3,22 +3,31 @@ package com.principle.checkinproject.model;
 import java.util.List;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
+@Entity
 public class Student {
-	@Column(name="stdID")
+	@Id
+    @Column(name="stdID")
     private String stdID;
-	@Column(name="name")
+    @Column(name="name")
     private String name;
 
-	@OneToMany(mappedBy = "student")
-	private Attendance attendance;
-	
+    @OneToMany(mappedBy = "std")
+    private List<Attendance> attendance;
+    
     @ManyToMany
-	@JoinColumn(name = "subject",nullable = false,referencedColumnName = "sbjID")
+    @JoinTable(
+        name = "student_subject",
+        joinColumns = @JoinColumn(name = "student_id"),
+        inverseJoinColumns = @JoinColumn(name = "subject_id")
+    )
     private List<Subject> subject;
     
     public Student(){}
@@ -39,12 +48,12 @@ public class Student {
 	}
 
 
-	public Attendance getAttendance() {
+	public List<Attendance> getAttendance() {
 		return attendance;
 	}
 
 
-	public void setAttendance(Attendance attendance) {
+	public void setAttendance(List<Attendance> attendance) {
 		this.attendance = attendance;
 	}
 
