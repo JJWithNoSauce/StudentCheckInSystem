@@ -28,36 +28,43 @@ public class ManageController {
     @Autowired
     private StudentManage studentManage;
 
+    // สร้างอาจารย์ใหม่
     @PostMapping("/teacher/add")
     public Teacher createTeacher(@RequestBody Teacher teacher){
         return teacherManage.addInstructor(teacher);
     }
     
+    // ลบอาจารย์โดยใช้ ID  localhost:8080/api/manage/teacher/remove/{teacherId}
     @DeleteMapping("/teacher/remove/{teacherId}")
     public void removeTeacher(@PathVariable String teacherId){
         teacherManage.deleteTeacherById(teacherId);
     }
 
+    // สร้างนักเรียนใหม่
     @PostMapping("/student/add")
     public Student createStudent(@RequestBody Student student){
         return studentManage.addStudent(student);
     }
     
+    // ลบนักเรียนโดยใช้ ID
     @DeleteMapping("/student/remove/{studentId}")
     public void removeStudent(@PathVariable String studentId){
         studentManage.removeStudent(studentId);
     }
 
+    // เพิ่มวิชาในห้องเรียนโดยใช้ ID ของอาจารย์
     @PostMapping("/classroom/{teacherId}/subject/add")
     public Subject classroomAddSubject(@PathVariable String techerId, @RequestBody Subject subject){
         return subjectManage.createSubject(subject);
     }
     
+    // ลบวิชาในห้องเรียนโดยใช้ ID ของอาจารย์และวิชา
     @DeleteMapping("/classroom/{teacherId}/subject/remove/{subjectId}")
     public void classroomRemoveSubject(@PathVariable String techerId, @PathVariable String subjectId){
         subjectManage.deleteSubject(subjectId);
     }
     
+    // ลงทะเบียนนักเรียนในวิชาโดยใช้ ID ของวิชาและนักเรียน
     @PutMapping("/subeject/{subjectId}/student/register/{studentId}")
     public Student registerStudentToSubject(@PathVariable String subjectId, @PathVariable String studentId){
         Student student = studentManage.getStudentById(studentId).orElse(null);
@@ -66,7 +73,8 @@ public class ManageController {
         return student;
     }
 
-    @DeleteMapping("/subeject/{subjectId}/student/deregister/{studentId}")
+    // ยกเลิกการลงทะเบียนนักเรียนในวิชาโดยใช้ ID ของวิชาและนักเรียน
+    @PutMapping("/subeject/{subjectId}/student/deregister/{studentId}")
     public Student deregisterStudentToSubject(@PathVariable String subjectId, @PathVariable String studentId){
         Student student = studentManage.getStudentById(studentId).orElse(null);
         Subject subject = subjectManage.getSubjectById(subjectId);

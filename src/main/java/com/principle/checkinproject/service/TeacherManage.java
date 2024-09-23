@@ -14,10 +14,14 @@ import java.util.Optional;
 public class TeacherManage implements IManageInstructor {
     @Autowired
     private TeacherRepository teacherRepository;
+    @Autowired
+    private ClassRoomManage classRoomManage;
 
     // Create
     public Teacher addInstructor(AInstructor instructor) {
-        return teacherRepository.save((Teacher) instructor);
+        Teacher ins = (Teacher) instructor;
+        classRoomManage.createClassRoom(ins);
+        return teacherRepository.save(ins);
     }
 
     // Read
