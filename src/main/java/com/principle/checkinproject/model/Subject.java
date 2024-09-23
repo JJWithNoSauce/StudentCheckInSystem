@@ -26,7 +26,7 @@ public class Subject {
     private List<Student> students;
     
     @ManyToOne
-	@JoinColumn(name = "classroom",nullable = false,referencedColumnName = "classID")
+	@JoinColumn(name = "classID")
     private ClassRoom classRoom;
     
     public Subject(){}

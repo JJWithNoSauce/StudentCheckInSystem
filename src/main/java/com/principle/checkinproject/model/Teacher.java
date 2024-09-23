@@ -1,14 +1,14 @@
 package com.principle.checkinproject.model;
 
-import java.util.List;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 
 
 @Entity
 public class Teacher extends AInstructor{
+	@Id
 	@Column(name="teacherID")
     private String teacherID;
 	@Column(name="name")
