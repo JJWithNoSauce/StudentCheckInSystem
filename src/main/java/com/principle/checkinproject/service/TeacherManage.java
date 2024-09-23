@@ -20,8 +20,9 @@ public class TeacherManage implements IManageInstructor {
     // Create
     public Teacher addInstructor(AInstructor instructor) {
         Teacher ins = (Teacher) instructor;
+        teacherRepository.save(ins);
         classRoomManage.createClassRoom(ins);
-        return teacherRepository.save(ins);
+        return ins;
     }
 
     // Read
