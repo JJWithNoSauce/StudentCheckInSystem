@@ -1,7 +1,10 @@
 package com.principle.checkinproject.model;
 
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
@@ -14,9 +17,9 @@ public class Student {
 	@OneToMany(mappedBy = "student")
 	private Attendance attendance;
 	
-    @ManyToOne
+    @ManyToMany
 	@JoinColumn(name = "subject",nullable = false,referencedColumnName = "sbjID")
-    private Subject subject;
+    private List<Subject> subject;
     
     public Student(){}
 
@@ -46,12 +49,12 @@ public class Student {
 	}
 
 
-	public Subject getSubject() {
+	public List<Subject> getSubject() {
 		return subject;
 	}
 
 
-	public void setSubject(Subject subject) {
+	public void setSubject(List<Subject> subject) {
 		this.subject = subject;
 	}
 

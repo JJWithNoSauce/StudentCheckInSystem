@@ -8,7 +8,7 @@ import jakarta.persistence.OneToOne;
 
 
 @Entity
-public class Teacher implements IInstructor{
+public class Teacher extends AInstructor{
 	@Column(name="teacherID")
     private String teacherID;
 	@Column(name="name")
@@ -18,17 +18,6 @@ public class Teacher implements IInstructor{
 
     public Teacher(){}
 
-    public void checkingStudent(String sbjID, List<String> stdID, List<String> status, List<String> note){
-        Subject subject = classRoom.getSubject(sbjID);
-        CheckIn check = subject.createCheckIn();
-
-        for (int i = 0; i < stdID.size(); i++) {
-            Student std = subject.getStudent(stdID.get(i));
-
-            check.checking(std, status.get(i), note.get(i));
-        }
-        
-    }
 
 	public String getTeacherID() {
 		return teacherID;
@@ -53,4 +42,5 @@ public class Teacher implements IInstructor{
 	public void setClassRoom(ClassRoom classRoom) {
 		this.classRoom = classRoom;
 	}
+
 }

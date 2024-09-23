@@ -4,12 +4,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
 @Entity
 public class CheckIn {
+
+	@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	private int classPeriod;
+
 	@OneToMany
 	@JoinColumn(name = "attendance",nullable = false,referencedColumnName = "id")	
     private List<Attendance> attendances;
@@ -21,6 +31,12 @@ public class CheckIn {
     public CheckIn(){
         this.attendances = new ArrayList<Attendance>();
     }
+
+	public CheckIn(List<Attendance> attendances,Subject subject){
+		this.attendances = attendances;
+		this.subject = subject;
+		this.classPeriod = subject.getCheckIns().size()+1;
+	}
 
     public void checking(Student std, String status, String note) {
         Attendance attendance = new Attendance(std,status,note);
@@ -45,5 +61,13 @@ public class CheckIn {
 
 	public void setSubject(Subject subject) {
 		this.subject = subject;
+	}
+
+	public Long getId(){
+		return id;
+	}
+
+	public void setId(Long id){
+		this.id = id;
 	}
 }

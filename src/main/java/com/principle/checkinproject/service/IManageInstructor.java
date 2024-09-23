@@ -1,8 +1,9 @@
 package com.principle.checkinproject.service;
 
-import com.principle.checkinproject.model.IInstructor;
+import com.principle.checkinproject.model.AInstructor;
+import com.principle.checkinproject.model.Teacher;
 
 public interface IManageInstructor {
-    public void addInstructor(IInstructor instructor);
-    public void removeInstructor(IInstructor instructor);
+    public Teacher addInstructor(AInstructor instructor);
+    public void removeInstructor(AInstructor instructor);
 }
