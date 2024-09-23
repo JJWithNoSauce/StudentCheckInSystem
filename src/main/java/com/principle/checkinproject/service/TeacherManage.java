@@ -2,9 +2,11 @@ package com.principle.checkinproject.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.principle.checkinproject.model.AInstructor;
 import com.principle.checkinproject.model.Teacher;
+import com.principle.checkinproject.model.ClassRoom;
 import com.principle.checkinproject.repository.TeacherRepository;
 
 import java.util.List;
@@ -14,10 +16,17 @@ import java.util.Optional;
 public class TeacherManage implements IManageInstructor {
     @Autowired
     private TeacherRepository teacherRepository;
+    @Autowired
+    private ClassRoomManage classRoomManage;
 
     // Create
     public Teacher addInstructor(AInstructor instructor) {
-        return teacherRepository.save((Teacher) instructor);
+        Teacher ins = (Teacher) instructor;
+        Teacher savedTeacher = teacherRepository.save(ins);
+        // Then create the classroom with the saved teacher
+        ClassRoom classRoom = classRoomManage.createClassRoom(savedTeacher);
+        savedTeacher.setClassRoom(classRoom);
+        return teacherRepository.save(savedTeacher);
     }
 
     // Read

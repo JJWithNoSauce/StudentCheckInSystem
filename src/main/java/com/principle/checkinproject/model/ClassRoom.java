@@ -1,59 +1,72 @@
 package com.principle.checkinproject.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.Column;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 
 @Entity
 public class ClassRoom {
-	@Id
-    @Column(name="classID")
+	@Column(name="classID")
     private String classID;
-    
-    @OneToMany(mappedBy = "classRoom")
+	
+	@OneToMany(mappedBy = "classroom")
     private List<Subject> subjects;
-    
-    @OneToOne
-    @JoinColumn(name = "teacher",nullable = false,referencedColumnName = "teacherID")
-    private Teacher teacher;
+	
+	@OneToOne
+	@JoinColumn(name = "teacher",nullable = false,referencedColumnName = "teacherID")
+	private Teacher teacher;
 
+    public ClassRoom() {
+        this.subjects = new ArrayList<>();
+    }
 
-    public ClassRoom(){}
+    public ClassRoom(Teacher teacher) {
+        this();
+        this.setTeacher(teacher);
+    }
 
-    public Subject getSubject(String sbjID){
+    public Subject getSubject(String sbjID) {
         for (Subject subject : subjects) {
-            if(subject.getSbjID() == sbjID) 
+            if(subject.getSbjID().equals(sbjID)) 
                 return subject;
         }
         return null;
     }
 
-	public String getClassID() {
-		return classID;
-	}
+    public List<Subject> getSubjects() {
+        return subjects;
+    }
 
-	public void setClassID(String classID) {
-		this.classID = classID;
-	}
+    public void setSubjects(List<Subject> subjects) {
+        this.subjects = subjects;
+    }
 
-	public List<Subject> getSubjects() {
-		return subjects;
-	}
+    public Teacher getTeacher() {
+        return teacher;
+    }
 
-	public void setSubjects(List<Subject> subjects) {
-		this.subjects = subjects;
-	}
+    public void setTeacher(Teacher teacher) {
+        if (this.teacher != null) {
+            this.teacher.setClassRoom(null);
+        }
+        this.teacher = teacher;
+        if (teacher != null) {
+            teacher.setClassRoom(this);
+        }
+    }
 
-	public Teacher getTeacher() {
-		return teacher;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setTeacher(Teacher teacher) {
-		this.teacher = teacher;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 }

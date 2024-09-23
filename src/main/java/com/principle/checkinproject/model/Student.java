@@ -2,32 +2,25 @@ package com.principle.checkinproject.model;
 
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
 @Entity
 public class Student {
-	@Id
-    @Column(name="stdID")
+	@Column(name="stdID")
     private String stdID;
-    @Column(name="name")
+	@Column(name="name")
     private String name;
 
-    @OneToMany(mappedBy = "std")
-    private List<Attendance> attendance;
-    
+	@OneToMany(mappedBy = "student")
+	private Attendance attendance;
+	
     @ManyToMany
-    @JoinTable(
-        name = "student_subject",
-        joinColumns = @JoinColumn(name = "student_id"),
-        inverseJoinColumns = @JoinColumn(name = "subject_id")
-    )
+	@JoinColumn(name = "subject",nullable = false,referencedColumnName = "sbjID")
     private List<Subject> subject;
     
     public Student(){}
@@ -48,12 +41,12 @@ public class Student {
 	}
 
 
-	public List<Attendance> getAttendance() {
+	public Attendance getAttendance() {
 		return attendance;
 	}
 
 
-	public void setAttendance(List<Attendance> attendance) {
+	public void setAttendance(Attendance attendance) {
 		this.attendance = attendance;
 	}
 
@@ -70,5 +63,15 @@ public class Student {
 
 	public void setStdID(String stdID) {
 		this.stdID = stdID;
+	}
+
+
+	public List<Attendance> getAttendances() {
+		return attendances;
+	}
+
+
+	public void setAttendances(List<Attendance> attendances) {
+		this.attendances = attendances;
 	}
 }

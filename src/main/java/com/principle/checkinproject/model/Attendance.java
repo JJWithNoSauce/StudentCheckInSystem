@@ -5,7 +5,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 
 @Entity
 public class Attendance {
@@ -21,7 +20,7 @@ public class Attendance {
     private CheckIn checkIn;
     
     @ManyToOne
-	@JoinColumn(name = "student",nullable = false,referencedColumnName = "stdID")
+    @JoinColumn(name = "stdID")
     private Student std;
 
 

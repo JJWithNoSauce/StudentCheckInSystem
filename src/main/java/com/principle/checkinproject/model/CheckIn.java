@@ -15,7 +15,7 @@ import jakarta.persistence.OneToMany;
 public class CheckIn {
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	private int classPeriod;
