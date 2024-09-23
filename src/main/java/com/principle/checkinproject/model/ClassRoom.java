@@ -3,6 +3,8 @@ package com.principle.checkinproject.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -24,6 +26,7 @@ public class ClassRoom {
     
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "teacher", referencedColumnName = "teacherID")
+    @JsonIgnoreProperties("classRoom")
     private Teacher teacher;
 
     public ClassRoom() {
