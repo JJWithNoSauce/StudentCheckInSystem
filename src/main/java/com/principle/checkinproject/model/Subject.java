@@ -2,6 +2,8 @@ package com.principle.checkinproject.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -10,6 +12,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
 @Entity
+
 public class Subject {
 	@Id
 	@Column(name="sbjID")
@@ -26,6 +29,7 @@ public class Subject {
     private List<Student> students;
     
     @ManyToOne
+	@JsonIgnoreProperties("subjects")
 	@JoinColumn(name = "classID")
     private ClassRoom classRoom;
     

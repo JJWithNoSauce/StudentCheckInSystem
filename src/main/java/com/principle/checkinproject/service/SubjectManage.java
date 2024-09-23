@@ -11,6 +11,7 @@ import com.principle.checkinproject.repository.SubjectRepository;
 import com.principle.checkinproject.model.Attendance;
 import com.principle.checkinproject.model.CheckIn;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -48,6 +49,8 @@ public class SubjectManage {
 
     @Transactional
     public Subject createSubject(Subject subject) {
+        subject.setCheckIns(new ArrayList<CheckIn>());
+        subject.setStudents(new ArrayList<Student>());
         return subjectRepository.save(subject);
     }
 

@@ -22,6 +22,7 @@ public class ClassRoom {
     
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "classID") 
+    @JsonIgnoreProperties({"classRoom"})
     private List<Subject> subjects;
     
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE,CascadeType.REMOVE})
