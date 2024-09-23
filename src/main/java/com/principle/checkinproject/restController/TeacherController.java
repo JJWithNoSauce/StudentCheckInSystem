@@ -16,7 +16,8 @@ import com.principle.checkinproject.service.TeacherManage;
 public class TeacherController {
     @Autowired
     private TeacherManage teacherManage;
-
+    
+    // ใช้ได้
     @GetMapping
     public List<Teacher> getAllTeacher(){
         return teacherManage.getAllTeachers();
@@ -28,7 +29,8 @@ public class TeacherController {
        return teacher.getClassRoom().getSubjects();
     }
 
-    @GetMapping("/{teacherId}")
+    // ใช้ได้
+    @GetMapping("{teacherId}")
     public Teacher getTeacherById(@PathVariable String teacherId){
         return teacherManage.getTeacherById(teacherId);
     }

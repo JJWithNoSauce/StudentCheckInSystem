@@ -6,9 +6,8 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
@@ -24,11 +23,10 @@ public class ClassRoom {
     @JoinColumn(name = "classID") 
     @JsonIgnoreProperties({"classRoom"})
     private List<Subject> subjects;
-    
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE,CascadeType.REMOVE})
-    @JoinColumn(name = "teacher", referencedColumnName = "teacherID")
-    @JsonIgnoreProperties("classRoom")
-    private Teacher teacher;
+	
+	@OneToOne
+	@JoinColumn(name = "teacher",nullable = false,referencedColumnName = "teacherID")
+	private Teacher teacher;
 
     public ClassRoom() {
         this.subjects = new ArrayList<>();
@@ -70,10 +68,10 @@ public class ClassRoom {
     }
 
     public Long getId() {
-        return id;
+        return classID;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setId(Long classID) {
+        this.classID = classID;
     }
 }

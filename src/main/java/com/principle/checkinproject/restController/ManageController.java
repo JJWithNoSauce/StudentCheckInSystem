@@ -32,7 +32,7 @@ public class ManageController {
     @Autowired
     private ClassRoomManage classRoomManage;
 
-    // สร้างอาจารย์ใหม่
+    // ใช้ได้
     @PostMapping("/teacher/add")
     public Teacher createTeacher(@RequestBody Teacher teacher){
         return teacherManage.addInstructor(teacher);
@@ -44,13 +44,13 @@ public class ManageController {
         teacherManage.deleteTeacherById(teacherId);
     }
 
-    // สร้างนักเรียนใหม่
+    // ได้แล้ว
     @PostMapping("/student/add")
     public Student createStudent(@RequestBody Student student){
         return studentManage.addStudent(student);
     }
     
-    // ลบนักเรียนโดยใช้ ID
+    // ได้แล้ว
     @DeleteMapping("/student/remove/{studentId}")
     public void removeStudent(@PathVariable String studentId){
         studentManage.removeStudent(studentId);
