@@ -16,7 +16,6 @@ public class ClassRoomManage {
 
     public ClassRoom createClassRoom(Teacher teacher){
         ClassRoom classRoom = new ClassRoom(teacher);
-        teacher.setClassRoom(classRoom);
         return classRoomRespository.save(classRoom);
     }
 
