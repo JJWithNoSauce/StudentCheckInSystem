@@ -119,7 +119,7 @@ public class webClientManageService {
 
     public Mono<Subject> getSubject(String subjectId) {
         return webClient.get()
-                .uri("/subject/{id}", subjectId)
+                .uri("/subjects/{id}", subjectId)
                 .retrieve()
                 .bodyToMono(Subject.class);
     }
@@ -134,7 +134,7 @@ public class webClientManageService {
 
     public Mono<List<Student>> getSubjectStudents(String subjectId) {
         return webClient.get()
-                .uri("/subject/{id}/students", subjectId)
+                .uri("/subjects/{id}/students", subjectId)
                 .retrieve()
                 .bodyToFlux(Student.class)
                 .collectList();

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teacher Dashboard</title>
+    <title>Student Manager</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -13,7 +13,7 @@
         }
 
         header {
-            background-color: #4CAF50;
+            background-color: #258292;
             color: white;
             padding: 10px;
             text-align: center;
@@ -35,7 +35,7 @@
         button {
             padding: 10px 15px;
             margin: 10px 5px;
-            background-color: #4CAF50;
+            background-color: #258292;
             color: white;
             border: none;
             border-radius: 5px;
@@ -44,7 +44,7 @@
         }
 
         button:hover {
-            background-color: #45a049;
+            background-color: rgb(42, 163, 179);
         }
 
         table {
@@ -80,53 +80,42 @@
 <body>
 
 <header>
-    <h1>Teacher Dashboard</h1>
+    <h1>Admin Dashboard</h1>
 </header>
 
 <div class="container">
-    <tr th:each = "subject: ${subject}">
-    <h1>Attendant's submit system</h1>
-    <td th:text = "${student.name}"></td>
-    </tr>
+    <h1>Logged in as admin</h1>
+    <button type="button" onclick="window.location.replace('?lang=ru');">Logout</button>
+
+    <h2>You are currently in the Teacher Manager's page.</h2>
+    <button type="button" onclick="window.location.replace('?lang=ru');">Back to main page</button>
+    <h3>Register new Teacher (note : pressing register button will add new teacher and refresh the page)</h3>
+    <td>Teacher Name : </td>
+    <input type="text" id=${teacher.id.name} name=${teacher.id.name} value="Name of teacher">
+    <button type="button" onclick="window.location.replace('?lang=ru');">Register Student</button>
     
-    <button th:onclick="|window.location='@{/teacher/{id}(id=${teacherId})}'|">Go back to teacher's page</button>
 
-    <h2>Time for attendant</h2>
+    <h4>List of all teachers</h4>
     <table>
         <thead>
             <tr>
-                <th>Time</th>
-                <th>Detail</th>
-            </tr>
-            </tr>
-                <td>Time</td>
-                <td><input type="text" id="ClassTime" name="ClassTime" value=${attendant.id.time}></td>
-            </tr>
-        </tbody>
-    </table>
-
-    <h3>Student check for attendant</h3>
-    <table>
-        <thead>
-            <tr>
-                <th>Present Status</th>
-                <th>Student ID</th>
-                <th>Student Name</th>
-                <th>Note</th>
+                <th>Teacher ID</th>
+                <th>Teacher Name</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            <!-- Check for non-null students before accessing properties -->
-            <tr th:each="student : ${students}" th:if="${student} != null">
-                <td><input type="checkbox" id="${student.id}check" name="${student.id}check"></td>
-                <td th:text="${student.id}"></td>
-                <td th:text="${student.name}"></td>
-                <td><input type="text" id="${student.id}note" name="${student.id}note"></td>
-            </tr>
+            <c:forEach teachers="${teachers}" var="teacher">
+                <tr>
+                    <td>${teacher.id}</td>
+                    <td><input type="text" id=${teacher.id.name} name=${teacher.id.name} value=${teacher.id.name}></td>
+                    <td><button type="button" onclick="window.location.replace('?lang=ru');">Remove Teacher</button>
+                        <button type="button" onclick="window.location.replace('?lang=ru');">Adjust Info</button>
+                        <button type="button" onclick="window.location.replace('?lang=ru');">Manage Classes</button></td>
+                </tr>
+            </c:forEach>
         </tbody>
     </table>
-    
-    
 </div>
 
 </body>
