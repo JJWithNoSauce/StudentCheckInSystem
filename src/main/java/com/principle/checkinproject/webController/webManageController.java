@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.reactive.result.view.Rendering;
 
 import com.principle.checkinproject.webService.webClientManageService;
 
@@ -21,17 +22,11 @@ public class webManageController {
 
     @GetMapping("/teacher")
     public String getAllTeachers(Model model) {
-        
+
         webClientManageService.getAllTeacher()
                 .doOnError(error -> model.addAttribute("error", "Failed to load teachers."))
                 .subscribe(teachers -> model.addAttribute("teachers", teachers));
         return "teacherlist";
-    }
-
-    @GetMapping("/api/teachers/")
-    @ResponseBody
-    public Mono<List<Teacher>> getTeachersApi() {
-        return webClientManageService.getAllTeacher();
     }
 
     @PostMapping("/teacher/add")
@@ -47,9 +42,9 @@ public class webManageController {
     @GetMapping("/teacher/{id}")
     public String getTeacher(@PathVariable String id, Model model) {
         Teacher teacher = webClientManageService.getTeacherById(id).block();
-
+        List<Subject> subjects = webClientManageService.getAllSubjectByTeacher(id).block();
         model.addAttribute("teacher", teacher);
-
+        model.addAttribute("subjects", subjects);
         return "teacher";
     }
 
@@ -80,12 +75,6 @@ public class webManageController {
         return "studentlist";
     }
 
-    @GetMapping("/api/student")
-    @ResponseBody
-    public Mono<List<Student>> getStudentsApi() {
-        return webClientManageService.getAllStudents();
-    }
-
     @PostMapping("/student/add")
     public String addStudent(@RequestParam String name, Model model) {
         Student student = new Student();
@@ -104,11 +93,6 @@ public class webManageController {
         return "subjectlist";
     }
 
-    @GetMapping("/api/subject")
-    @ResponseBody
-    public Mono<List<Subject>> getSubjectsApi() {
-        return webClientManageService.getAllSubject();
-    }
 
     @GetMapping("/subject/{teacherId}/add")
     public String showAddSubjectForm(@PathVariable String teacherId, Model model) {
@@ -121,7 +105,7 @@ public class webManageController {
     public String addSubject(@RequestParam String teacherId, @RequestParam String subjectId,
             @RequestParam String subjectName, @RequestParam String subjectTime, Model model) {
         Subject subject = new Subject();
-        System.out.println(teacherId+"-------------------------add sub");
+        System.out.println(teacherId + "-------------------------add sub");
         subject.setSbjID(subjectId);
         subject.setName(subjectName);
         subject.setTime(subjectTime);
@@ -131,4 +115,3 @@ public class webManageController {
         return "redirect:/teacher/" + teacherId;
     }
 }
-
