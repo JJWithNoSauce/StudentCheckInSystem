@@ -84,11 +84,11 @@
 </header>
 
 <div class="container">
-    <h1 th:each="teacher: ${teacher}">Teacher: <span th:text="${teacher.name}"></span></h1>
+    <h1 th:text="'Teacher: ' + ${teacher.name}"></h1>
     <button th:onclick="|window.location='@{/teacher}'|">Go back to teacher list's page</button>
 
-    <h1>Class List</h1>
-    <p th:text="${teacher}">Teacher ID</p>
+    <h1>Subject List</h1>
+    <p th:text="'Teacher ID: ' + ${teacher.teacherID}"></p>
     
     <div class="action-buttons">
         <button type="button" 
@@ -102,14 +102,13 @@
     <table>
         <thead>
             <tr>
-                
                 <th>Subject Name</th>
                 <th>Time</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            <tr th:each="subject: ${subject}">
+            <tr th:each="subject: ${teacher.classRoom.subjects}">
               <td th:text="${subject.name}"></td>
               <td th:text="${subject.time}"></td>
               <td><button th:onclick="|window.location='@{/teacher/{id1}/subject/{id2}(id1=${teacher.teacherID}, id2=${subject.sbjID})}'|">Manage Student</button></td>  
@@ -120,4 +119,3 @@
 
 </body>
 </html>
-
