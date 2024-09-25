@@ -131,17 +131,33 @@ public class webManageController {
     public String showAttendantForm(@PathVariable String teacherId, @PathVariable String subjectId, Model model) {
         Teacher teacher = webClientManageService.getTeacherById(teacherId).block();
         Subject subject = webClientManageService.getSubject(subjectId).block();
-        List<Student> student = webClientManageService.getSubjectStudents(subject.getSbjID()).block();
 
-        System.out.println(teacherId);
-        System.out.println(subjectId);
+        // Get the list of students and handle the case where the list is null or empty
+        List<Student> students = webClientManageService.getSubjectStudents(subject.getSbjID()).block();
+        System.out.println(students);
 
+        if (students == null || students.isEmpty()) {
+            // If the list is null or empty, log and add a message to the model
+            System.out.println("No students found for this subject.");
+            return "redirect:/failedNoStudentInSubject";
+        } else {
+            model.addAttribute("students", students);
+        }
+
+        // Pass the teacher and subject data to the model
         model.addAttribute("teacher", teacher);
         model.addAttribute("subject", subject);
-        model.addAttribute("student", student);
+        
         return "subjectattendant";
     }
 
+
+    //error handler
+    @GetMapping("/failedNoStudentInSubject")
+    public String failedNoStudentInSubject(Model model) {
+        model.addAttribute("message", "No students enrolled for this subject. Please add some student into your class before continuing");
+        return "failed";
+    }
     /*
 
     @GetMapping("/admin/{tEmp}")
