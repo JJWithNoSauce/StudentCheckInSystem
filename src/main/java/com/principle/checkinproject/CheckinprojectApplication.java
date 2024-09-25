@@ -3,6 +3,7 @@ package com.principle.checkinproject;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+
 @SpringBootApplication
 public class CheckinprojectApplication {
 
@@ -10,4 +11,5 @@ public class CheckinprojectApplication {
 		SpringApplication.run(CheckinprojectApplication.class, args);
 	}
 
+	
 }

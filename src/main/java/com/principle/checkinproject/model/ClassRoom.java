@@ -1,5 +1,7 @@
 package com.principle.checkinproject.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,10 +22,12 @@ public class ClassRoom {
     
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "classID") 
+    @JsonManagedReference
     private List<Subject> subjects;
     
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "teacher", referencedColumnName = "teacherID")
+    @JsonBackReference
     private Teacher teacher;
 
     public ClassRoom() {
@@ -73,3 +77,4 @@ public class ClassRoom {
         this.id = id;
     }
 }
+

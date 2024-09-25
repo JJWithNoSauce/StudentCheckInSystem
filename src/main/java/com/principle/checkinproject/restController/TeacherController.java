@@ -9,10 +9,12 @@ import com.principle.checkinproject.model.Subject;
 import com.principle.checkinproject.model.Teacher;
 import com.principle.checkinproject.service.TeacherManage;
 
+import org.springframework.ui.Model;
+
 
 
 @RestController
-@RequestMapping("/api/teachers/")
+@RequestMapping("/api/teacher/")
 public class TeacherController {
     @Autowired
     private TeacherManage teacherManage;
@@ -32,7 +34,4 @@ public class TeacherController {
     public Teacher getTeacherById(@PathVariable String teacherId){
         return teacherManage.getTeacherById(teacherId);
     }
-
-    
-    
 }
