@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teacher Dashboard</title>
+    <title>Student Manager</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -87,23 +87,32 @@
     <h1>Logged in as admin</h1>
     <button type="button" onclick="window.location.replace('?lang=ru');">Logout</button>
 
-    <h2>Lists of actions</h2>
+    <h2>You are currently in the Student Manager's page.</h2>
+    <button type="button" onclick="window.location.replace('?lang=ru');">Back to main page</button>
+    <h3>Register new student (note : pressing register button will add new student and refresh the page)</h3>
+    <td>Student Name : </td>
+    <input type="text" id=${student.id.name} name=${student.id.name} value="Name of student">
+    <button type="button" onclick="window.location.replace('?lang=ru');">Register Student</button>
+    
+
+    <h4>List of all students</h4>
     <table>
         <thead>
             <tr>
-                <th>Page</th>
+                <th>Student ID</th>
+                <th>Student Name</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
+            <c:forEach students="${students}" var="student">
                 <tr>
-                    <td>Teacher's account management</td>
-                    <td><button th:onclick="|window.location='@{???????????}'|">Navigate</button></td>
+                    <td>${student.id}</td>
+                    <td><input type="text" id=${student.id.name} name=${student.id.name} value=${student.id.name}></td>
+                    <td><button type="button" onclick="window.location.replace('?lang=ru');">Remove Student</button>
+                        <button type="button" onclick="window.location.replace('?lang=ru');">Adjust Info</button></td>
                 </tr>
-                <tr>
-                    <td>Student's account management</td>
-                    <td><button th:onclick="|window.location='@{???????????}'|">Navigate</button></td>
-                </tr>
+            </c:forEach>
         </tbody>
     </table>
 </div>

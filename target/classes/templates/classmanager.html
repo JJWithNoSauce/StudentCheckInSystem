@@ -44,7 +44,7 @@
         }
 
         button:hover {
-            background-color: rgb(42, 163, 179);
+            background-color: #258292;
         }
 
         table {
@@ -80,30 +80,40 @@
 <body>
 
 <header>
-    <h1>Admin Dashboard</h1>
+    <h1>Teacher Dashboard</h1>
 </header>
 
 <div class="container">
-    <h1>Logged in as admin</h1>
-    <button type="button" onclick="window.location.replace('?lang=ru');">Logout</button>
+    <h1 th:text="'Teacher: ' + ${teacher.name}"></h1>
+    <button th:onclick="|window.location='@{/teacher}'|">Go back to teacher list's page</button>
 
-    <h2>Lists of actions</h2>
+    <h1>Subject List</h1>
+    <p th:text="'Teacher ID: ' + ${teacher.teacherID}"></p>
+    
+    <div class="action-buttons">
+        <button type="button" 
+            th:onclick="|window.location='@{/subject/{teacherId}/add(teacherId=${teacher.teacherID})}'|">
+            Add Subject
+        </button>
+
+    </div>
+
     <table>
         <thead>
             <tr>
-                <th>Page</th>
+                <th>Subject Name</th>
+                <th>Time</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
-                <tr>
-                    <td>Teacher's account management</td>
-                    <td><button th:onclick="|window.location='@{???????????}'|">Navigate</button></td>
-                </tr>
-                <tr>
-                    <td>Student's account management</td>
-                    <td><button th:onclick="|window.location='@{???????????}'|">Navigate</button></td>
-                </tr>
+            <tr th:each="subject: ${teacher.classRoom.subjects}">
+              <td th:text="${subject.name}"></td>
+              <td th:text="${subject.time}"></td>
+              <td><button th:onclick="|window.location='@{?????????????}'|">Accress</button>
+              <button th:onclick="|window.location='@{?????????????}'|">Remove</button></td>
+              
+            </tr>
         </tbody>
     </table>
 </div>
