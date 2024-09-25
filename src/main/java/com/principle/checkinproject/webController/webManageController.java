@@ -130,5 +130,20 @@ public class webManageController {
                 .subscribe();
         return "redirect:/teacher/" + teacherId;
     }
+
+    @GetMapping("/subject/{teacherId}/{subjectId}/attendantform")
+    public String showAttendantForm(@PathVariable String teacherId, @PathVariable String subjectId, Model model) {
+        Teacher teacher = webClientManageService.getTeacherById(teacherId).block();
+        Subject subject = webClientManageService.getSubject(subjectId).block();
+        List<Student> student = webClientManageService.getSubjectStudents(subject.getSbjID()).block();
+
+        System.out.println(teacherId);
+        System.out.println(subjectId);
+
+        model.addAttribute("teacher", teacher);
+        model.addAttribute("subject", subject);
+        model.addAttribute("student", student);
+        return "subjectattendant";
+    }
 }
 
