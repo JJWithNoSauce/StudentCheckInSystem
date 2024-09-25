@@ -19,7 +19,7 @@ public class webClientManageService {
     // ManageController APIs
     public Mono<Teacher> createTeacher(Teacher teacher) {
         return webClient.post()
-                .uri("/manage/teacher")
+                .uri("/teacher")
                 .bodyValue(teacher)
                 .retrieve()
                 .bodyToMono(Teacher.class);
@@ -27,26 +27,43 @@ public class webClientManageService {
 
     public Mono<Void> removeTeacher(String teacherId) {
         return webClient.delete()
-                .uri("/manage/teacher/{id}", teacherId)
+                .uri("/teacher/{id}", teacherId)
                 .retrieve()
                 .bodyToMono(Void.class);
     }
 
     public Mono<Teacher> updateTeacher(Teacher teacher) {
         return webClient.put()
-                .uri("/manage/teacher/{id}", teacher.getTeacherID())
+                .uri("/teacher/{id}", teacher.getTeacherID())
                 .bodyValue(teacher)
                 .retrieve()
                 .bodyToMono(Teacher.class);
     }
 
-    public Mono<Void> deleteTeacher(String teacherId) {
-        return webClient.delete()
-                .uri("/manage/teacher/{id}", teacherId)
+    public Mono<Teacher> getTeacherById(String teacherId) {
+        return webClient.get()
+                .uri("/teacher/{id}", teacherId)
                 .retrieve()
-                .bodyToMono(Void.class);
+                .bodyToMono(Teacher.class);
     }
 
+    public Mono<List<Teacher>> getAllTeacher() {
+        return webClient.get()
+                .uri("/teacher")
+                .retrieve()
+                .bodyToFlux(Teacher.class)
+                .collectList();
+    }
+
+    public Mono<List<Subject>> getAllSubjectByTeacher(String teacherId) {
+        return webClient.get()
+                .uri("/teacher/subjects/{teacherId}", teacherId)
+                .retrieve()
+                .bodyToFlux(Subject.class)
+                .collectList();
+    }
+
+    // Additional methods for students and subjects
     public Mono<Student> createStudent(Student student) {
         return webClient.post()
                 .uri("/manage/student")
@@ -64,7 +81,7 @@ public class webClientManageService {
 
     public Mono<Subject> classroomAddSubject(String teacherId, Subject subject) {
         return webClient.post()
-                .uri("/manage/teacher/{id}/subject", teacherId)
+                .uri("/manage/classroom/{id}/subject/add", teacherId)
                 .bodyValue(subject)
                 .retrieve()
                 .bodyToMono(Subject.class);
@@ -138,30 +155,6 @@ public class webClientManageService {
                 .bodyToMono(CheckIn.class);
     }
 
-    // TeacherController APIs
-    public Mono<List<Teacher>> getAllTeacher() {
-        return webClient.get()
-                .uri("/teacher")
-                .retrieve()
-                .bodyToFlux(Teacher.class)
-                .collectList();
-    }
-
-    public Mono<List<Subject>> getAllSubjectByTeacher(String teacherId) {
-        return webClient.get()
-                .uri("/teacher/{id}/subjects", teacherId)
-                .retrieve()
-                .bodyToFlux(Subject.class)
-                .collectList();
-    }
-
-    public Mono<Teacher> getTeacherById(String teacherId) {
-        return webClient.get()
-                .uri("/teacher/{id}", teacherId)
-                .retrieve()
-                .bodyToMono(Teacher.class);
-    }
-
     // Added methods for students
     public Mono<List<Student>> getAllStudents() {
         return webClient.get()
@@ -169,6 +162,14 @@ public class webClientManageService {
                 .retrieve()
                 .bodyToFlux(Student.class)
                 .collectList();
+    }
+
+    // Define deleteTeacher method
+    public Mono<Void> deleteTeacher(String teacherId) {
+        return webClient.delete()
+                .uri("/teacher/{id}", teacherId)
+                .retrieve()
+                .bodyToMono(Void.class);
     }
 }
 

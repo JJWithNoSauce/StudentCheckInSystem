@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import com.principle.checkinproject.webService.webClientManageService;
 
 import reactor.core.publisher.Mono;
+import java.util.List;
 
 import com.principle.checkinproject.model.Teacher;
 import com.principle.checkinproject.model.Student;
@@ -20,10 +21,17 @@ public class webManageController {
 
     @GetMapping("/teacher")
     public String getAllTeachers(Model model) {
+        
         webClientManageService.getAllTeacher()
                 .doOnError(error -> model.addAttribute("error", "Failed to load teachers."))
                 .subscribe(teachers -> model.addAttribute("teachers", teachers));
         return "teacherlist";
+    }
+
+    @GetMapping("/api/teachers/")
+    @ResponseBody
+    public Mono<List<Teacher>> getTeachersApi() {
+        return webClientManageService.getAllTeacher();
     }
 
     @PostMapping("/teacher/add")
@@ -72,6 +80,12 @@ public class webManageController {
         return "studentlist";
     }
 
+    @GetMapping("/api/student")
+    @ResponseBody
+    public Mono<List<Student>> getStudentsApi() {
+        return webClientManageService.getAllStudents();
+    }
+
     @PostMapping("/student/add")
     public String addStudent(@RequestParam String name, Model model) {
         Student student = new Student();
@@ -88,6 +102,12 @@ public class webManageController {
                 .doOnError(error -> model.addAttribute("error", "Failed to load subjects."))
                 .subscribe(subjects -> model.addAttribute("subjects", subjects));
         return "subjectlist";
+    }
+
+    @GetMapping("/api/subject")
+    @ResponseBody
+    public Mono<List<Subject>> getSubjectsApi() {
+        return webClientManageService.getAllSubject();
     }
 
     @GetMapping("/subject/{teacherId}/add")
@@ -111,3 +131,4 @@ public class webManageController {
         return "redirect:/teacher/" + teacherId;
     }
 }
+

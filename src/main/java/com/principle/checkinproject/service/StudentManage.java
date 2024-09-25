@@ -22,8 +22,8 @@ public class StudentManage {
         return studentRespository.findAll();
     }
 
-    public Optional<Student> getStudentById(String stdId) {
-        return studentRespository.findById(stdId);
+    public Student getStudentById(String stdId) {
+        return studentRespository.findById(stdId).orElse(null);
     }
 
     public Student updateStudent(String stdId, Student updatedStudent) {

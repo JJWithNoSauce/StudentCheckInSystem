@@ -1,11 +1,12 @@
 package com.principle.checkinproject.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,13 +23,12 @@ public class ClassRoom {
     
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "classID") 
-    @JsonManagedReference
+    @JsonIgnoreProperties({"classRoom"})
     private List<Subject> subjects;
-    
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "teacher", referencedColumnName = "teacherID")
-    @JsonBackReference
-    private Teacher teacher;
+	
+	@OneToOne
+	@JoinColumn(name = "teacher",nullable = false,referencedColumnName = "teacherID")
+	private Teacher teacher;
 
     public ClassRoom() {
         this.subjects = new ArrayList<>();
@@ -77,4 +77,3 @@ public class ClassRoom {
         this.id = id;
     }
 }
-

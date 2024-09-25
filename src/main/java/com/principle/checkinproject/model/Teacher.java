@@ -1,15 +1,14 @@
 package com.principle.checkinproject.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.JoinColumn;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
-public class Teacher extends AInstructor {
+public class Teacher extends AInstructor{
     @Id
     @Column(name = "teacherID")
     private String teacherID;
@@ -19,9 +18,9 @@ public class Teacher extends AInstructor {
 
     @OneToOne(mappedBy = "teacher")
     @JoinColumn(name = "classroom_id")
-    @JsonManagedReference
+    @JsonIgnoreProperties("teacher")
     private ClassRoom classRoom;
-
+    
     public Teacher() {}
 
     public Teacher(String teacherID, String name) {
@@ -57,11 +56,6 @@ public class Teacher extends AInstructor {
         if (classRoom != null && classRoom.getTeacher() != this) {
             classRoom.setTeacher(this);
         }
-    }
-
-    // New method to get subjects
-    public List<Subject> getSubjects() {
-        return classRoom != null ? classRoom.getSubjects() : null;
     }
 }
 

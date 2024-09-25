@@ -9,29 +9,32 @@ import com.principle.checkinproject.model.Subject;
 import com.principle.checkinproject.model.Teacher;
 import com.principle.checkinproject.service.TeacherManage;
 
-import org.springframework.ui.Model;
-
 
 
 @RestController
-@RequestMapping("/api/teacher/")
+@RequestMapping("/api/teacher")
 public class TeacherController {
     @Autowired
     private TeacherManage teacherManage;
-
+    
+    // ใช้ได้
     @GetMapping
     public List<Teacher> getAllTeacher(){
         return teacherManage.getAllTeachers();
     }
 
-    @GetMapping("subjects/{teacherId}")
+    @GetMapping("/subjects/{teacherId}")
     private List<Subject> getAllSubject(@PathVariable String teacherId){
        Teacher teacher = teacherManage.getTeacherById(teacherId);
        return teacher.getClassRoom().getSubjects();
     }
 
+    // ใช้ได้
     @GetMapping("/{teacherId}")
     public Teacher getTeacherById(@PathVariable String teacherId){
         return teacherManage.getTeacherById(teacherId);
     }
+
+    
+    
 }

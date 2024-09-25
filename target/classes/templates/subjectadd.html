@@ -9,7 +9,7 @@
     <h1>Add New Subject</h1>
     <form action="/subject/add" method="post">
         <!-- Hidden field for teacherId -->
-        <input type="hidden" id="teacherId" name="teacherId" value="{teacherId}(teacherId=${teacherId})}"><br><br>
+        <input type="text" id="teacherId" name="teacherId" th:value="${teacherId}"><br><br>
         
         <label for="subjectId">Subject ID:</label>
         <input type="text" id="subjectId" name="subjectId" required><br><br>
