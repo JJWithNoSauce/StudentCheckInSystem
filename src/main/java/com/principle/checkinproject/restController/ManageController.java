@@ -68,6 +68,8 @@ public class ManageController {
     public void classroomRemoveSubject(@PathVariable String teacherId, @PathVariable String subjectId){
         ClassRoom classRoom = teacherManage.getTeacherById(teacherId).getClassRoom();
         Subject sbj = subjectManage.getSubjectById(subjectId);
+        System.out.println(sbj+"=================================");
+        System.out.println(classRoom);
         classRoomManage.removeSubject(classRoom,sbj);
     }
     

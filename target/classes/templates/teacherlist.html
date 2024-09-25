@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Account Select</title>
+    <title>Teacher List</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -76,34 +76,11 @@
         }
 
     </style>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            fetch('/api/teachers/')
-                .then(response => response.json())
-                .then(data => {
-                    if (Array.isArray(data)) {
-                        const tbody = document.querySelector('tbody');
-                        data.forEach(teacher => {
-                            const tr = document.createElement('tr');
-                            tr.innerHTML = `
-                                <td>${teacher.teacherID}</td>
-                                <td>${teacher.name}</td>
-                                <td><button onclick="window.location='/teacher/${teacher.teacherID}'">Access</button></td>
-                            `;
-                            tbody.appendChild(tr);
-                        });
-                    } else {
-                        console.error('Unexpected data format:', data);
-                    }
-                })
-                .catch(error => console.error('Error fetching teacher data:', error));
-        });
-    </script>
 </head>
 <body>
 
 <header>
-    <h1>Teacher select's page</h1>
+    <h1>Teacher List</h1>
 </header>
 
 <div class="container">
@@ -117,11 +94,17 @@
             </tr>
         </thead>
         <tbody>
-            <!-- Data will be populated here by JavaScript -->
+            <!-- Iterate over the teachers list and display each teacher -->
+            <tr th:each="teacher : ${teachers}">
+                <td th:text="${teacher.teacherID}"></td>
+                <td th:text="${teacher.name}"></td>
+                <td>
+                    <a th:href="@{/teacher/{id}(id=${teacher.teacherID})}">View</a>
+                </td>
+            </tr>
         </tbody>
     </table>
 </div>
 
 </body>
 </html>
-

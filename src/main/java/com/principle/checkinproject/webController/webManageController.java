@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.result.view.Rendering;
 
 import com.principle.checkinproject.webService.webClientManageService;
@@ -23,9 +24,8 @@ public class webManageController {
     @GetMapping("/teacher")
     public String getAllTeachers(Model model) {
 
-        webClientManageService.getAllTeacher()
-                .doOnError(error -> model.addAttribute("error", "Failed to load teachers."))
-                .subscribe(teachers -> model.addAttribute("teachers", teachers));
+        List<Teacher> teachers = webClientManageService.getAllTeacher().block();
+        model.addAttribute("teachers", teachers);
         return "teacherlist";
     }
 
@@ -109,9 +109,21 @@ public class webManageController {
         subject.setSbjID(subjectId);
         subject.setName(subjectName);
         subject.setTime(subjectTime);
-        webClientManageService.classroomAddSubject(teacherId, subject)
-                .doOnError(error -> model.addAttribute("error", "Failed to add subject."))
-                .subscribe();
+        try {
+            webClientManageService.classroomAddSubject(teacherId, subject)
+                    .doOnError(error -> model.addAttribute("error", "Failed to add subject."))
+                    .block(); // Wait for the operation to complete
+        } catch (Exception e) {
+            model.addAttribute("error", "Failed to add subject.");
+            return "subjectadd"; // Return to the form in case of error
+        }
         return "redirect:/teacher/" + teacherId;
     }
+
+    @DeleteMapping("/subject/remove")
+    public void removeSubject(@RequestParam String teacherId, @RequestParam String subjectId, Model model) {
+        webClientManageService.classroomRemoveSubject(teacherId, subjectId).block();
+    }
+
 }
+
