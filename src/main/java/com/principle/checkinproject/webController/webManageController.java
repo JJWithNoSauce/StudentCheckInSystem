@@ -4,19 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.reactive.function.client.ClientResponse;
-import org.springframework.web.reactive.result.view.Rendering;
 
 import com.principle.checkinproject.webService.webClientManageService;
 
-import reactor.core.publisher.Mono;
 import java.util.List;
 
 import com.principle.checkinproject.model.Teacher;
 import com.principle.checkinproject.model.Student;
 import com.principle.checkinproject.model.Subject;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
