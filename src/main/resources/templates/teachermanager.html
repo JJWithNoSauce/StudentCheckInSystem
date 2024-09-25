@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Manager</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+
+        header {
+            background-color: #258292;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 24px;
+            color: #333;
+        }
+
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        button {
+            padding: 10px 15px;
+            margin: 10px 5px;
+            background-color: #258292;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: rgb(42, 163, 179);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        .action-buttons {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Admin Dashboard</h1>
+</header>
+
+<div class="container">
+    <h1>Logged in as admin</h1>
+    <button type="button" onclick="window.location.replace('?lang=ru');">Logout</button>
+
+    <h2>You are currently in the Teacher Manager's page.</h2>
+    <button type="button" onclick="window.location.replace('?lang=ru');">Back to main page</button>
+    <h3>Register new Teacher (note : pressing register button will add new teacher and refresh the page)</h3>
+    <td>Teacher Name : </td>
+    <input type="text" id=${teacher.id.name} name=${teacher.id.name} value="Name of teacher">
+    <button type="button" onclick="window.location.replace('?lang=ru');">Register Student</button>
+    
+
+    <h4>List of all teachers</h4>
+    <table>
+        <thead>
+            <tr>
+                <th>Teacher ID</th>
+                <th>Teacher Name</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <c:forEach teachers="${teachers}" var="teacher">
+                <tr>
+                    <td>${teacher.id}</td>
+                    <td><input type="text" id=${teacher.id.name} name=${teacher.id.name} value=${teacher.id.name}></td>
+                    <td><button type="button" onclick="window.location.replace('?lang=ru');">Remove Teacher</button>
+                        <button type="button" onclick="window.location.replace('?lang=ru');">Adjust Info</button>
+                        <button type="button" onclick="window.location.replace('?lang=ru');">Manage Classes</button></td>
+                </tr>
+            </c:forEach>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
