@@ -85,7 +85,7 @@
 
 <div class="container">
     <h1>Logged in as admin</h1>
-    <button type="button" onclick="window.location.replace('?lang=ru');">Logout</button>
+    <button th:onclick="|window.location='@{/teacher}'|">Logout</button>
 
     <h2>Lists of actions</h2>
     <table>
@@ -98,11 +98,11 @@
         <tbody>
                 <tr>
                     <td>Teacher's account management</td>
-                    <td><button type="button" onclick="window.location.replace('?lang=ru');">Navigate</button></td>
+                    <td><button th:onclick="|window.location='@{/teachermanager}'|">Navigate</button></td>
                 </tr>
                 <tr>
                     <td>Student's account management</td>
-                    <td><button type="button" onclick="window.location.replace('?lang=ru');">Navigate</button></td>
+                    <td><button th:onclick="|window.location='@{/studentmanager}'|">Navigate</button></td>
                 </tr>
         </tbody>
     </table>

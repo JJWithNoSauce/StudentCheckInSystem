@@ -84,15 +84,13 @@
 </header>
 
 <div class="container">
-    <h1>Logged in as admin</h1>
-    <button type="button" onclick="window.location.replace('?lang=ru');">Logout</button>
 
     <h2>You are currently in the Teacher Manager's page.</h2>
-    <button type="button" onclick="window.location.replace('?lang=ru');">Back to main page</button>
+    <button th:onclick="|window.location='@{/admin}'|">Back to main page</button>
     <h3>Register new Teacher (note : pressing register button will add new teacher and refresh the page)</h3>
-    <td>Teacher Name : </td>
-    <input type="text" id=${teacher.id.name} name=${teacher.id.name} value="Name of teacher">
+    
     <button type="button" onclick="window.location.replace('?lang=ru');">Register Student</button>
+    
     
 
     <h4>List of all teachers</h4>
@@ -108,10 +106,10 @@
             <c:forEach teachers="${teachers}" var="teacher">
                 <tr>
                     <td>${teacher.id}</td>
-                    <td><input type="text" id=${teacher.id.name} name=${teacher.id.name} value=${teacher.id.name}></td>
+                    <td><input type="text" id=${teacher.id.name} name=${teacher.id.name} value=${teacher.id.name} disabled></td>
                     <td><button type="button" onclick="window.location.replace('?lang=ru');">Remove Teacher</button>
-                        <button type="button" onclick="window.location.replace('?lang=ru');">Adjust Info</button>
-                        <button type="button" onclick="window.location.replace('?lang=ru');">Manage Classes</button></td>
+                        <button th:onclick="|window.location='@{???????????}'|">Manage Classes</button>
+                    </td>
                 </tr>
             </c:forEach>
         </tbody>

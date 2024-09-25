@@ -2,6 +2,8 @@ package com.principle.checkinproject.webService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.reactive.function.client.WebClient;
 import com.principle.checkinproject.model.*;
 import reactor.core.publisher.Mono;
@@ -89,7 +91,7 @@ public class webClientManageService {
 
     public Mono<Void> classroomRemoveSubject(String teacherId, String subjectId) {
         return webClient.delete()
-                .uri("/manage/teacher/{teacherId}/subject/{subjectId}", teacherId, subjectId)
+                .uri("/manage/classroom/{teacherId}/subject/remove/{subjectId}", teacherId, subjectId)
                 .retrieve()
                 .bodyToMono(Void.class);
     }

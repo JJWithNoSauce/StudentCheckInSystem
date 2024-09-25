@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.result.view.Rendering;
 
 import com.principle.checkinproject.webService.webClientManageService;
@@ -16,6 +17,12 @@ import java.util.List;
 import com.principle.checkinproject.model.Teacher;
 import com.principle.checkinproject.model.Student;
 import com.principle.checkinproject.model.Subject;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+
 
 @Controller
 public class webManageController {
@@ -25,9 +32,8 @@ public class webManageController {
     @GetMapping("/teacher")
     public String getAllTeachers(Model model) {
 
-        webClientManageService.getAllTeacher()
-                .doOnError(error -> model.addAttribute("error", "Failed to load teachers."))
-                .subscribe(teachers -> model.addAttribute("teachers", teachers));
+        List<Teacher> teachers = webClientManageService.getAllTeacher().block();
+        model.addAttribute("teachers", teachers);
         return "teacherlist";
     }
 
@@ -111,10 +117,20 @@ public class webManageController {
         subject.setSbjID(subjectId);
         subject.setName(subjectName);
         subject.setTime(subjectTime);
-        webClientManageService.classroomAddSubject(teacherId, subject)
-                .doOnError(error -> model.addAttribute("error", "Failed to add subject."))
-                .subscribe();
+        try {
+            webClientManageService.classroomAddSubject(teacherId, subject)
+                    .doOnError(error -> model.addAttribute("error", "Failed to add subject."))
+                    .block(); // Wait for the operation to complete
+        } catch (Exception e) {
+            model.addAttribute("error", "Failed to add subject.");
+            return "subjectadd"; // Return to the form in case of error
+        }
         return "redirect:/teacher/" + teacherId;
+    }
+
+    @DeleteMapping("/subject/remove")
+    public void removeSubject(@RequestParam String teacherId, @RequestParam String subjectId, Model model) {
+        webClientManageService.classroomRemoveSubject(teacherId, subjectId).block();
     }
 
     @GetMapping("/subject/{teacherId}/{subjectId}/attendantform")
@@ -148,4 +164,29 @@ public class webManageController {
         model.addAttribute("message", "No students enrolled for this subject. Please add some student into your class before continuing");
         return "failed";
     }
+    /*
+
+    @GetMapping("/admin/{tEmp}")
+    public String getMethodName(@PathVariable String tEmp) {
+        return "teachermanager";
+    }                                                                   
+    
+    */
+    
+    @GetMapping("/admin")
+    public String go_admin() {
+        return "admin";
+    }
+    
+    @GetMapping("/teachermanager")
+    public String go_teachermanager() {
+        return "teachermanager";
+    }
+    
+    @GetMapping("/studentmanager")
+    public String go_studentmanager() {
+        return "studentmanager";
+    }
+    
 }
+

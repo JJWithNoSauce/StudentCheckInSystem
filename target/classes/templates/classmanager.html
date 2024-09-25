@@ -13,7 +13,7 @@
         }
 
         header {
-            background-color: #4CAF50;
+            background-color: #258292;
             color: white;
             padding: 10px;
             text-align: center;
@@ -35,7 +35,7 @@
         button {
             padding: 10px 15px;
             margin: 10px 5px;
-            background-color: #4CAF50;
+            background-color: #258292;
             color: white;
             border: none;
             border-radius: 5px;
@@ -44,7 +44,7 @@
         }
 
         button:hover {
-            background-color: #45a049;
+            background-color: #258292;
         }
 
         table {
@@ -96,7 +96,6 @@
             Add Subject
         </button>
 
-        
     </div>
 
     <table>
@@ -111,30 +110,13 @@
             <tr th:each="subject: ${teacher.classRoom.subjects}">
               <td th:text="${subject.name}"></td>
               <td th:text="${subject.time}"></td>
-              <td><button th:onclick="|window.location='@{/teacher/{id1}/subject/{id2}(id1=${teacher.teacherID}, id2=${subject.sbjID})}'|">Manage Student</button>
-                <button th:onclick="|window.location='@{/subject/{teacherId}/{subjectId}/attendantform(teacherId=${teacher.teacherID}, subjectId=${subject.sbjID})}'|">Attendant</button>
-                <button th:onclick="|window.location='@{/teacher/{id1}/subject/{id2}(id1=${teacher.teacherID}, id2=${subject.sbjID})}'|">Remove</button>
-            
-            </td>  
+              <td><button th:onclick="|window.location='@{?????????????}'|">Accress</button>
+              <button th:onclick="|window.location='@{?????????????}'|">Remove</button></td>
+              
             </tr>
         </tbody>
     </table>
 </div>
 
-<script>
-    function removeSubject(button) {
-        const teacherId = encodeURIComponent(button.getAttribute('data-teacher-id'));
-        const subjectId = encodeURIComponent(button.getAttribute('data-subject-id'));
-        fetch(`/subject/remove?teacherId=${teacherId}&subjectId=${subjectId}`, {
-            method: 'DELETE'
-        })
-        .then(response => {
-            location.reload();
-        })
-        .catch(error => console.error('Error:', error));
-    }
-</script>
-
 </body>
 </html>
-
