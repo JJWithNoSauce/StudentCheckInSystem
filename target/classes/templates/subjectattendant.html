@@ -85,25 +85,22 @@
 
 <div class="container">
     <tr th:each = "subject: ${subject}">
-    <h1>Attendant's history for class : </h1>
+    <h1>Attendant's submit system</h1>
     <td th:text = "${student.name}"></td>
     </tr>
     
-    <button type="button" onclick="window.location.replace('?lang=ru');">Back to main page</button>
+    <button th:onclick="|window.location='@{/teacher/{id}(id=${teacherId})}'|">Go back to teacher's page</button>
 
     <h2>Time for attendant</h2>
     <table>
         <thead>
             <tr>
-                <th>Item</th>
+                <th>Time</th>
                 <th>Detail</th>
             </tr>
             </tr>
-                <td>Attendant ID</td>
-                <td><input type="text" id="AttendantID" name="AttendantID" value=${attendant.id} disabled></td>
-            </tr>
                 <td>Time</td>
-                <td><input type="text" id="ClassTime" name="ClassTime" value=${attendant.id.time} disabled></td>
+                <td><input type="text" id="ClassTime" name="ClassTime" value=${attendant.id.time}></td>
             </tr>
         </tbody>
     </table>
@@ -120,10 +117,10 @@
         </thead>
         <tbody>
             <tr th:each = "student: ${student}">
-              <td><input type="checkbox" id="${student.id}" name="${student.name}" disabled></td>
+              <td><input type="checkbox" id="${student.id}check" name="${student.id}check"></td>
                     <td th:text = "${student.id}"></td>
                     <td th:text = "${student.name}"></td>
-                    <td><input type="text" id="${student.id.note}" name="${student.name.note}" disabled></td>
+                    <td><input type="text" id="${student.id}note" name="${student.id}note"></td>
             </tr>
         </tbody>
     </table>

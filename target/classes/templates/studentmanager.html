@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teacher List</title>
+    <title>Student Manager</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -13,7 +13,7 @@
         }
 
         header {
-            background-color: #4CAF50;
+            background-color: #258292;
             color: white;
             padding: 10px;
             text-align: center;
@@ -35,7 +35,7 @@
         button {
             padding: 10px 15px;
             margin: 10px 5px;
-            background-color: #4CAF50;
+            background-color: #258292;
             color: white;
             border: none;
             border-radius: 5px;
@@ -44,7 +44,7 @@
         }
 
         button:hover {
-            background-color: #45a049;
+            background-color: rgb(42, 163, 179);
         }
 
         table {
@@ -80,31 +80,41 @@
 <body>
 
 <header>
-    <h1>Teacher List</h1>
+    <h1>Admin Dashboard</h1>
 </header>
 
 <div class="container">
-    <h1>Teacher List</h1>
+    <h1>Logged in as admin</h1>
+    <button type="button" onclick="window.location.replace('?lang=ru');">Logout</button>
+
+    <h2>You are currently in the Student Manager's page.</h2>
+    <button th:onclick="|window.location='@{/admin}'|">Back to main page</button>
+    <h3>Register new student (note : pressing register button will add new student and refresh the page)</h3>
+    <td>Student Name : </td>
+    <input type="text" id=${student.id.name} name=${student.id.name} value="Name of student">
+    <button type="button" onclick="window.location.replace('?lang=ru');">Register Student</button>
+    
+
+    <h4>List of all students</h4>
     <table>
         <thead>
             <tr>
-                <th>Teacher ID</th>
-                <th>Teacher Name</th>
+                <th>Student ID</th>
+                <th>Student Name</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            <!-- Iterate over the teachers list and display each teacher -->
-            <tr th:each="teacher : ${teachers}">
-                <td th:text="${teacher.teacherID}"></td>
-                <td th:text="${teacher.name}"></td>
-                <td>
-                    <a th:href="@{/teacher/{id}(id=${teacher.teacherID})}">View</a>
-                </td>
-            </tr>
+            <c:forEach students="${students}" var="student">
+                <tr>
+                    <td>${student.id}</td>
+                    <td><input type="text" id=${student.id.name} name=${student.id.name} value=${student.id.name}></td>
+                    <td><button type="button" onclick="window.location.replace('?lang=ru');">Remove Student</button>
+                        <button type="button" onclick="window.location.replace('?lang=ru');">Adjust Info</button></td>
+                </tr>
+            </c:forEach>
         </tbody>
     </table>
-    <td><button th:onclick="|window.location='@{/admin}'|">Admin Accress</button></td>
 </div>
 
 </body>

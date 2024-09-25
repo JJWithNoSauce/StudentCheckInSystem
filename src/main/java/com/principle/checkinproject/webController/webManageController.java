@@ -15,6 +15,12 @@ import java.util.List;
 import com.principle.checkinproject.model.Teacher;
 import com.principle.checkinproject.model.Student;
 import com.principle.checkinproject.model.Subject;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+
 
 @Controller
 public class webManageController {
@@ -125,5 +131,44 @@ public class webManageController {
         webClientManageService.classroomRemoveSubject(teacherId, subjectId).block();
     }
 
+    @GetMapping("/subject/{teacherId}/{subjectId}/attendantform")
+    public String showAttendantForm(@PathVariable String teacherId, @PathVariable String subjectId, Model model) {
+        Teacher teacher = webClientManageService.getTeacherById(teacherId).block();
+        Subject subject = webClientManageService.getSubject(subjectId).block();
+        List<Student> student = webClientManageService.getSubjectStudents(subject.getSbjID()).block();
+
+        System.out.println(teacherId);
+        System.out.println(subjectId);
+
+        model.addAttribute("teacher", teacher);
+        model.addAttribute("subject", subject);
+        model.addAttribute("student", student);
+        return "subjectattendant";
+    }
+
+    /*
+
+    @GetMapping("/admin/{tEmp}")
+    public String getMethodName(@PathVariable String tEmp) {
+        return "teachermanager";
+    }                                                                   
+    
+    */
+    
+    @GetMapping("/admin")
+    public String go_admin() {
+        return "admin";
+    }
+    
+    @GetMapping("/teachermanager")
+    public String go_teachermanager() {
+        return "teachermanager";
+    }
+    
+    @GetMapping("/studentmanager")
+    public String go_studentmanager() {
+        return "studentmanager";
+    }
+    
 }
 

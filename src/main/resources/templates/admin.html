@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teacher List</title>
+    <title>Teacher Dashboard</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -13,7 +13,7 @@
         }
 
         header {
-            background-color: #4CAF50;
+            background-color: #258292;
             color: white;
             padding: 10px;
             text-align: center;
@@ -35,7 +35,7 @@
         button {
             padding: 10px 15px;
             margin: 10px 5px;
-            background-color: #4CAF50;
+            background-color: #258292;
             color: white;
             border: none;
             border-radius: 5px;
@@ -44,7 +44,7 @@
         }
 
         button:hover {
-            background-color: #45a049;
+            background-color: rgb(42, 163, 179);
         }
 
         table {
@@ -80,31 +80,32 @@
 <body>
 
 <header>
-    <h1>Teacher List</h1>
+    <h1>Admin Dashboard</h1>
 </header>
 
 <div class="container">
-    <h1>Teacher List</h1>
+    <h1>Logged in as admin</h1>
+    <button th:onclick="|window.location='@{/teacher}'|">Logout</button>
+
+    <h2>Lists of actions</h2>
     <table>
         <thead>
             <tr>
-                <th>Teacher ID</th>
-                <th>Teacher Name</th>
+                <th>Page</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            <!-- Iterate over the teachers list and display each teacher -->
-            <tr th:each="teacher : ${teachers}">
-                <td th:text="${teacher.teacherID}"></td>
-                <td th:text="${teacher.name}"></td>
-                <td>
-                    <a th:href="@{/teacher/{id}(id=${teacher.teacherID})}">View</a>
-                </td>
-            </tr>
+                <tr>
+                    <td>Teacher's account management</td>
+                    <td><button th:onclick="|window.location='@{/teachermanager}'|">Navigate</button></td>
+                </tr>
+                <tr>
+                    <td>Student's account management</td>
+                    <td><button th:onclick="|window.location='@{/studentmanager}'|">Navigate</button></td>
+                </tr>
         </tbody>
     </table>
-    <td><button th:onclick="|window.location='@{/admin}'|">Admin Accress</button></td>
 </div>
 
 </body>
