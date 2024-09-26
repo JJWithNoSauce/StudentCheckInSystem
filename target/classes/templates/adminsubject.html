@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Manager</title>
+    <title>Teacher Dashboard</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -51,7 +51,7 @@
         }
 
         button:hover {
-            background-color: rgb(42, 163, 179);
+            background-color: #258292;
         }
 
         table {
@@ -87,46 +87,62 @@
 <body>
 
 <header>
-    <h1>Admin Dashboard</h1>
+    <h1>Teacher Dashboard</h1>
     <button class="logout" onclick="window.location.href='index.html'">Logout</button>
 </header>
 
 <div class="container">
-   
-    <h2>You are currently in the Student Manager's page.</h2>
-    <button th:onclick="|window.location='@{/admin}'|">Back to main page</button>
-    <h3>Register new student (note : pressing register button will add new student and refresh the page)</h3>
-    <button type="button" onclick="window.location.href='/studentmanager/studentadd'">New Student</button>
-    
+    <h1 th:text="'Teacher: ' + ${teacher.name}"></h1>
+    <button th:onclick="|window.location='@{/teacher}'|">Go back to teacher list's page</button>
 
-    <h4>List of all students</h4>
+    <h1>Subject List</h1>
+    <p th:text="'Teacher ID: ' + ${teacher.teacherID}"></p>
+    
+    <div class="action-buttons">
+        <button type="button" 
+            th:onclick="|window.location='@{/subject/{teacherId}/add(teacherId=${teacher.teacherID})}'|">
+            Add Subject
+        </button>
+
+        
+    </div>
+
     <table>
         <thead>
             <tr>
-                <th>Student ID</th>
-                <th>Student Name</th>
+                <th>Subject Name</th>
+                <th>Time</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            <tr th:each="student : ${students}">
-                <td th:text="${student.stdID}"></td>
-                <td th:text="${student.name}"></td>
-                <td>
-                    <form th:action="@{/student/delete/{stdID}(stdID=${student.stdID})}" method="post" onsubmit="return confirmDelete()">
-                        <input type="hidden" name="_method" value="delete" />
-                        <button type="submit">Delete</button>
-                    </form>
-                </td>
+            <tr th:each="subject: ${teacher.classRoom.subjects}">
+              <td th:text="${subject.name}"></td>
+              <td th:text="${subject.time}"></td>
+              <td><button th:onclick="|window.location='@{/teacher/{id1}/subject/{id2}(id1=${teacher.teacherID}, id2=${subject.sbjID})}'|">Manage Student</button>
+                <!-- <button th:onclick="|window.location='@{/subject/{teacherId}/{subjectId}/attendantform(teacherId=${teacher.teacherID}, subjectId=${subject.sbjID})}'|">Attendant</button> -->
+                <button type="button" th:data-teacher-id="${teacher.teacherID}" th:data-subject-id="${subject.sbjID}" onclick="removeSubject(this)">Remove Subject</button>
+            
+            </td>  
             </tr>
         </tbody>
     </table>
 </div>
+
 <script>
-    function confirmDelete() {
-        return confirm('Are you sure you want to delete this student?');
+    function removeSubject(button) {
+        const teacherId = encodeURIComponent(button.getAttribute('data-teacher-id'));
+        const subjectId = encodeURIComponent(button.getAttribute('data-subject-id'));
+        console.log(subjectId, teacherId)
+        fetch(`/subject/remove?teacherId=${teacherId}&subjectId=${subjectId}`, {
+            method: 'DELETE'
+        })
+        .then(response => {
+                location.reload();
+        });
     }
 </script>
 
 </body>
 </html>
+

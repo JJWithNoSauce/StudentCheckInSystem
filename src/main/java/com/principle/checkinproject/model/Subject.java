@@ -7,8 +7,11 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
@@ -25,7 +28,15 @@ public class Subject {
     @OneToMany(mappedBy = "subject")
     private List<CheckIn> checkIns;
 
-    @OneToMany(mappedBy = "subject")
+    // @OneToMany(mappedBy = "subject", fetch = FetchType.LAZY)
+    // private List<Student> students;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "student_subject", // ชื่อตารางเชื่อม
+        joinColumns = @JoinColumn(name = "sbjID"), // คอลัมน์ของ Subject
+        inverseJoinColumns = @JoinColumn(name = "stdID") // คอลัมน์ของ Student
+    )
     private List<Student> students;
 
     @ManyToOne

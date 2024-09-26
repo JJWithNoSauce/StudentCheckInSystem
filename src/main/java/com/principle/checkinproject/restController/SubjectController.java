@@ -14,11 +14,19 @@ import com.principle.checkinproject.model.Attendance;
 import com.principle.checkinproject.model.CheckIn;
 import com.principle.checkinproject.model.Student;
 import com.principle.checkinproject.model.Subject;
+import com.principle.checkinproject.repository.StudentRespository;
+import com.principle.checkinproject.repository.SubjectRepository;
 import com.principle.checkinproject.service.SubjectManage;
 
 @RestController
 @RequestMapping("/api/subjects")
 public class SubjectController {
+    @Autowired
+    private SubjectRepository subjectRepository;
+
+    @Autowired 
+    private StudentRespository studentRespository;
+    
     @Autowired
     private SubjectManage subjectManage;
 

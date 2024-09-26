@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Manager</title>
+    <title>Teacher Dashboard</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -51,7 +51,7 @@
         }
 
         button:hover {
-            background-color: rgb(42, 163, 179);
+            background-color: #258292;
         }
 
         table {
@@ -87,19 +87,20 @@
 <body>
 
 <header>
-    <h1>Admin Dashboard</h1>
+    <h1>Teacher Dashboard</h1>
     <button class="logout" onclick="window.location.href='index.html'">Logout</button>
 </header>
 
 <div class="container">
-   
-    <h2>You are currently in the Student Manager's page.</h2>
-    <button th:onclick="|window.location='@{/admin}'|">Back to main page</button>
-    <h3>Register new student (note : pressing register button will add new student and refresh the page)</h3>
-    <button type="button" onclick="window.location.href='/studentmanager/studentadd'">New Student</button>
+    <tr th:each = "subject: ${subject}">
+    <h2>Managing students within selected class : </h2>
+    <td th:text = "${subject.name}"></td>
+    </tr>
     
+    <button th:onclick="|window.location='@{/teacher/{id}(id=${teacher.teacherID})}'|">Back to class management</button>
+    <button th:onclick="|window.location='@{/teacher/{id1}/subject/{id2}/addstudent/(id1=${teacher.teacherID}, id2=${subject.sbjID})}'|">Add new Student</button>
 
-    <h4>List of all students</h4>
+    
     <table>
         <thead>
             <tr>
@@ -109,24 +110,19 @@
             </tr>
         </thead>
         <tbody>
-            <tr th:each="student : ${students}">
-                <td th:text="${student.stdID}"></td>
-                <td th:text="${student.name}"></td>
-                <td>
-                    <form th:action="@{/student/delete/{stdID}(stdID=${student.stdID})}" method="post" onsubmit="return confirmDelete()">
-                        <input type="hidden" name="_method" value="delete" />
-                        <button type="submit">Delete</button>
-                    </form>
+            <tbody>
+                <tr th:each = "student: ${student}">
+                <td th:text = "${student.id}"></td>
+                <td th:text = "${student.name}"></td> 
+                <td><button th:onclick="|window.location='@{/teacher/{id1}/subject/{id2}/deletestudent/{id3}(id1=${teacher.teacherID}, id2=${subject.sbjID}, id3=${student.stdID})}'|">Remove Student</button>
                 </td>
-            </tr>
+                </tr>
+            </tbody>
         </tbody>
     </table>
 </div>
-<script>
-    function confirmDelete() {
-        return confirm('Are you sure you want to delete this student?');
-    }
-</script>
+
 
 </body>
 </html>
+
