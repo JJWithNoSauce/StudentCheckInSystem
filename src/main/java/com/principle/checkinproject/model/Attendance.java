@@ -15,6 +15,9 @@ public class Attendance {
     private String status;
 	@Column(name="note")
     private String note;
+
+	// @Column(name="checkIn_id")
+	// private String checkIn_Id;
 	
 	@ManyToOne
     @JoinColumn(name = "checkIn_id")

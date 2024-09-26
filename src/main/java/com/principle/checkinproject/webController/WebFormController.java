@@ -25,19 +25,21 @@ public class WebFormController {
     @Autowired
     webClientManageService webClientManageService;
 
-    @PostMapping("/submitAttendance")
+    @PostMapping("/submitattendance")
     public String submitAttendance(@RequestParam String teacherId,
                                    @RequestParam String subjectId,
                                    @RequestParam Map<String, String> formData,
                                    Model model) {
-        Subject subject = webClientManageService.getSubject(subjectId).block();
         List<Attendance> attendances = new ArrayList<>();
+
+        System.out.println("***************  "+subjectId);
 
         for (Map.Entry<String, String> entry : formData.entrySet()) {
             if (entry.getKey().startsWith("attendanceStatus_")) {
                 String studentId = entry.getKey().substring("attendanceStatus_".length());
                 String status = entry.getValue();
                 String note = formData.get("note_" + studentId);
+                System.out.println("7777772222222  "+ studentId);
 
                 Student student = webClientManageService.getStudentById(studentId).block();
                 Attendance attendance = new Attendance(student, status, note);
@@ -48,6 +50,7 @@ public class WebFormController {
         try {
             CheckIn newCheckIn = webClientManageService.checking(subjectId, attendances).block();
             if (newCheckIn != null) {
+                System.out.println("oooooooooooooo comple");
                 return "redirect:/attendanthistory/" + teacherId + "/" + subjectId;
             } else {
                 model.addAttribute("error", "Failed to submit attendance. Check-in was not created.");
@@ -55,6 +58,7 @@ public class WebFormController {
             }
         } catch (Exception e) {
             model.addAttribute("error", "Failed to submit attendance: " + e.getMessage());
+            System.out.println("yyyyyyy"+e.getMessage());
             return "redirect:/subject/" + teacherId + "/" + subjectId + "/attendantform";
         }
     }

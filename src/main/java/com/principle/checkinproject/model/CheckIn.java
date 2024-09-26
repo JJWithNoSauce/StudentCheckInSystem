@@ -39,10 +39,6 @@ public class CheckIn {
 		this.classPeriod = subject.getCheckIns().size()+1;
 	}
 
-    public void checking(Student std, String status, String note) {
-        Attendance attendance = new Attendance(std,status,note);
-        attendances.add(attendance);
-    }
 
     public List<Attendance> viewHistory(){
         return attendances;

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.principle.checkinproject.model.Student;
 import com.principle.checkinproject.model.Subject;
+import com.principle.checkinproject.repository.AttendanceRepository;
 import com.principle.checkinproject.repository.CheckInRepository;
 import com.principle.checkinproject.repository.StudentRespository;
 import com.principle.checkinproject.repository.SubjectRepository;
@@ -22,6 +23,8 @@ public class SubjectManage {
     SubjectRepository subjectRepository;
     @Autowired
     StudentRespository studentRepository;
+    @Autowired
+    AttendanceRepository attendanceRepository;
 
     public void registerStudent(Student std, Subject sbj) {
         sbj.getStudents().add(std);
@@ -42,6 +45,12 @@ public class SubjectManage {
         CheckIn check = new CheckIn(attendances, subject);
 
         checkInRepository.save(check);
+
+        for (Attendance attendance : attendances) {
+            attendance.setCheckIn(check);
+            attendanceRepository.save(attendance);
+        }
+
         subject.getCheckIns().add(check);
         subjectRepository.save(subject);
         return check;
