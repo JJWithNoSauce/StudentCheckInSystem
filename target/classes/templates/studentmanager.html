@@ -113,7 +113,7 @@
                 <td th:text="${student.stdID}"></td>
                 <td th:text="${student.name}"></td>
                 <td>
-                    <form th:action="@{/student/delete/{stdID}(stdID=${student.stdID})}" method="post" onsubmit="return confirmDelete()">
+                    <form th:action="@{/student/delete/{stdID}(stdID=${student.stdID})}" method="post" onsubmit="return confirmDelete()" onclick="removeSubject(this)">
                         <input type="hidden" name="_method" value="delete" />
                         <button type="submit">Delete</button>
                     </form>
@@ -125,6 +125,16 @@
 <script>
     function confirmDelete() {
         return confirm('Are you sure you want to delete this student?');
+    }
+    function removeSubject(button) {
+        const studentid = encodeURIComponent(button.getAttribute('data-student-id'));
+        console.log(studentid)
+        fetch(`/subject/remove?studentid=${studentid}`, {
+            method: 'DELETE'
+        })
+        .then(response => {
+                location.reload();
+        });
     }
 </script>
 
