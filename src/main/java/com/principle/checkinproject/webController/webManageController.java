@@ -11,8 +11,10 @@ import com.principle.checkinproject.webService.webClientManageService;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.principle.checkinproject.model.Teacher;
+import com.principle.checkinproject.model.Attendance;
 import com.principle.checkinproject.model.CheckIn;
 import com.principle.checkinproject.model.Student;
 import com.principle.checkinproject.model.Subject;
@@ -101,21 +103,27 @@ public class webManageController {
         Teacher teacher = webClientManageService.getTeacherById(teacherId).block();
         Subject subject = webClientManageService.getSubject(subjectId).block();
         CheckIn checkin = webClientManageService.getSubjectCheckIn(subjectId,checkinId).block();
+        List<Attendance> attendance = checkin.getAttendances();
         
+        // We'll pass the attendance list to the view and let it handle the student information
 
         System.out.println(teacher);
         System.out.println(subject);
         System.out.println(checkin);
-        
-        if (subject == null || checkin == null || teacher == null) {
-            // If the list is null or empty, log and add a message to the model
-            System.out.println("either subject , or list of check in were found");
+        System.out.println(attendance);
+
+        if (subject == null || checkin == null || teacher == null || attendance == null) {
+            // If any of the required data is null, log and redirect to an error page
+            System.out.println("Required data not found");
             return "redirect:/failedNoCheckinList";
         }
-        else{
+        else {
             model.addAttribute("subject", subject);
             model.addAttribute("checkin", checkin);
             model.addAttribute("teacher", teacher);
+            model.addAttribute("attendant", attendance);
+            // We're not adding a separate "students" attribute, as the student information
+            // should be accessible through the attendance objects
         }
         return "attendanthistoryview";
     }
@@ -131,20 +139,19 @@ public class webManageController {
         Subject subject = webClientManageService.getSubject(subjectId).block();
 
         // Get the list of students and handle the case where the list is null or empty
-        List<Student> students = webClientManageService.getSubjectStudents(subject.getSbjID()).block();
-        System.out.println(students);
+        List<Student> student = webClientManageService.getSubjectStudents(subjectId).block();
+        System.out.println(student);
 
-        if (students == null || students.isEmpty()) {
+        if (student == null || student.isEmpty()) {
             // If the list is null or empty, log and add a message to the model
             System.out.println("No students found for this subject.");
             return "redirect:/failedNoStudentInSubject";
-        } else {
-            model.addAttribute("students", students);
         }
 
         // Pass the teacher and subject data to the model
         model.addAttribute("teacher", teacher);
         model.addAttribute("subject", subject);
+        model.addAttribute("student", student);
         
         return "subjectattendant";
     }
@@ -162,14 +169,6 @@ public class webManageController {
         model.addAttribute("message", "This subject's attendance's never been registered , Or either teacher or subject were found. To access history, Please register at least one attendance");
         return "failed";
     }
-    /*
-
-    @GetMapping("/admin/{tEmp}")
-    public String getMethodName(@PathVariable String tEmp) {
-        return "teachermanager";
-    }                                                                   
-    
-    */
     
     @GetMapping("/admin")
     public String go_admin() {
@@ -190,10 +189,21 @@ public class webManageController {
         model.addAttribute("students", students);
         return "studentmanager";
     }
+
+    @GetMapping("/subject/{subjectId}/manage")
+    public String subjectStudentManage(@PathVariable String subjectId, Model model){
+        List<Student> students = webClientManageService.getSubjectStudents(subjectId).block();
+        Subject sbj = webClientManageService.getSubject(subjectId).block();
+        model.addAttribute("students", students);
+        model.addAttribute("subject", sbj);
+        return "subjectstudent";
+    }
+    
+    
+
     
     @DeleteMapping("/students/manage/remove")
     public void deleteStudent(@RequestParam String stdID) {
         webClientManageService.removeStudent(stdID).block();
     }
 }
-

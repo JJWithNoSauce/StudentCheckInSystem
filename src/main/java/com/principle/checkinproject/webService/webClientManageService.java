@@ -18,6 +18,25 @@ public class webClientManageService {
         this.webClient = webClient;
     }
 
+    // Existing methods...
+
+    // New method to get a student by ID
+    public Mono<Student> getStudentById(String studentId) {
+        return webClient.get()
+                .uri("/students/{id}", studentId)
+                .retrieve()
+                .bodyToMono(Student.class);
+    }
+
+    // New method to submit attendance
+    public Mono<CheckIn> submitAttendance(CheckIn checkIn) {
+        return webClient.post()
+                .uri("/subjects/{id}/checkin", checkIn.getSubject().getSbjID())
+                .bodyValue(checkIn)
+                .retrieve()
+                .bodyToMono(CheckIn.class);
+    }
+
     // ManageController APIs
     public Mono<Teacher> createTeacher(Teacher teacher) {
         return webClient.post()
@@ -103,8 +122,8 @@ public class webClientManageService {
     }
 
     public Mono<Student> deregisterStudentToSubject(String subjectId, String studentId) {
-        return webClient.delete()
-                .uri("/manage/subject/{subjectId}/student/{studentId}", subjectId, studentId)
+        return webClient.put()
+                .uri("/manage/subeject/{subjectId}/student/deregister/{studentId}", subjectId, studentId)
                 .retrieve()
                 .bodyToMono(Student.class);
     }
@@ -127,7 +146,7 @@ public class webClientManageService {
 
     public Mono<CheckIn> checking(String sbjId, List<Attendance> attendances) {
         return webClient.post()
-                .uri("/subjects/{id}/checkin", sbjId)
+                .uri("/subjects/{id}/checking", sbjId)
                 .bodyValue(attendances)
                 .retrieve()
                 .bodyToMono(CheckIn.class);
@@ -173,4 +192,3 @@ public class webClientManageService {
                 .bodyToMono(Void.class);
     }
 }
-

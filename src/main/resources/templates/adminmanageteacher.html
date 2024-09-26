@@ -119,7 +119,7 @@
             <tr th:each="subject: ${teacher.classRoom.subjects}">
               <td th:text="${subject.name}"></td>
               <td th:text="${subject.time}"></td>
-              <td><button th:onclick="|window.location='@{/teacher/{id1}/subject/{id2}(id1=${teacher.teacherID}, id2=${subject.sbjID})}'|">Manage Student</button>
+              <td><button th:onclick="|window.location='@{/subject/{id1}/manage(id1=${subject.sbjID})}'|">Manage Student</button>
                 <button type="button" th:data-teacher-id="${teacher.teacherID}" th:data-subject-id="${subject.sbjID}" onclick="removeSubject(this)">Remove Subject</button>
             
             </td>  
