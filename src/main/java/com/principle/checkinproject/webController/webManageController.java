@@ -77,32 +77,6 @@ public class webManageController {
     }
 
 
-    @GetMapping("/subject/{teacherId}/add")
-    public String showAddSubjectForm(@PathVariable String teacherId, Model model) {
-        System.out.println(teacherId);
-        model.addAttribute("teacherId", teacherId);
-        return "subjectadd";
-    }
-
-    @PostMapping("/subject/add")
-    public String addSubject(@RequestParam String teacherId, @RequestParam String subjectId,
-            @RequestParam String subjectName, @RequestParam String subjectTime, Model model) {
-        Subject subject = new Subject();
-        System.out.println(teacherId + "-------------------------add sub");
-        subject.setSbjID(subjectId);
-        subject.setName(subjectName);
-        subject.setTime(subjectTime);
-        try {
-            webClientManageService.classroomAddSubject(teacherId, subject)
-                    .doOnError(error -> model.addAttribute("error", "Failed to add subject."))
-                    .block(); // Wait for the operation to complete
-        } catch (Exception e) {
-            model.addAttribute("error", "Failed to add subject.");
-            return "subjectadd"; // Return to the form in case of error
-        }
-        return "redirect:/teacher/" + teacherId;
-    }
-
     @DeleteMapping("/subject/remove")
     public void removeSubject(@RequestParam String teacherId, @RequestParam String subjectId, Model model) {
         webClientManageService.classroomRemoveSubject(teacherId, subjectId).block();
@@ -162,28 +136,15 @@ public class webManageController {
     public String go_studentmanager() {
         return "studentmanager";
     }
-    
-    @GetMapping("/teachermanager/teacheradd")
-    public String showAddTeacherForm(Model model) {
-        return "teacheradd";
+
+
+    @GetMapping("/subject/{teacherId}/addstudent")
+    public String showAddStudentToSubjectForm(Model model) {
+        return "subjectstudentadd";
     }
 
-    @PostMapping("/teacher/add")
-    public String addTeacher(@RequestParam String name,@RequestParam String teacherID, Model model) {
-        Teacher teacher = new Teacher();
-        teacher.setName(name);
-        teacher.setTeacherID(teacherID);
-        webClientManageService.createTeacher(teacher).block();
-        return "redirect:/teacher";
-    }
-
-    @GetMapping("/studentmanager/studentadd")
-    public String showAddStudentForm(Model model) {
-        return "studentadd";
-    }
-
-    @PostMapping("/student/add")
-    public String addStudent(@RequestParam String name,@RequestParam String stdID, Model model) {
+    @PutMapping("/student/add")
+    public String addStudenttoSubject(@RequestParam String name,@RequestParam String stdID, Model model) {
         Student student = new Student();
         student.setName(name);
         student.setStdID(name);

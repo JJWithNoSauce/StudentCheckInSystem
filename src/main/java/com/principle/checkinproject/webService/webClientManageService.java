@@ -97,8 +97,8 @@ public class webClientManageService {
     }
 
     public Mono<Student> registerStudentToSubject(String subjectId, String studentId) {
-        return webClient.post()
-                .uri("/manage/subject/{subjectId}/student/{studentId}", subjectId, studentId)
+        return webClient.put()
+                .uri("/subeject/{subjectId}/student/register/{studentId}", subjectId, studentId)
                 .retrieve()
                 .bodyToMono(Student.class);
     }

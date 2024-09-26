@@ -103,23 +103,6 @@
         <button type="button" onclick="redirectToAddStudent()">Add Student</button>
     </form>
 
-    <script type="text/javascript">
-        function redirectToAddStudent() {
-            var studentID = document.getElementById('studentID').value;
-
-            // Ensure the studentID is provided
-            if (!studentID) {
-                alert('Please enter a Student ID');
-                return;
-            }
-
-            // Construct the URL dynamically using the Thymeleaf variables for id1 and id2
-            var url = /*[[${'/api/manage/subeject/' + subject.sbjID + '/student/register/'}]]*/ '' + studentID;
-            
-            // Redirect to the constructed URL
-            window.location.href = url;
-        }
-    </script>
 
 </body>
 
