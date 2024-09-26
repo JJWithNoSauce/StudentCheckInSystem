@@ -1,6 +1,7 @@
 package com.principle.checkinproject.webController;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -161,14 +162,6 @@ public class webManageController {
         model.addAttribute("message", "This subject's attendance's never been registered , Or either teacher or subject were found. To access history, Please register at least one attendance");
         return "failed";
     }
-    /*
-
-    @GetMapping("/admin/{tEmp}")
-    public String getMethodName(@PathVariable String tEmp) {
-        return "teachermanager";
-    }                                                                   
-    
-    */
     
     @GetMapping("/admin")
     public String go_admin() {
@@ -188,6 +181,22 @@ public class webManageController {
         return "studentmanager";
     }
 
+    @GetMapping("/subject/{subjectId}/manage")
+    public String subjectStudentManage(@PathVariable String subjectId, Model model){
+        List<Student> students = webClientManageService.getSubjectStudents(subjectId).block();
+        Subject sbj = webClientManageService.getSubject(subjectId).block();
+        model.addAttribute("students", students);
+        model.addAttribute("subject", sbj);
+        return "subjectstudent";
+    }
+    
+    
 
+    
+    @PostMapping("/student/delete/{stdID}")
+    public String deleteStudent(@PathVariable String stdID) {
+        webClientManageService.removeStudent(stdID);
+        return "redirect:/students/manage";
+    }
 }
 

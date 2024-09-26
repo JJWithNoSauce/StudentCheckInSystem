@@ -92,15 +92,15 @@
 </header>
 
 <div class="container">
-    <tr th:each = "subject: ${subject}">
-    <h2>Managing students within selected class : </h2>
-    <td th:text = "${subject.name}"></td>
+    <tr th:each="subject: ${subject}">
+        <h2>Managing students within selected class :</h2>
+        <td th:text="${subject.name}"></td>
     </tr>
-    
-    <button th:onclick="|window.location='@{/teacher/{id}(id=${teacher.teacherID})}'|">Back to class management</button>
-    <button th:onclick="|window.location='@{/teacher/{id1}/subject/{id2}/addstudent/(id1=${teacher.teacherID}, id2=${subject.sbjID})}'|">Add new Student</button>
 
-    
+    <div class="action-buttons">
+        <button th:onclick="|window.location='@{/subject/{subjectId}/addstudent(subjectId=${subject.sbjID})}'|">Add Student</button>
+    </div>
+
     <table>
         <thead>
             <tr>
@@ -110,19 +110,17 @@
             </tr>
         </thead>
         <tbody>
-            <tbody>
-                <tr th:each = "student: ${student}">
-                <td th:text = "${student.id}"></td>
-                <td th:text = "${student.name}"></td> 
-                <td><button th:onclick="|window.location='@{/teacher/{id1}/subject/{id2}/deletestudent/{id3}(id1=${teacher.teacherID}, id2=${subject.sbjID}, id3=${student.stdID})}'|">Remove Student</button>
+            <tr th:each="student: ${students}">
+                <td th:text="${student.stdID}"></td>
+                <td th:text="${student.name}"></td>
+                <td>
+                    <button th:onclick="|window.location='@{/subject/studentremove(subjectID=${subject.sbjID}, stdID=${student.stdID})}'|">Remove</button>
                 </td>
-                </tr>
-            </tbody>
+            </tr>
         </tbody>
     </table>
-</div>
 
+</div>
 
 </body>
 </html>
-

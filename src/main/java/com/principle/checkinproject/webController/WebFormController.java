@@ -73,8 +73,14 @@ public class WebFormController {
     student.setName(name);
     student.setStdID(stdID); // Corrected to set stdID instead of name
     webClientManageService.createStudent(student).block();
-    return "redirect:/studentmanager";
+    return "redirect:/students/manage";
 }
+        Student student = new Student();
+        student.setName(name);
+        student.setStdID(stdID); // Corrected to set stdID instead of name
+        webClientManageService.createStudent(student).block();
+        return "redirect:/studentmanager";
+    }
 
     @GetMapping("/teachermanager/teacheradd")
     public String showAddTeacherForm(Model model) {
@@ -124,9 +130,14 @@ public class WebFormController {
 
     @GetMapping("/subject/studentadd")
     public String addStudenttoSubject(@RequestParam String subjectID,@RequestParam String stdID, Model model) {
-        System.out.println("--------------+++" + subjectID);
         webClientManageService.registerStudentToSubject(subjectID, stdID).block();
-        return "redirect:/students";
+        return "redirect:/subject/"+subjectID+"/manage";
+    }
+
+    @GetMapping("/subject/studentremove")
+    public String removeStudenttoSubject(@RequestParam String subjectID,@RequestParam String stdID, Model model) {
+        webClientManageService.deregisterStudentToSubject(subjectID, stdID).block();
+        return "redirect:/subject/"+subjectID+"/manage";
     }
 }
 

@@ -122,8 +122,8 @@ public class webClientManageService {
     }
 
     public Mono<Student> deregisterStudentToSubject(String subjectId, String studentId) {
-        return webClient.delete()
-                .uri("/manage/subject/{subjectId}/student/{studentId}", subjectId, studentId)
+        return webClient.put()
+                .uri("/manage/subeject/{subjectId}/student/deregister/{studentId}", subjectId, studentId)
                 .retrieve()
                 .bodyToMono(Student.class);
     }
