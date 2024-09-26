@@ -17,17 +17,18 @@ public class Attendance {
     private String note;
 	
 	@ManyToOne
+    @JoinColumn(name = "checkIn_id")
     private CheckIn checkIn;
     
     @ManyToOne
     @JoinColumn(name = "stdID")
-    private Student std;
+    private Student student;
 
 
     public Attendance(){}
 
     public Attendance(Student std, String status, String note){
-        this.std = std;
+        this.student = std;
         this.status = status;
         this.note = note;
     }
@@ -65,10 +66,10 @@ public class Attendance {
 	}
 
 	public Student getStd() {
-		return std;
+		return student;
 	}
 
 	public void setStd(Student std) {
-		this.std = std;
+		this.student = std;
 	}
 }

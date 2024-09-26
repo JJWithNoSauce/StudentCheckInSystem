@@ -3,7 +3,9 @@ package com.principle.checkinproject.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -20,8 +22,7 @@ public class CheckIn {
 
 	private int classPeriod;
 
-	@OneToMany
-	@JoinColumn(name = "attendance",nullable = false,referencedColumnName = "id")	
+	@OneToMany(mappedBy = "checkIn", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Attendance> attendances;
 
     @ManyToOne
