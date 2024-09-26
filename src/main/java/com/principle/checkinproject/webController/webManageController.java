@@ -84,7 +84,7 @@ public class webManageController {
     }
 
     @GetMapping("/attendanthistory/{teacherId}/{subjectId}")
-    public String shotCheckin(@PathVariable String subjectId, @PathVariable String teacherId, Model model) {
+    public String showCheckin(@PathVariable String subjectId, @PathVariable String teacherId, Model model) {
         Teacher teacher = webClientManageService.getTeacherById(teacherId).block();
         Subject subject = webClientManageService.getSubject(subjectId).block();
         List<CheckIn> checkin = webClientManageService.getAllSubjectCheckIn(subjectId).block();
@@ -103,6 +103,29 @@ public class webManageController {
             model.addAttribute("teacher", teacher);
         }
         return "attendanthistory";
+    }
+
+    @GetMapping("/attendanthistoryview/{teacherId}/{subjectId}/{checkinId}")
+    public String showAttendantHistoryView(@PathVariable String subjectId, @PathVariable String teacherId, @PathVariable int checkinId, Model model) {
+        Teacher teacher = webClientManageService.getTeacherById(teacherId).block();
+        Subject subject = webClientManageService.getSubject(subjectId).block();
+        CheckIn checkin = webClientManageService.getSubjectCheckIn(subjectId,checkinId).block();
+
+        System.out.println(teacher);
+        System.out.println(subject);
+        System.out.println(checkin);
+        
+        if (subject == null || checkin == null || teacher == null) {
+            // If the list is null or empty, log and add a message to the model
+            System.out.println("either subject , or list of check in were found");
+            return "redirect:/failedNoCheckinList";
+        }
+        else{
+            model.addAttribute("subject", subject);
+            model.addAttribute("checkin", checkin);
+            model.addAttribute("teacher", teacher);
+        }
+        return "attendanthistoryview";
     }
 
     @DeleteMapping("/teacher/remove")
