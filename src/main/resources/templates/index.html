@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <script>
+        function redirectToTeacher() {
+            const teacherId = document.getElementById('teacherId').value;
+            if (teacherId) {
+                window.location.href = `/teacher/${teacherId}`;
+            } else {
+                alert('Please enter a Teacher ID.');
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Teacher Login</h1>
+    <form onsubmit="event.preventDefault(); redirectToTeacher();">
+        <label for="teacherId">Teacher ID:</label>
+        <input type="text" id="teacherId" name="id" required>
+        <button type="submit">Login</button>
+    </form>
+
+    <h1>Admin Access</h1>
+    <form action="/admin" method="get">
+        <button type="submit">Go to Admin</button>
+    </form>
+</body>
+</html>

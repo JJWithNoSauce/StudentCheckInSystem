@@ -4,9 +4,66 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Subject</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+
+        header {
+            background-color: #258292;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            position: relative;
+        }
+
+        .logout {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+        }
+
+        h1 {
+            font-size: 24px;
+            color: #333;
+        }
+
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        button {
+            padding: 10px 15px;
+            margin: 10px 5px;
+            background-color: #258292;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: rgb(42, 163, 179);
+        }
+
+    </style>
 </head>
 <body>
+
+<header>
     <h1>Add New Subject</h1>
+    <button class="logout" onclick="window.location.href='index.html'">Logout</button>
+</header>
+
+<div class="container">
     <form action="/subject/add" method="post">
         <!-- Hidden field for teacherId -->
         <input type="text" id="teacherId" name="teacherId" th:value="${teacherId}"><br><br>
@@ -22,5 +79,7 @@
         
         <button type="submit">Add Subject</button>
     </form>
+</div>
+
 </body>
 </html>

@@ -21,7 +21,7 @@ public class webClientManageService {
     // ManageController APIs
     public Mono<Teacher> createTeacher(Teacher teacher) {
         return webClient.post()
-                .uri("/teacher")
+                .uri("/manage/teacher/add")
                 .bodyValue(teacher)
                 .retrieve()
                 .bodyToMono(Teacher.class);

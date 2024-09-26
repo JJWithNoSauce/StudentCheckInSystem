@@ -31,16 +31,6 @@ public class webManageController {
         return "teacherlist";
     }
 
-    @PostMapping("/teacher/add")
-    public String addTeacher(@RequestParam String name, Model model) {
-        Teacher teacher = new Teacher();
-        teacher.setName(name);
-        webClientManageService.createTeacher(teacher)
-                .doOnError(error -> model.addAttribute("error", "Failed to add teacher."))
-                .subscribe();
-        return "redirect:/teacher";
-    }
-
     @GetMapping("/teacher/{id}")
     public String getTeacher(@PathVariable String id, Model model) {
         Teacher teacher = webClientManageService.getTeacherById(id).block();
@@ -182,5 +172,18 @@ public class webManageController {
         return "studentmanager";
     }
     
+    @GetMapping("/teachermanager/teacheradd")
+    public String showAddTeacherForm(Model model) {
+        return "teacheradd";
+    }
+
+    @PostMapping("/teacher/add")
+    public String addTeacher(@RequestParam String name,@RequestParam String teacherID, Model model) {
+        Teacher teacher = new Teacher();
+        teacher.setName(name);
+        teacher.setTeacherID(teacherID);
+        webClientManageService.createTeacher(teacher).block();
+        return "redirect:/teacher";
+    }
 }
 

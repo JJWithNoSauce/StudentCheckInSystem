@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teacher Dashboard</title>
+    <title>Add Teacher</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -54,68 +54,25 @@
             background-color: rgb(42, 163, 179);
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        table, th, td {
-            border: 1px solid #ddd;
-        }
-
-        th, td {
-            padding: 12px;
-            text-align: left;
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
-
-        tr:hover {
-            background-color: #f5f5f5;
-        }
-
-        .action-buttons {
-            margin-top: 20px;
-            text-align: center;
-        }
-
     </style>
 </head>
 <body>
 
 <header>
-    <h1>Admin Dashboard</h1>
+    <h1>Add New Teacher</h1>
     <button class="logout" onclick="window.location.href='index.html'">Logout</button>
 </header>
 
 <div class="container">
-    <h1>Logged in as admin</h1>
-    <button th:onclick="|window.location='@{/teacher}'|">Logout</button>
-
-    <h2>Lists of actions</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Page</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-                <tr>
-                    <td>Teacher's account management</td>
-                    <td><button th:onclick="|window.location='@{/teachermanager}'|">Navigate</button></td>
-                </tr>
-                <tr>
-                    <td>Student's account management</td>
-                    <td><button th:onclick="|window.location='@{/studentmanager}'|">Navigate</button></td>
-                </tr>
-        </tbody>
-    </table>
+    <form action="/teacher/add" method="post">
+        <label for="teacherID">Teacher ID:</label>
+        <input type="text" id="teacherID" name="teacherID" required><br><br>
+        <label for="teacherName">Teacher Name:</label>
+        <input type="text" id="teacherName" name="name" required><br><br>
+        
+        <button type="submit">Add Teacher</button>
+    </form>
 </div>
 
 </body>
 </html>
-
