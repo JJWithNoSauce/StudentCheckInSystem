@@ -29,6 +29,7 @@ public class webManageController {
         return "teacherlist";
     }
 
+    
     @GetMapping("/teacher/{id}")
     public String getTeacher(@PathVariable String id, Model model) {
         Teacher teacher = webClientManageService.getTeacherById(id).block();
@@ -37,7 +38,15 @@ public class webManageController {
         model.addAttribute("subjects", subjects);
         return "teacher";
     }
-
+    
+    @GetMapping("/teachermanager/teacher/{id}")
+    public String getAdminTeacher(@PathVariable String id, Model model) {
+        Teacher teacher = webClientManageService.getTeacherById(id).block();
+        List<Subject> subjects = webClientManageService.getAllSubjectByTeacher(id).block();
+        model.addAttribute("teacher", teacher);
+        model.addAttribute("subjects", subjects);
+        return "adminmanageteacher";
+    }
 
     @GetMapping("/students/manage")
     public String Studentsmanage(Model model) {
@@ -46,13 +55,6 @@ public class webManageController {
         return "studentmanager";
     }
 
-    /*@GetMapping("/students")
-    public String getAllStudents(Model model) {
-        webClientManageService.getAllStudents()
-                .doOnError(error -> model.addAttribute("error", "Failed to load students."))
-                .subscribe(students -> model.addAttribute("students", students));
-        return "studentlist";
-    }*/
 
 
     @GetMapping("/subjects")
@@ -173,9 +175,9 @@ public class webManageController {
         return "teachermanager";
     }
 
-    @DeleteMapping("/teacher/remove")
+    @GetMapping("/teacher/remove")
     public void removeTeacher(@RequestParam String teacherId, Model model) {
-        System.out.println("8iiiiiiiiiiiii"+teacherId);
+        System.out.println("+++++++++++++++++"+teacherId);
         webClientManageService.classroomRemoveTeacher(teacherId).block();
     }
     
