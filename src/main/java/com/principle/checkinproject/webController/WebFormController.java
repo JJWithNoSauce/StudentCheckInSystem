@@ -30,7 +30,7 @@ public class WebFormController {
     student.setName(name);
     student.setStdID(stdID); // Corrected to set stdID instead of name
     webClientManageService.createStudent(student).block();
-    return "redirect:/studentmanager";
+    return "redirect:/students/manage";
 }
 
     @GetMapping("/teachermanager/teacheradd")
