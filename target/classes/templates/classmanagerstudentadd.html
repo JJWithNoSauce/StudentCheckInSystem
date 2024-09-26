@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Manager</title>
+    <title>Add Student</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -54,67 +54,25 @@
             background-color: rgb(42, 163, 179);
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        table, th, td {
-            border: 1px solid #ddd;
-        }
-
-        th, td {
-            padding: 12px;
-            text-align: left;
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
-
-        tr:hover {
-            background-color: #f5f5f5;
-        }
-
-        .action-buttons {
-            margin-top: 20px;
-            text-align: center;
-        }
-
     </style>
 </head>
 <body>
 
 <header>
-    <h1>Admin Dashboard</h1>
+    <h1>Add New Student</h1>
     <button class="logout" onclick="window.location.href='index.html'">Logout</button>
 </header>
 
 <div class="container">
-   
-    <h2>You are currently in the Student Manager's page.</h2>
-    <button th:onclick="|window.location='@{/admin}'|">Back to main page</button>
-    <h3>Register new student (note : pressing register button will add new student and refresh the page)</h3>
-    <button type="button" onclick="window.location.href='/studentmanager/studentadd'">New Student</button>
-    
-
-    <h4>List of all students</h4>
-    <table>
-        <thead>
-            <tr>
-                <th>Student ID</th>
-                <th>Student Name</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Iterate over the teachers list and display each teacher -->
-            <tr th:each="students : ${students}">
-                <td th:text="${students.stdID}"></td>
-                <td th:text="${students.name}"></td>
-            </tr>
-        </tbody>
-    </table>
+    <form action="/student/add" method="post">
+        <label for="stdID">Student ID:</label>
+        <input type="text" id="stdID" name="stdID" required><br><br>
+        
+        <label for="name">Student Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+        
+        <button type="submit">Add Student</button>
+    </form>
 </div>
 
 </body>

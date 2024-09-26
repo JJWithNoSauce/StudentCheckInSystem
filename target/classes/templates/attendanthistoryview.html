@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teacher List</title>
+    <title>Teacher Dashboard</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -87,33 +87,54 @@
 <body>
 
 <header>
-    <h1>Teacher List</h1>
+    <h1>Teacher Dashboard</h1>
     <button class="logout" onclick="window.location.href='index.html'">Logout</button>
 </header>
 
 <div class="container">
-    <h1>Teacher List</h1>
+    <tr th:each = "subject: ${subject}">
+    <h1>Attendant's submit system</h1>
+    <td th:text = "${student.name}"></td>
+    </tr>
+    
+    <button th:onclick="|window.location='@{/teacher/{id}(id=${teacherId})}'|">Go back to teacher's page</button>
+
+    <h2>Time for attendant</h2>
     <table>
         <thead>
             <tr>
-                <th>Teacher ID</th>
-                <th>Teacher Name</th>
-                <th>Action</th>
+                <th>Class Period</th>
+                <th>Detail</th>
             </tr>
-        </thead>
-        </thead>
-        <tbody>
-            <!-- Iterate over the teachers list and display each teacher -->
-            <tr th:each="teacher : ${teachers}">
-                <td th:text="${teacher.teacherID}"></td>
-                <td th:text="${teacher.name}"></td>
-                <td>
-                    <a th:href="@{/teacher/{id}(id=${teacher.teacherID})}">View</a>
-                </td>
+            </tr>
+                <td>Class Period</td>
+                <td th:text="${checkin.classPeriod}"></td>
             </tr>
         </tbody>
     </table>
-    <td><button th:onclick="|window.location='@{/admin}'|">Admin Access</button></td>
+
+    <h3>Student check for attendant</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Present Status</th>
+                <th>Student ID</th>
+                <th>Student Name</th>
+                <th>Note</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Check for non-null students before accessing properties -->
+            <tr th:each="student : ${students}" th:if="${student} != null">
+                <td><input type="checkbox" id="${student.id}check" name="${student.id}check" disabled></td>
+                <td th:text="${student.id}"></td>
+                <td th:text="${student.name}"></td>
+                <td><input type="text" id="${student.id}note" name="${student.id}note"></td>
+            </tr>
+        </tbody>
+    </table>
+    
+    
 </div>
 
 </body>

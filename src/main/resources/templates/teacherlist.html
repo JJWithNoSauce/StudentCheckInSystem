@@ -101,6 +101,7 @@
                 <th>Action</th>
             </tr>
         </thead>
+        </thead>
         <tbody>
             <!-- Iterate over the teachers list and display each teacher -->
             <tr th:each="teacher : ${teachers}">
@@ -112,7 +113,7 @@
             </tr>
         </tbody>
     </table>
-    <td><button th:onclick="|window.location='@{/admin}'|">Admin Accress</button></td>
+    <td><button th:onclick="|window.location='@{/admin}'|">Admin Access</button></td>
 </div>
 
 </body>

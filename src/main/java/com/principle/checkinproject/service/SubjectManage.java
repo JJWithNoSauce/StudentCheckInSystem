@@ -76,6 +76,7 @@ public class SubjectManage {
     public List<Student> getAllStudentsInSubject(String subjectId) {
         Subject subject = subjectRepository.findById(subjectId)
             .orElseThrow(() -> new RuntimeException("Subject not found with id: " + subjectId));
+        System.out.println(subject.getSbjID() + "999999999999999999999999999");
         return subject.getStudents();
     }
 
@@ -85,10 +86,10 @@ public class SubjectManage {
         return subject.getCheckIns();
     }
 
-    public CheckIn getCheckInInSubject(String subjectId,int period) {
+    public CheckIn getCheckInInSubject(String subjectId, int period) {
         Subject subject = subjectRepository.findById(subjectId)
             .orElseThrow(() -> new RuntimeException("Subject not found with id: " + subjectId));
-        return subject.getCheckIns().get(period-1);
+        return subject.getCheckIns().get(period - 1);
     }
 
 }
