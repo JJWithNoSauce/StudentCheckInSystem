@@ -13,6 +13,9 @@ import com.principle.checkinproject.model.Teacher;
 import com.principle.checkinproject.model.CheckIn;
 import com.principle.checkinproject.model.Student;
 import com.principle.checkinproject.model.Subject;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 
@@ -98,6 +101,7 @@ public class webManageController {
         Teacher teacher = webClientManageService.getTeacherById(teacherId).block();
         Subject subject = webClientManageService.getSubject(subjectId).block();
         CheckIn checkin = webClientManageService.getSubjectCheckIn(subjectId,checkinId).block();
+        
 
         System.out.println(teacher);
         System.out.println(subject);
@@ -116,6 +120,10 @@ public class webManageController {
         return "attendanthistoryview";
     }
 
+    @DeleteMapping("/teacher/remove")
+    public void removeTeacher(@RequestParam String teacherId, Model model) {
+        webClientManageService.classroomRemoveTeacher(teacherId).block();
+    }
 
     @GetMapping("/subject/{teacherId}/{subjectId}/attendantform")
     public String showAttendantForm(@PathVariable String teacherId, @PathVariable String subjectId, Model model) {
@@ -175,12 +183,12 @@ public class webManageController {
         return "teachermanager";
     }
 
-    @GetMapping("/teacher/remove")
-    public void removeTeacher(@RequestParam String teacherId, Model model) {
-        System.out.println("+++++++++++++++++"+teacherId);
-        webClientManageService.classroomRemoveTeacher(teacherId).block();
-    }
     
+    @GetMapping("/studentmanager")
+    public String go_studentmanager() {
+        return "studentmanager";
+    }
+
 
 }
 
