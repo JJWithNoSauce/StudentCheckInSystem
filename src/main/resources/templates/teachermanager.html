@@ -97,9 +97,13 @@
     <button th:onclick="|window.location='@{/admin}'|">Back to main page</button>
     <h3>Register new Teacher (note : pressing register button will add new teacher and refresh the page)</h3>
     
-    <button type="button" onclick="window.location.replace('?lang=ru');">Register Student</button>
+    <button th:onclick="|window.location='@{/teachermanager/teacheradd}'|">Register Teacher</button>
     
+    
+
     <h4>List of all teachers</h4>
+    <table>
+        <h1>Teacher List</h1>
     <table>
         <thead>
             <tr>
@@ -112,30 +116,17 @@
             <tr th:each="teacher : ${teachers}">
                 <td th:text="${teacher.teacherID}"></td>
                 <td th:text="${teacher.name}"></td>
-                <td>
-                    <button type="button" th:data-teacher-id="${teacher.teacherID}" onclick="removeTeacher(this)">Remove Teacher</button>
-                    <button th:onclick="|window.location='@{/teachermanager/teacheradd}'|">Manage Classes</button>
-                </td>
+                <div class="action-buttons">
+                  
+                <td><button th:onclick="|window.location='@{/teacher/remove}'|">Remove Teacher</button>
+                  
+                <button type="button" th:onclick="|window.location='@{/teachermanager/teacher/{id}(id=${teacher.teacherID})}'|">Manage Classes</button>
+    </div>
             </tr>
         </tbody>
     </table>
+    </table>
 </div>
-
-<script>
-    function removeTeacher(button) {
-        const teacherId = encodeURIComponent(button.getAttribute('data-teacher-id'));
-        fetch(`/teacher/remove?teacherId=${teacherId}`, {
-            method: 'GET'
-        })
-        .then(response => {
-            if (response.ok) {
-                location.reload();
-            } else {
-                alert('Failed to remove teacher.');
-            }
-        });
-    }
-</script>
 
 </body>
 </html>
