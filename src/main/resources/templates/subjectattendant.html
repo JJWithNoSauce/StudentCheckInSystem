@@ -92,51 +92,40 @@
 </header>
 
 <div class="container">
-    <tr th:each = "subject: ${subject}">
     <h1>Attendant's submit system</h1>
-    <td th:text = "${student.name}"></td>
-    </tr>
-    
     <button th:onclick="|window.location='@{/teacher/{id}(id=${teacherId})}'|">Go back to teacher's page</button>
-
-    <h2>Time for attendant</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Time</th>
-                <th>Detail</th>
-            </tr>
-            </tr>
-                <td>Time</td>
-                <td><input type="text" id="ClassTime" name="ClassTime" value=${attendant.id.time}></td>
-            </tr>
-        </tbody>
-    </table>
-
+    
     <h3>Student check for attendant</h3>
-    <table>
-        <thead>
-            <tr>
-                <th>Present Status</th>
-                <th>Student ID</th>
-                <th>Student Name</th>
-                <th>Note</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Check for non-null students before accessing properties -->
-            <tr th:each="student : ${students}" th:if="${student} != null">
-                <td><input type="checkbox" id="${student.id}check" name="${student.id}check"></td>
-                <td th:text="${student.id}"></td>
-                <td th:text="${student.name}"></td>
-                <td><input type="text" id="${student.id}note" name="${student.id}note"></td>
-            </tr>
-        </tbody>
-    </table>
-    
-    
+    <form th:action="@{/submitAttendance}" method="post">
+        <input type="hidden" name="teacherId" th:value="${teacher.teacherID}">
+        <input type="hidden" name="subjectId" th:value="${subject.sbjID}">
+        <table>
+            <thead>
+                <tr>
+                    <th>Present Status</th>
+                    <th>Student ID</th>
+                    <th>Student Name</th>
+                    <th>Note</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="student : ${student}">
+                    <td>
+                        <select th:name="'attendanceStatus_' + ${student.stdID}">
+                            <option value="present">Present</option>
+                            <option value="late">Late</option>
+                            <option value="absent">Absent</option>
+                        </select>
+                    </td>
+                    <td th:text="${student.stdID}"></td>
+                    <td th:text="${student.name}"></td>
+                    <td><input type="text" th:name="'note_' + ${student.stdID}"></td>
+                </tr>
+            </tbody>
+        </table>
+        <button type="submit">Submit Attendance</button>
+    </form>
 </div>
 
 </body>
 </html>
-

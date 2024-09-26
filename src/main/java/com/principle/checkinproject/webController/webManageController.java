@@ -131,20 +131,19 @@ public class webManageController {
         Subject subject = webClientManageService.getSubject(subjectId).block();
 
         // Get the list of students and handle the case where the list is null or empty
-        List<Student> students = webClientManageService.getSubjectStudents(subject.getSbjID()).block();
-        System.out.println(students);
+        List<Student> student = webClientManageService.getSubjectStudents(subjectId).block();
+        System.out.println(student);
 
-        if (students == null || students.isEmpty()) {
+        if (student == null || student.isEmpty()) {
             // If the list is null or empty, log and add a message to the model
             System.out.println("No students found for this subject.");
             return "redirect:/failedNoStudentInSubject";
-        } else {
-            model.addAttribute("students", students);
         }
 
         // Pass the teacher and subject data to the model
         model.addAttribute("teacher", teacher);
         model.addAttribute("subject", subject);
+        model.addAttribute("student", student);
         
         return "subjectattendant";
     }
