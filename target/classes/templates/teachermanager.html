@@ -114,7 +114,7 @@
                 <td th:text="${teacher.name}"></td>
                 <td>
                     <button type="button" th:data-teacher-id="${teacher.teacherID}" onclick="removeTeacher(this)">Remove Teacher</button>
-                    <button th:onclick="|window.location='@{???????????}'|">Manage Classes</button>
+                    <button th:onclick="|window.location='@{/teachermanager/teacheradd}'|">Manage Classes</button>
                 </td>
             </tr>
         </tbody>
