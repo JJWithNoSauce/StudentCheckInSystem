@@ -104,7 +104,7 @@
         </thead>
         <tbody>
             <!-- Iterate over the teachers list and display each teacher -->
-            <tr th:each="attendance : ${checkin}">
+            <tr th:each="checkin : ${checkin}">
                 <td th:text="${checkin.classPeriod}"></td>
                 <td>
                     <a th:href="@{/teacher/{id}(id=${teacher.teacherID})}">View</a>
