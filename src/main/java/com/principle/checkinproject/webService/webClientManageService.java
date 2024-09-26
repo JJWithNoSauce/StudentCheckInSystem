@@ -96,9 +96,16 @@ public class webClientManageService {
                 .bodyToMono(Void.class);
     }
 
+    public Mono<Void> classroomRemoveTeacher(String teacherId) {
+        return webClient.delete()
+                .uri("/manage/teacher/remove/{teacherId}", teacherId)
+                .retrieve()
+                .bodyToMono(Void.class);
+    }
+
     public Mono<Student> registerStudentToSubject(String subjectId, String studentId) {
         return webClient.put()
-                .uri("/subeject/{subjectId}/student/register/{studentId}", subjectId, studentId)
+                .uri("/manage/subeject/{subjectId}/student/register/{studentId}", subjectId, studentId)
                 .retrieve()
                 .bodyToMono(Student.class);
     }

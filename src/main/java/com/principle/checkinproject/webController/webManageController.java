@@ -105,6 +105,11 @@ public class webManageController {
         return "attendanthistory";
     }
 
+    @DeleteMapping("/teacher/remove")
+    public void removeTeacher(@RequestParam String teacherId, Model model) {
+        webClientManageService.classroomRemoveTeacher(teacherId).block();
+    }
+
     @GetMapping("/subject/{teacherId}/{subjectId}/attendantform")
     public String showAttendantForm(@PathVariable String teacherId, @PathVariable String subjectId, Model model) {
         Teacher teacher = webClientManageService.getTeacherById(teacherId).block();
@@ -157,7 +162,9 @@ public class webManageController {
     }
     
     @GetMapping("/teachermanager")
-    public String go_teachermanager() {
+    public String go_teachermanager(Model model) {
+        List<Teacher> teachers = webClientManageService.getAllTeacher().block();
+        model.addAttribute("teachers", teachers);
         return "teachermanager";
     }
     
@@ -166,20 +173,6 @@ public class webManageController {
         return "studentmanager";
     }
 
-
-    @GetMapping("/subject/{teacherId}/addstudent")
-    public String showAddStudentToSubjectForm(Model model) {
-        return "subjectstudentadd";
-    }
-
-    @PutMapping("/student/add")
-    public String addStudenttoSubject(@RequestParam String name,@RequestParam String stdID, Model model) {
-        Student student = new Student();
-        student.setName(name);
-        student.setStdID(name);
-        webClientManageService.createStudent(student).block();
-        return "redirect:/students";
-    }
 
 }
 
