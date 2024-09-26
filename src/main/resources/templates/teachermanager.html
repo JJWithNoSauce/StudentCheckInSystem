@@ -103,6 +103,8 @@
 
     <h4>List of all teachers</h4>
     <table>
+        <h1>Teacher List</h1>
+    <table>
         <thead>
             <tr>
                 <th>Teacher ID</th>
@@ -111,16 +113,14 @@
             </tr>
         </thead>
         <tbody>
-            <c:forEach teachers="${teachers}" var="teacher">
-                <tr>
-                    <td>${teacher.id}</td>
-                    <td><input type="text" id=${teacher.id.name} name=${teacher.id.name} value=${teacher.id.name} disabled></td>
-                    <td><button type="button" onclick="window.location.replace('?lang=ru');">Remove Teacher</button>
-                        <button th:onclick="|window.location='@{???????????}'|">Manage Classes</button>
-                    </td>
-                </tr>
-            </c:forEach>
+            <tr th:each="teacher : ${teachers}">
+                <td th:text="${teacher.teacherID}"></td>
+                <td th:text="${teacher.name}"></td>
+                <td><button th:onclick="|window.location='@{/teacher/remove}'|">Remove Teacher</button>
+                    <button th:onclick="|window.location='@{???????????}'|">Manage Classes</button></td>
+            </tr>
         </tbody>
+    </table>
     </table>
 </div>
 

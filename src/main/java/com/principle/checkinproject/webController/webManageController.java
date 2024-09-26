@@ -10,6 +10,7 @@ import com.principle.checkinproject.webService.webClientManageService;
 import java.util.List;
 
 import com.principle.checkinproject.model.Teacher;
+import com.principle.checkinproject.model.CheckIn;
 import com.principle.checkinproject.model.Student;
 import com.principle.checkinproject.model.Subject;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -82,6 +83,33 @@ public class webManageController {
         webClientManageService.classroomRemoveSubject(teacherId, subjectId).block();
     }
 
+    @GetMapping("/attendanthistory/{teacherId}/{subjectId}")
+    public String shotCheckin(@PathVariable String subjectId, @PathVariable String teacherId, Model model) {
+        Teacher teacher = webClientManageService.getTeacherById(teacherId).block();
+        Subject subject = webClientManageService.getSubject(subjectId).block();
+        List<CheckIn> checkin = webClientManageService.getAllSubjectCheckIn(subjectId).block();
+        System.out.println(teacher);
+        System.out.println(subject);
+        System.out.println(checkin);
+        
+        if (subject == null || checkin == null || teacher == null) {
+            // If the list is null or empty, log and add a message to the model
+            System.out.println("either subject , or list of check in were found");
+            return "redirect:/failedNoCheckinList";
+        }
+        else{
+            model.addAttribute("subject", subject);
+            model.addAttribute("checkin", checkin);
+            model.addAttribute("teacher", teacher);
+        }
+        return "attendanthistory";
+    }
+
+    @DeleteMapping("/teacher/remove")
+    public void removeTeacher(@RequestParam String teacherId, Model model) {
+        webClientManageService.classroomRemoveTeacher(teacherId).block();
+    }
+
     @GetMapping("/subject/{teacherId}/{subjectId}/attendantform")
     public String showAttendantForm(@PathVariable String teacherId, @PathVariable String subjectId, Model model) {
         Teacher teacher = webClientManageService.getTeacherById(teacherId).block();
@@ -113,6 +141,12 @@ public class webManageController {
         model.addAttribute("message", "No students enrolled for this subject. Please add some student into your class before continuing");
         return "failed";
     }
+
+    @GetMapping("/failedNoCheckinList")
+    public String failedNoCheckinList(Model model) {
+        model.addAttribute("message", "This subject's attendance's never been registered , Or either teacher or subject were found. To access history, Please register at least one attendance");
+        return "failed";
+    }
     /*
 
     @GetMapping("/admin/{tEmp}")
@@ -128,7 +162,9 @@ public class webManageController {
     }
     
     @GetMapping("/teachermanager")
-    public String go_teachermanager() {
+    public String go_teachermanager(Model model) {
+        List<Teacher> teachers = webClientManageService.getAllTeacher().block();
+        model.addAttribute("teachers", teachers);
         return "teachermanager";
     }
     
@@ -137,20 +173,6 @@ public class webManageController {
         return "studentmanager";
     }
 
-
-    @GetMapping("/subject/{teacherId}/addstudent")
-    public String showAddStudentToSubjectForm(Model model) {
-        return "subjectstudentadd";
-    }
-
-    @PutMapping("/student/add")
-    public String addStudenttoSubject(@RequestParam String name,@RequestParam String stdID, Model model) {
-        Student student = new Student();
-        student.setName(name);
-        student.setStdID(name);
-        webClientManageService.createStudent(student).block();
-        return "redirect:/students";
-    }
 
 }
 
