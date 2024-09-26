@@ -8,15 +8,14 @@ import org.springframework.web.bind.annotation.*;
 
 import com.principle.checkinproject.webService.webClientManageService;
 
+import reactor.core.publisher.Mono;
+
 import java.util.List;
 
 import com.principle.checkinproject.model.Teacher;
 import com.principle.checkinproject.model.CheckIn;
 import com.principle.checkinproject.model.Student;
 import com.principle.checkinproject.model.Subject;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 
@@ -186,14 +185,15 @@ public class webManageController {
 
     
     @GetMapping("/studentmanager")
-    public String go_studentmanager() {
+    public String go_studentmanager(Model model) {
+        List<Student> students = webClientManageService.getAllStudents().block();
+        model.addAttribute("students", students);
         return "studentmanager";
     }
     
-    @PostMapping("/student/delete/{stdID}")
-    public String deleteStudent(@PathVariable String stdID) {
-        webClientManageService.removeStudent(stdID);
-        return "redirect:/students/manage";
+    @DeleteMapping("/students/manage/remove")
+    public void deleteStudent(@RequestParam String stdID) {
+        webClientManageService.removeStudent(stdID).block();
     }
 }
 

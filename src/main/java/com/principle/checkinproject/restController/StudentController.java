@@ -30,6 +30,12 @@ public class StudentController {
         return studentManage.getStudentById(studentId);
     }
 
+    @DeleteMapping("/remove/{stdID}")
+    public ResponseEntity<Void> removeStudent(@PathVariable String stdID) {
+        // Logic to remove student
+        return ResponseEntity.noContent().build();
+    }
+
     
     
 }

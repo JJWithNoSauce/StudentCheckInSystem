@@ -66,9 +66,9 @@ public class webClientManageService {
                 .bodyToMono(Student.class);
     }
 
-    public Mono<Void> removeStudent(String studentId) {
+    public Mono<Void> removeStudent(String stdID) {
         return webClient.delete()
-                .uri("/manage/student/{id}", studentId)
+                .uri("/api/students/manage/remove/{stdID}", stdID)
                 .retrieve()
                 .bodyToMono(Void.class);
     }
