@@ -57,11 +57,11 @@ public class TeacherManage implements IManageInstructor {
         }
     }
 
-    public boolean deleteTeacherById(String id) {
-        if (teacherRepository.existsById(id)) {
-            teacherRepository.deleteById(id);
-            return true;
-        }
-        return false;
+    // Test ใหม่ ลบอาจารย์จาก ID
+    public void deleteTeacherById(String id) {
+        Teacher teacher = teacherRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Teacher not found with ID: " + id));
+        
+        teacherRepository.delete(teacher); 
     }
 }
