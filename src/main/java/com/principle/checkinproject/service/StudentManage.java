@@ -39,5 +39,6 @@ public class StudentManage {
 
     public void removeStudent(String stdId) {
         studentRespository.deleteById(stdId);
+        
     }
 }

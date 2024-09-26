@@ -26,6 +26,12 @@ public class WebFormController {
 
     @PostMapping("/student/add")
     public String addStudent(@RequestParam String name, @RequestParam String stdID, Model model) { 
+    Student student = new Student();
+    student.setName(name);
+    student.setStdID(stdID); // Corrected to set stdID instead of name
+    webClientManageService.createStudent(student).block();
+    return "redirect:/students/manage";
+}
         Student student = new Student();
         student.setName(name);
         student.setStdID(stdID); // Corrected to set stdID instead of name
@@ -44,7 +50,7 @@ public class WebFormController {
         teacher.setName(name);
         teacher.setTeacherID(teacherID);
         webClientManageService.createTeacher(teacher).block();
-        return "redirect:/teacher";
+        return "redirect:/teachermanager";
     }
 
     @GetMapping("/subject/{teacherId}/add")
