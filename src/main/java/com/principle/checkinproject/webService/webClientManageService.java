@@ -68,7 +68,7 @@ public class webClientManageService {
     // Additional methods for students and subjects
     public Mono<Student> createStudent(Student student) {
         return webClient.post()
-                .uri("/manage/student")
+                .uri("/manage/student/add")
                 .bodyValue(student)
                 .retrieve()
                 .bodyToMono(Student.class);

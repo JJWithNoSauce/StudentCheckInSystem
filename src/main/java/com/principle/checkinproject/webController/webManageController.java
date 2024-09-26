@@ -67,15 +67,6 @@ public class webManageController {
         return "studentlist";
     }
 
-    @PostMapping("/student/add")
-    public String addStudent(@RequestParam String name, Model model) {
-        Student student = new Student();
-        student.setName(name);
-        webClientManageService.createStudent(student)
-                .doOnError(error -> model.addAttribute("error", "Failed to add student."))
-                .subscribe();
-        return "redirect:/students";
-    }
 
     @GetMapping("/subjects")
     public String getAllSubjects(Model model) {
@@ -185,5 +176,20 @@ public class webManageController {
         webClientManageService.createTeacher(teacher).block();
         return "redirect:/teacher";
     }
+
+    @GetMapping("/studentmanager/studentadd")
+    public String showAddStudentForm(Model model) {
+        return "studentadd";
+    }
+
+    @PostMapping("/student/add")
+    public String addStudent(@RequestParam String name,@RequestParam String stdID, Model model) {
+        Student student = new Student();
+        student.setName(name);
+        student.setStdID(name);
+        webClientManageService.createStudent(student).block();
+        return "redirect:/students";
+    }
+
 }
 

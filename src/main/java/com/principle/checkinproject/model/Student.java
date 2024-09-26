@@ -1,5 +1,6 @@
 package com.principle.checkinproject.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -31,7 +32,10 @@ public class Student {
     )
     private List<Subject> subject;
     
-    public Student(){}
+    public Student(){
+        this.subject = new ArrayList<Subject>();
+        this.attendance = new ArrayList<Attendance>();
+    }
 
     public String getStdID(){
         return stdID;
