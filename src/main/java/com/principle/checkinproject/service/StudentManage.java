@@ -37,7 +37,11 @@ public class StudentManage {
         return null; // Or throw an exception
     }
 
-    public void removeStudent(String stdId) {
-        studentRespository.deleteById(stdId);
+    public boolean removeStudent(String stdId) {
+        if (studentRespository.existsById(stdId)) {
+            studentRespository.deleteById(stdId);
+            return true;
+        }
+        return false;
     }
 }

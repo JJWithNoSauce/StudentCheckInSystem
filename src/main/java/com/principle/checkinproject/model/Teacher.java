@@ -1,5 +1,6 @@
 package com.principle.checkinproject.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -16,7 +17,7 @@ public class Teacher extends AInstructor{
     @Column(name = "name")
     private String name;
 
-    @OneToOne(mappedBy = "teacher")
+    @OneToOne(mappedBy = "teacher", cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "classroom_id")
     @JsonIgnoreProperties("teacher")
     private ClassRoom classRoom;

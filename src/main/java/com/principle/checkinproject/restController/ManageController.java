@@ -44,8 +44,12 @@ public class ManageController {
     
     // ลบอาจารย์โดยใช้ ID  localhost:8080/api/manage/teacher/remove/{teacherId}
     @DeleteMapping("/teacher/remove/{teacherId}")
-    public void removeTeacher(@PathVariable String teacherId){
+    // public void removeTeacher(@PathVariable String teacherId){
+    //     teacherManage.deleteTeacherById(teacherId);
+    // }
+    public ResponseEntity<String> deleteTeacher(@PathVariable String teacherId) {
         teacherManage.deleteTeacherById(teacherId);
+        return ResponseEntity.ok("Teacher and associated Classroom deleted successfully");
     }
 
     // ได้แล้ว
