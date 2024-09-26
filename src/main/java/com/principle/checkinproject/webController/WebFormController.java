@@ -44,7 +44,7 @@ public class WebFormController {
         teacher.setName(name);
         teacher.setTeacherID(teacherID);
         webClientManageService.createTeacher(teacher).block();
-        return "redirect:/teacher";
+        return "redirect:/teachermanager";
     }
 
     @GetMapping("/subject/{teacherId}/add")

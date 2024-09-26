@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Manager</title>
+    <title>Teacher Dashboard</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -13,7 +13,7 @@
         }
 
         header {
-            background-color: #258292;
+            background-color: #4CAF50;
             color: white;
             padding: 10px;
             text-align: center;
@@ -42,7 +42,7 @@
         button {
             padding: 10px 15px;
             margin: 10px 5px;
-            background-color: #258292;
+            background-color: #4CAF50;
             color: white;
             border: none;
             border-radius: 5px;
@@ -51,7 +51,7 @@
         }
 
         button:hover {
-            background-color: rgb(42, 163, 179);
+            background-color: #45a049;
         }
 
         table {
@@ -87,52 +87,58 @@
 <body>
 
 <header>
-    <h1>Admin Dashboard</h1>
+    <h1>Teacher Dashboard</h1>
     <button class="logout" onclick="window.location.href='index.html'">Logout</button>
 </header>
 
 <div class="container">
+    <h1 th:text="'Teacher: ' + ${teacher.name}"></h1>
+    <button th:onclick="|window.location='@{/teacher}'|">Go back to teacher list's page</button>
 
-    <h2>You are currently in the Teacher Manager's page.</h2>
-    <button th:onclick="|window.location='@{/admin}'|">Back to main page</button>
-    <h3>Register new Teacher (note : pressing register button will add new teacher and refresh the page)</h3>
+    <h1>Subject List</h1>
+    <p th:text="'Teacher ID: ' + ${teacher.teacherID}"></p>
     
-    <button type="button" onclick="window.location.replace('?lang=ru');">Register Student</button>
-    
-    <h4>List of all teachers</h4>
+    <div class="action-buttons">
+        <button type="button" 
+            th:onclick="|window.location='@{/subject/{teacherId}/add(teacherId=${teacher.teacherID})}'|">
+            Add Subject
+        </button>
+
+        
+    </div>
+
     <table>
         <thead>
             <tr>
-                <th>Teacher ID</th>
-                <th>Teacher Name</th>
+                <th>Subject Name</th>
+                <th>Time</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            <tr th:each="teacher : ${teachers}">
-                <td th:text="${teacher.teacherID}"></td>
-                <td th:text="${teacher.name}"></td>
-                <td>
-                    <button type="button" th:data-teacher-id="${teacher.teacherID}" onclick="removeTeacher(this)">Remove Teacher</button>
-                    <button th:onclick="|window.location='@{/teachermanager/teacheradd}'|">Manage Classes</button>
-                </td>
+            <tr th:each="subject: ${teacher.classRoom.subjects}">
+              <td th:text="${subject.name}"></td>
+              <td th:text="${subject.time}"></td>
+              <td><button th:onclick="|window.location='@{/teacher/{id1}/subject/{id2}(id1=${teacher.teacherID}, id2=${subject.sbjID})}'|">Manage Student</button>
+                <button th:onclick="|window.location='@{/subject/{teacherId}/{subjectId}/attendantform(teacherId=${teacher.teacherID}, subjectId=${subject.sbjID})}'|">Attendant</button>
+                <button type="button" th:data-teacher-id="${teacher.teacherID}" th:data-subject-id="${subject.sbjID}" onclick="removeSubject(this)">Remove Subject</button>
+            
+            </td>  
             </tr>
         </tbody>
     </table>
 </div>
 
 <script>
-    function removeTeacher(button) {
+    function removeSubject(button) {
         const teacherId = encodeURIComponent(button.getAttribute('data-teacher-id'));
-        fetch(`/teacher/remove?teacherId=${teacherId}`, {
-            method: 'GET'
+        const subjectId = encodeURIComponent(button.getAttribute('data-subject-id'));
+        console.log(subjectId, teacherId)
+        fetch(`/subject/remove?teacherId=${teacherId}&subjectId=${subjectId}`, {
+            method: 'DELETE'
         })
         .then(response => {
-            if (response.ok) {
                 location.reload();
-            } else {
-                alert('Failed to remove teacher.');
-            }
         });
     }
 </script>

@@ -32,6 +32,7 @@ public class webManageController {
         return "teacherlist";
     }
 
+    
     @GetMapping("/teacher/{id}")
     public String getTeacher(@PathVariable String id, Model model) {
         Teacher teacher = webClientManageService.getTeacherById(id).block();
@@ -40,22 +41,23 @@ public class webManageController {
         model.addAttribute("subjects", subjects);
         return "teacher";
     }
-
-    @PostMapping("/teacher/delete")
-    public String deleteTeacher(@RequestParam String id, Model model) {
-        webClientManageService.deleteTeacher(id)
-                .doOnError(error -> model.addAttribute("error", "Failed to delete teacher."))
-                .subscribe();
-        return "redirect:/teacher";
+    
+    @GetMapping("/teachermanager/teacher/{id}")
+    public String getAdminTeacher(@PathVariable String id, Model model) {
+        Teacher teacher = webClientManageService.getTeacherById(id).block();
+        List<Subject> subjects = webClientManageService.getAllSubjectByTeacher(id).block();
+        model.addAttribute("teacher", teacher);
+        model.addAttribute("subjects", subjects);
+        return "adminmanageteacher";
     }
 
-    @GetMapping("/students")
-    public String getAllStudents(Model model) {
-        webClientManageService.getAllStudents()
-                .doOnError(error -> model.addAttribute("error", "Failed to load students."))
-                .subscribe(students -> model.addAttribute("students", students));
-        return "studentlist";
+    @GetMapping("/students/manage")
+    public String Studentsmanage(Model model) {
+        List<Student> students = webClientManageService.getAllStudents().block();
+        model.addAttribute("students", students);
+        return "studentmanager";
     }
+
 
 
     @GetMapping("/subjects")
@@ -180,6 +182,7 @@ public class webManageController {
         model.addAttribute("teachers", teachers);
         return "teachermanager";
     }
+
     
     @GetMapping("/studentmanager")
     public String go_studentmanager() {
