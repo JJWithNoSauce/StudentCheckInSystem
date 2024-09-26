@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teacher Dashboard</title>
+    <title>Attendance History View</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -26,8 +26,7 @@
             top: 10px;
         }
 
-        h1 {
-            font-size: 24px;
+        h1, h2, h3 {
             color: #333;
         }
 
@@ -76,67 +75,42 @@
         tr:hover {
             background-color: #f5f5f5;
         }
-
-        .action-buttons {
-            margin-top: 20px;
-            text-align: center;
-        }
-
     </style>
 </head>
 <body>
 
 <header>
-    <h1>Teacher Dashboard</h1>
+    <h1>Attendance History View</h1>
+    <h2 th:text="${checkin.classPeriod}"></h2>
     <button class="logout" onclick="window.location.href='index.html'">Logout</button>
 </header>
 
 <div class="container">
-    <tr th:each = "subject: ${subject}">
-    <h1>Attendant's submit system</h1>
-    <td th:text = "${student.name}"></td>
-    </tr>
-    
-    <button th:onclick="|window.location='@{/teacher/{id}(id=${teacherId})}'|">Go back to teacher's page</button>
+    <h2 th:text="'Subject: ' + ${subject.name}"></h2>
+    <h3 th:text="'Teacher: ' + ${teacher.name}"></h3>
 
-    <h2>Time for attendant</h2>
+    <h3>Attendance List</h3>
     <table>
         <thead>
             <tr>
-                <th>Class Period</th>
-                <th>Detail</th>
-            </tr>
-            </tr>
-                <td>Class Period</td>
-                <td th:text="${checkin.classPeriod}"></td>
-            </tr>
-        </tbody>
-    </table>
-
-    <h3>Student check for attendant</h3>
-    <table>
-        <thead>
-            <tr>
-                <th>Present Status</th>
                 <th>Student ID</th>
                 <th>Student Name</th>
+                <th>Present Status</th>
                 <th>Note</th>
             </tr>
         </thead>
         <tbody>
-            <!-- Check for non-null students before accessing properties -->
-            <tr th:each="student : ${students}" th:if="${student} != null">
-                <td th:text="${student.id}"></td>
-                <td th:text="${student.id}"></td>
-                <td th:text="${student.name}"></td>
-                <td><input type="text" id="${student.id}note" name="${student.id}note"></td>
+            <tr th:each="attendance : ${attendant}">
+                <td th:text="${attendance.student.id}"></td>
+                <td th:text="${attendance.student.name}"></td>
+                <td th:text="${attendance.status}"></td>
+                <td th:text="${attendance.note}"></td>
             </tr>
         </tbody>
     </table>
     
-    
+    <button th:onclick="|window.location.href='@{/teacher/{id}(id=${teacher.id})}'|">Back to Teacher's Page</button>
 </div>
 
 </body>
 </html>
-

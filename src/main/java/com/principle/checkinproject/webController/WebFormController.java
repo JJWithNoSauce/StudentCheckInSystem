@@ -73,12 +73,12 @@ public class WebFormController {
 
     @PostMapping("/student/add")
     public String addStudent(@RequestParam String name, @RequestParam String stdID, Model model) { 
-    Student student = new Student();
-    student.setName(name);
-    student.setStdID(stdID); // Corrected to set stdID instead of name
-    webClientManageService.createStudent(student).block();
-    return "redirect:/students/manage";
-}
+        Student student = new Student();
+        student.setName(name);
+        student.setStdID(stdID); // Corrected to set stdID instead of name
+        webClientManageService.createStudent(student).block();
+        return "redirect:/students/manage";
+    }
 
     @GetMapping("/teachermanager/teacheradd")
     public String showAddTeacherForm(Model model) {

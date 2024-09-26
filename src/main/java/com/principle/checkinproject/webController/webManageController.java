@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.*;
 import com.principle.checkinproject.webService.webClientManageService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.principle.checkinproject.model.Teacher;
+import com.principle.checkinproject.model.Attendance;
 import com.principle.checkinproject.model.CheckIn;
 import com.principle.checkinproject.model.Student;
 import com.principle.checkinproject.model.Subject;
@@ -102,21 +104,27 @@ public class webManageController {
         Teacher teacher = webClientManageService.getTeacherById(teacherId).block();
         Subject subject = webClientManageService.getSubject(subjectId).block();
         CheckIn checkin = webClientManageService.getSubjectCheckIn(subjectId,checkinId).block();
+        List<Attendance> attendance = checkin.getAttendances();
         
+        // We'll pass the attendance list to the view and let it handle the student information
 
         System.out.println(teacher);
         System.out.println(subject);
         System.out.println(checkin);
-        
-        if (subject == null || checkin == null || teacher == null) {
-            // If the list is null or empty, log and add a message to the model
-            System.out.println("either subject , or list of check in were found");
+        System.out.println(attendance);
+
+        if (subject == null || checkin == null || teacher == null || attendance == null) {
+            // If any of the required data is null, log and redirect to an error page
+            System.out.println("Required data not found");
             return "redirect:/failedNoCheckinList";
         }
-        else{
+        else {
             model.addAttribute("subject", subject);
             model.addAttribute("checkin", checkin);
             model.addAttribute("teacher", teacher);
+            model.addAttribute("attendant", attendance);
+            // We're not adding a separate "students" attribute, as the student information
+            // should be accessible through the attendance objects
         }
         return "attendanthistoryview";
     }
@@ -199,4 +207,3 @@ public class webManageController {
         return "redirect:/students/manage";
     }
 }
-
