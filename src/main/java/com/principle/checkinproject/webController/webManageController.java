@@ -41,24 +41,6 @@ public class webManageController {
         return "teacher";
     }
 
-    @PostMapping("/teacher/update")
-    public String updateTeacher(@RequestParam String id, @RequestParam String name, Model model) {
-        Teacher teacher = new Teacher();
-        teacher.setTeacherID(id);
-        teacher.setName(name);
-        webClientManageService.updateTeacher(teacher)
-                .doOnError(error -> model.addAttribute("error", "Failed to update teacher."))
-                .subscribe();
-        return "redirect:/teacher";
-    }
-
-    @PostMapping("/teacher/delete")
-    public String deleteTeacher(@RequestParam String id, Model model) {
-        webClientManageService.deleteTeacher(id)
-                .doOnError(error -> model.addAttribute("error", "Failed to delete teacher."))
-                .subscribe();
-        return "redirect:/teacher";
-    }
 
     @GetMapping("/students")
     public String getAllStudents(Model model) {
@@ -105,10 +87,6 @@ public class webManageController {
         return "attendanthistory";
     }
 
-    @DeleteMapping("/teacher/remove")
-    public void removeTeacher(@RequestParam String teacherId, Model model) {
-        webClientManageService.classroomRemoveTeacher(teacherId).block();
-    }
 
     @GetMapping("/subject/{teacherId}/{subjectId}/attendantform")
     public String showAttendantForm(@PathVariable String teacherId, @PathVariable String subjectId, Model model) {
@@ -166,6 +144,12 @@ public class webManageController {
         List<Teacher> teachers = webClientManageService.getAllTeacher().block();
         model.addAttribute("teachers", teachers);
         return "teachermanager";
+    }
+
+    @DeleteMapping("/teacher/remove")
+    public void removeTeacher(@RequestParam String teacherId, Model model) {
+        System.out.println("8iiiiiiiiiiiii"+teacherId);
+        webClientManageService.classroomRemoveTeacher(teacherId).block();
     }
     
     @GetMapping("/studentmanager")

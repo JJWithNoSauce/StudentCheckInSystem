@@ -34,14 +34,6 @@ public class webClientManageService {
                 .bodyToMono(Void.class);
     }
 
-    public Mono<Teacher> updateTeacher(Teacher teacher) {
-        return webClient.put()
-                .uri("/teacher/{id}", teacher.getTeacherID())
-                .bodyValue(teacher)
-                .retrieve()
-                .bodyToMono(Teacher.class);
-    }
-
     public Mono<Teacher> getTeacherById(String teacherId) {
         return webClient.get()
                 .uri("/teacher/{id}", teacherId)

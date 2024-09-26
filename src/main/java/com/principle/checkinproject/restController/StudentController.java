@@ -12,7 +12,7 @@ import com.principle.checkinproject.service.StudentManage;
 
 
 @RestController
-@RequestMapping("/api/students/")
+@RequestMapping("/api/students")
 public class StudentController {
     @Autowired
     private StudentManage studentManage;
