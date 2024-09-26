@@ -97,7 +97,7 @@
     <button th:onclick="|window.location='@{/admin}'|">Back to main page</button>
     <h3>Register new Teacher (note : pressing register button will add new teacher and refresh the page)</h3>
     
-    <button type="button" onclick="window.location.replace('?lang=ru');">Register Student</button>
+    <button th:onclick="|window.location='@{/teachermanager/teacheradd}'|">Register Teacher</button>
     
     
 
@@ -117,7 +117,7 @@
                 <td th:text="${teacher.teacherID}"></td>
                 <td th:text="${teacher.name}"></td>
                 <td><button th:onclick="|window.location='@{/teacher/remove}'|">Remove Teacher</button>
-                    <button th:onclick="|window.location='@{???????????}'|">Manage Classes</button></td>
+                    <button th:onclick="|window.location='@{/teachermanager/teacheradd}'|">Manage Classes</button></td>
             </tr>
         </tbody>
     </table>
