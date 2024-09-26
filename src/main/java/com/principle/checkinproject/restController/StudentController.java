@@ -25,7 +25,6 @@ public class StudentController {
     }
 
 
-
     @GetMapping("/{studentId}")
     public Student getstudentById(@PathVariable String studentId){
         return studentManage.getStudentById(studentId);

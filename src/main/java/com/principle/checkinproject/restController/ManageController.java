@@ -60,8 +60,12 @@ public class ManageController {
     
     // ได้แล้ว
     @DeleteMapping("/student/remove/{studentId}")
-    public void removeStudent(@PathVariable String studentId){
+    // public void removeStudent(@PathVariable String studentId){
+    //     studentManage.removeStudent(studentId);
+    // }
+    public ResponseEntity<String> deleteStudent(@PathVariable String studentId) {
         studentManage.removeStudent(studentId);
+        return ResponseEntity.ok("Student deleted successfully.");
     }
 
     // เพิ่มวิชาในห้องเรียนโดยใช้ ID ของอาจารย์
