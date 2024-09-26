@@ -126,7 +126,7 @@
         <tbody>
             <!-- Check for non-null students before accessing properties -->
             <tr th:each="student : ${students}" th:if="${student} != null">
-                <td><input type="checkbox" id="${student.id}check" name="${student.id}check" disabled></td>
+                <td th:text="${student.id}"></td>
                 <td th:text="${student.id}"></td>
                 <td th:text="${student.name}"></td>
                 <td><input type="text" id="${student.id}note" name="${student.id}note"></td>
