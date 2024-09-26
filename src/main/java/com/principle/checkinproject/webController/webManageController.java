@@ -162,14 +162,6 @@ public class webManageController {
         model.addAttribute("message", "This subject's attendance's never been registered , Or either teacher or subject were found. To access history, Please register at least one attendance");
         return "failed";
     }
-    /*
-
-    @GetMapping("/admin/{tEmp}")
-    public String getMethodName(@PathVariable String tEmp) {
-        return "teachermanager";
-    }                                                                   
-    
-    */
     
     @GetMapping("/admin")
     public String go_admin() {
@@ -189,6 +181,16 @@ public class webManageController {
         return "studentmanager";
     }
 
+    @GetMapping("/subject/{subjectId}/manage")
+    public String subjectStudentManage(@PathVariable String subjectId, Model model){
+        List<Student> students = webClientManageService.getSubjectStudents(subjectId).block();
+        Subject sbj = webClientManageService.getSubject(subjectId).block();
+        model.addAttribute("students", students);
+        model.addAttribute("subject", sbj);
+        return "subjectstudent";
+    }
+    
+    
 
 }
 
