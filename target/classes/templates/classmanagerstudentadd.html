@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Student to Subject</title>
+    <title>Add Student</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -59,19 +59,19 @@
 <body>
 
 <header>
-    <h1>Add Student to Subject</h1>
-    <button class="logout" onclick="window.location.href='/'">Logout</button>
+    <h1>Add New Student</h1>
+    <button class="logout" onclick="window.location.href='index.html'">Logout</button>
 </header>
 
 <div class="container">
-    <form action="/subject/studentadd" method="PUT">
-        <label for="subjectID">Subject ID:</label>
-        <input type="text" id="subjectID" name="subjectID" th:value="${subjectId}" required><br><br>
-        
+    <form action="/student/add" method="post">
         <label for="stdID">Student ID:</label>
         <input type="text" id="stdID" name="stdID" required><br><br>
         
-        <button type="submit">Add Student to Subject</button>
+        <label for="name">Student Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+        
+        <button type="submit">Add Student</button>
     </form>
 </div>
 

@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.principle.checkinproject.model.Student;
@@ -46,7 +47,7 @@ public class WebFormController {
         return "redirect:/teacher";
     }
 
-        @GetMapping("/subject/{teacherId}/add")
+    @GetMapping("/subject/{teacherId}/add")
     public String showAddSubjectForm(@PathVariable String teacherId, Model model) {
         System.out.println(teacherId);
         model.addAttribute("teacherId", teacherId);
@@ -71,4 +72,18 @@ public class WebFormController {
         }
         return "redirect:/teacher/" + teacherId;
     }
+
+    @GetMapping("/subject/{subjectId}/addstudent")
+    public String showAddStudentToSubjectForm(@PathVariable String subjectId,Model model) {
+        model.addAttribute("subjectId", subjectId);
+        return "subjectstudentadd";
+    }
+
+    @GetMapping("/subject/studentadd")
+    public String addStudenttoSubject(@RequestParam String subjectID,@RequestParam String stdID, Model model) {
+        System.out.println("--------------+++" + subjectID);
+        webClientManageService.registerStudentToSubject(subjectID, stdID).block();
+        return "redirect:/students";
+    }
 }
+

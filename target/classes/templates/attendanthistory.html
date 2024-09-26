@@ -17,6 +17,13 @@
             color: white;
             padding: 10px;
             text-align: center;
+            position: relative;
+        }
+
+        .logout {
+            position: absolute;
+            right: 10px;
+            top: 10px;
         }
 
         h1 {
@@ -80,32 +87,33 @@
 <body>
 
 <header>
-    <h1>Teacher List</h1>
+    <h1>Attendant's history</h1>
+    <button class="logout" onclick="window.location.href='index.html'">Logout</button>
 </header>
 
 <div class="container">
-    <h1>Teacher List</h1>
+    <h1>Attendant's history for subject : </h1>
+    <button th:onclick="|window.location='@{/subject/{teacherId}/{subjectId}/attendantform(teacherId=${teacher.teacherID}, subjectId=${subject.sbjID})}'|">Go back!</button>
+    <h2 th:text="${subject.name}">Attendant's history for subject : ${subject.name}</h2>
     <table>
         <thead>
             <tr>
-                <th>Teacher ID</th>
-                <th>Teacher Name</th>
+                <th>Attendance's period</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
             <!-- Iterate over the teachers list and display each teacher -->
-            <tr th:each="teacher : ${teachers}">
-                <td th:text="${teacher.teacherID}"></td>
-                <td th:text="${teacher.name}"></td>
+            <tr th:each="attendance : ${checkin}">
+                <td th:text="${checkin.classPeriod}"></td>
                 <td>
                     <a th:href="@{/teacher/{id}(id=${teacher.teacherID})}">View</a>
                 </td>
             </tr>
         </tbody>
     </table>
-    <td><button th:onclick="|window.location='@{/admin}'|">Admin Accress</button></td>
 </div>
 
 </body>
 </html>
+
