@@ -3,6 +3,8 @@ package com.principle.checkinproject.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -25,12 +27,16 @@ public class Student {
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Attendance> attendance;
     
-    @ManyToMany
-    @JoinTable(
-        name = "student_subject",
-        joinColumns = @JoinColumn(name = "stdID"),
-        inverseJoinColumns = @JoinColumn(name = "sbjID")
-    )
+    // @ManyToMany
+    // @JoinTable(
+    //     name = "student_subject",
+    //     joinColumns = @JoinColumn(name = "stdID"),
+    //     inverseJoinColumns = @JoinColumn(name = "sbjID")
+    // )
+    // private List<Subject> subject;
+    
+    @ManyToMany(mappedBy = "students", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Subject> subject;
     
     public Student(){
