@@ -98,9 +98,7 @@
     <h2>You are currently in the Student Manager's page.</h2>
     <button th:onclick="|window.location='@{/admin}'|">Back to main page</button>
     <h3>Register new student (note : pressing register button will add new student and refresh the page)</h3>
-    <td>Student Name : </td>
-    <input type="text" id=${student.id.name} name=${student.id.name} value="Name of student">
-    <button type="button" onclick="window.location.replace('?lang=ru');">Register Student</button>
+    <button type="button" onclick="window.location.href='/studentmanager/studentadd'">New Student</button>
     
 
     <h4>List of all students</h4>
@@ -109,22 +107,17 @@
             <tr>
                 <th>Student ID</th>
                 <th>Student Name</th>
-                <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            <c:forEach students="${students}" var="student">
-                <tr>
-                    <td>${student.id}</td>
-                    <td><input type="text" id=${student.id.name} name=${student.id.name} value=${student.id.name}></td>
-                    <td><button type="button" onclick="window.location.replace('?lang=ru');">Remove Student</button>
-                        <button type="button" onclick="window.location.replace('?lang=ru');">Adjust Info</button></td>
-                </tr>
-            </c:forEach>
+            <!-- Iterate over the teachers list and display each teacher -->
+            <tr th:each="students : ${students}">
+                <td th:text="${students.stdID}"></td>
+                <td th:text="${students.name}"></td>
+            </tr>
         </tbody>
     </table>
 </div>
 
 </body>
 </html>
-

@@ -12,9 +12,6 @@ import java.util.List;
 import com.principle.checkinproject.model.Teacher;
 import com.principle.checkinproject.model.Student;
 import com.principle.checkinproject.model.Subject;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 
@@ -59,13 +56,20 @@ public class webManageController {
         return "redirect:/teacher";
     }
 
-    @GetMapping("/students")
+    @GetMapping("/students/manage")
+    public String Studentsmanage(Model model) {
+        List<Student> students = webClientManageService.getAllStudents().block();
+        model.addAttribute("students", students);
+        return "studentmanager";
+    }
+
+    /*@GetMapping("/students")
     public String getAllStudents(Model model) {
         webClientManageService.getAllStudents()
                 .doOnError(error -> model.addAttribute("error", "Failed to load students."))
                 .subscribe(students -> model.addAttribute("students", students));
         return "studentlist";
-    }
+    }*/
 
 
     @GetMapping("/subjects")
@@ -139,11 +143,6 @@ public class webManageController {
         return "teachermanager";
     }
     
-    @GetMapping("/studentmanager")
-    public String go_studentmanager() {
-        return "studentmanager";
-    }
-
 
     @GetMapping("/subject/{teacherId}/addstudent")
     public String showAddStudentToSubjectForm(Model model) {
