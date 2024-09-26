@@ -32,7 +32,7 @@ public class WebFormController {
         return "redirect:/students";
     }
 
-        @GetMapping("/teachermanager/teacheradd")
+    @GetMapping("/teachermanager/teacheradd")
     public String showAddTeacherForm(Model model) {
         return "teacheradd";
     }
