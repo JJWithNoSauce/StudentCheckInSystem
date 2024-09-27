@@ -1,7 +1,11 @@
 package com.principle.checkinproject.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -9,24 +13,24 @@ import jakarta.persistence.ManyToOne;
 @Entity
 public class Attendance {
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="id")
-    private String id;
+    private Long id;
+
 	@Column(name="status")	
     private String status;
+
 	@Column(name="note")
     private String note;
-
-	// @Column(name="checkIn_id")
-	// private String checkIn_Id;
 	
 	@ManyToOne
     @JoinColumn(name = "checkIn_id")
+    @JsonBackReference
     private CheckIn checkIn;
     
     @ManyToOne
     @JoinColumn(name = "stdID")
     private Student student;
-
 
     public Attendance(){}
 
@@ -36,11 +40,11 @@ public class Attendance {
         this.note = note;
     }
 
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -68,11 +72,11 @@ public class Attendance {
 		this.checkIn = checkIn;
 	}
 
-	public Student getStd() {
+	public Student getStudent() {
 		return student;
 	}
 
-	public void setStd(Student std) {
-		this.student = std;
+	public void setStudent(Student student) {
+		this.student = student;
 	}
 }

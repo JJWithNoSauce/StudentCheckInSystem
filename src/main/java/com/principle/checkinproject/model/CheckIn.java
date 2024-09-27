@@ -3,6 +3,8 @@ package com.principle.checkinproject.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -23,6 +25,7 @@ public class CheckIn {
 	private int classPeriod;
 
 	@OneToMany(mappedBy = "checkIn", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<Attendance> attendances;
 
     @ManyToOne
@@ -38,7 +41,6 @@ public class CheckIn {
 		this.subject = subject;
 		this.classPeriod = subject.getCheckIns().size()+1;
 	}
-
 
     public List<Attendance> viewHistory(){
         return attendances;
@@ -67,4 +69,12 @@ public class CheckIn {
 	public void setId(Long id){
 		this.id = id;
 	}
+
+    public int getClassPeriod() {
+        return classPeriod;
+    }
+
+    public void setClassPeriod(int classPeriod) {
+        this.classPeriod = classPeriod;
+    }
 }

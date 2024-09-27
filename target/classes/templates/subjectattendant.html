@@ -96,7 +96,7 @@
     <button th:onclick="|window.location='@{/teacher/{id}(id=${teacherId})}'|">Go back to teacher's page</button>
     
     <h3>Student check for attendant</h3>
-    <form action="/submitattendance" method="post">
+    <form th:action="@{/submitattendance}" method="post">
         <input type="hidden" name="teacherId" th:value="${teacher.teacherID}">
         <input type="hidden" name="subjectId" th:value="${subject.sbjID}">
         <table>

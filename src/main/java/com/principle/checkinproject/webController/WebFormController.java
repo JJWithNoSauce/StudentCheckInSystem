@@ -10,7 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.principle.checkinproject.model.Attendance;
@@ -20,51 +19,54 @@ import com.principle.checkinproject.model.Subject;
 import com.principle.checkinproject.model.Teacher;
 import com.principle.checkinproject.webService.webClientManageService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Mono;
+
 @Controller
 public class WebFormController {
+    private static final Logger logger = LoggerFactory.getLogger(WebFormController.class);
+
     @Autowired
     webClientManageService webClientManageService;
 
     @PostMapping("/submitattendance")
     public String submitAttendance(@RequestParam String teacherId,
-                                   @RequestParam String subjectId,
-                                   @RequestParam Map<String, String> formData,
-                                   Model model) {
+            @RequestParam String subjectId,
+            @RequestParam Map<String, String> formData,
+            Model model) {
+        // Fetch the subject
+        System.out.println("+5+5+5+5+5+5+5+5+5+5+5"+subjectId);
+        Subject subject = webClientManageService.getSubject(subjectId).block();
+        if (subject == null) {
+            model.addAttribute("error", "Subject not found");
+            return "failed";
+        }
+
         List<Attendance> attendances = new ArrayList<>();
 
-        System.out.println("***************  "+subjectId);
+        // Process form data
+                for (Map.Entry<String, String> entry : formData.entrySet()) {
+                    if (entry.getKey().startsWith("attendanceStatus_")) {
+                        String studentId = entry.getKey().substring("attendanceStatus_".length());
+                        String status = entry.getValue();
+                        String note = formData.get("note_" + studentId);
 
-        for (Map.Entry<String, String> entry : formData.entrySet()) {
-            if (entry.getKey().startsWith("attendanceStatus_")) {
-                String studentId = entry.getKey().substring("attendanceStatus_".length());
-                String status = entry.getValue();
-                String note = formData.get("note_" + studentId);
-                System.out.println("7777772222222  "+ studentId);
+                // Create Attendance object
+                                Attendance attendance = new Attendance();
+                attendance.setStudent(webClientManageService.getStudentById(studentId).block());
+                                attendance.setStatus(status);
+                                attendance.setNote(note);
 
-                Student student = webClientManageService.getStudentById(studentId).block();
-                Attendance attendance = new Attendance(student, status, note);
                 attendances.add(attendance);
             }
         }
+        
+        // Call the checking API to save the attendance data
+        webClientManageService.checking(subjectId, attendances).block();
 
-        try {
-            CheckIn newCheckIn = webClientManageService.checking(subjectId, attendances).block();
-            if (newCheckIn != null) {
-                System.out.println("oooooooooooooo comple");
-                return "redirect:/attendanthistory/" + teacherId + "/" + subjectId;
-            } else {
-                model.addAttribute("error", "Failed to submit attendance. Check-in was not created.");
-                return "redirect:/subject/" + teacherId + "/" + subjectId + "/attendantform";
-            }
-        } catch (Exception e) {
-            model.addAttribute("error", "Failed to submit attendance: " + e.getMessage());
-            System.out.println("yyyyyyy"+e.getMessage());
-            return "redirect:/subject/" + teacherId + "/" + subjectId + "/attendantform";
-        }
+        return "redirect:/teacher/" + teacherId;
     }
-
-
-
 
     @GetMapping("/studentmanager/studentadd")
     public String showAddStudentForm(Model model) {
@@ -72,13 +74,13 @@ public class WebFormController {
     }
 
     @PostMapping("/student/add")
-    public String addStudent(@RequestParam String name, @RequestParam String stdID, Model model) { 
-    Student student = new Student();
-    student.setName(name);
-    student.setStdID(stdID); // Corrected to set stdID instead of name
-    webClientManageService.createStudent(student).block();
-    return "redirect:/students/manage";
-}
+    public String addStudent(@RequestParam String name, @RequestParam String stdID, Model model) {
+        Student student = new Student();
+        student.setName(name);
+        student.setStdID(stdID); // Corrected to set stdID instead of name
+        webClientManageService.createStudent(student).block();
+        return "redirect:/students/manage";
+    }
 
     @GetMapping("/teachermanager/teacheradd")
     public String showAddTeacherForm(Model model) {
@@ -86,7 +88,7 @@ public class WebFormController {
     }
 
     @PostMapping("/teacher/add")
-    public String addTeacher(@RequestParam String name,@RequestParam String teacherID, Model model) {
+    public String addTeacher(@RequestParam String name, @RequestParam String teacherID, Model model) {
         Teacher teacher = new Teacher();
         teacher.setName(name);
         teacher.setTeacherID(teacherID);
@@ -121,21 +123,20 @@ public class WebFormController {
     }
 
     @GetMapping("/subject/{subjectId}/addstudent")
-    public String showAddStudentToSubjectForm(@PathVariable String subjectId,Model model) {
+    public String showAddStudentToSubjectForm(@PathVariable String subjectId, Model model) {
         model.addAttribute("subjectId", subjectId);
         return "subjectstudentadd";
     }
 
     @GetMapping("/subject/studentadd")
-    public String addStudenttoSubject(@RequestParam String subjectID,@RequestParam String stdID, Model model) {
+    public String addStudenttoSubject(@RequestParam String subjectID, @RequestParam String stdID, Model model) {
         webClientManageService.registerStudentToSubject(subjectID, stdID).block();
-        return "redirect:/subject/"+subjectID+"/manage";
+        return "redirect:/subject/" + subjectID + "/manage";
     }
 
     @GetMapping("/subject/studentremove")
-    public String removeStudenttoSubject(@RequestParam String subjectID,@RequestParam String stdID, Model model) {
+    public String removeStudenttoSubject(@RequestParam String subjectID, @RequestParam String stdID, Model model) {
         webClientManageService.deregisterStudentToSubject(subjectID, stdID).block();
-        return "redirect:/subject/"+subjectID+"/manage";
+        return "redirect:/subject/" + subjectID + "/manage";
     }
 }
-

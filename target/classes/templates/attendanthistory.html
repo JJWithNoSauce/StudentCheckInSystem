@@ -98,17 +98,20 @@
     <table>
         <thead>
             <tr>
-                <th>Attendance's period</th>
-                <th>Action</th>
+                <th>Present Status</th>
+                <th>Student ID</th>
+                <th>Student Name</th>
+                <th>Note</th>
             </tr>
         </thead>
         <tbody>
-            <!-- Iterate over the teachers list and display each teacher -->
-            <tr th:each="checkin : ${checkin}">
-                <td th:text="${checkin.classPeriod}"></td>
+            <tr th:each="attendant : ${attendant}">
                 <td>
-                    <a th:href="@{/teacher/{id}(id=${teacher.teacherID})}">View</a>
+                    <td th:text="${attendant.status}"></td>
                 </td>
+                <td th:text="${student.stdID}"></td>
+                <td th:text="${student.name}"></td>
+                <td th:text="${attendant.note}"></td>
             </tr>
         </tbody>
     </table>

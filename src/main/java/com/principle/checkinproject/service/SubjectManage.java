@@ -40,20 +40,36 @@ public class SubjectManage {
         studentRepository.save(std);
     }
 
+    @Transactional
     public CheckIn checkInStudent(String sbjId, List<Attendance> attendances) {
-        Subject subject = subjectRepository.findById(sbjId).orElse(null);
-        CheckIn check = new CheckIn(attendances, subject);
+        try {
+            Subject subject = subjectRepository.findById(sbjId)
+                .orElseThrow(() -> new RuntimeException("Subject not found with id: " + sbjId));
 
-        checkInRepository.save(check);
+            if (attendances == null || attendances.isEmpty()) {
+                throw new IllegalArgumentException("Attendances list is null or empty");
+            }
 
-        for (Attendance attendance : attendances) {
-            attendance.setCheckIn(check);
-            attendanceRepository.save(attendance);
+            CheckIn check = new CheckIn(attendances, subject);
+            checkInRepository.save(check);
+
+            for (Attendance attendance : attendances) {
+                if (attendance == null) {
+                    throw new IllegalArgumentException("Attendance object is null");
+                }
+                attendance.setCheckIn(check);
+                attendanceRepository.save(attendance);
+            }
+
+            subject.getCheckIns().add(check);
+            subjectRepository.save(subject);
+            return check;
+        } catch (Exception e) {
+            // Log the exception
+            e.printStackTrace();
+            // Rethrow as RuntimeException to be handled by global exception handler
+            throw new RuntimeException("Error during check-in process: " + e.getMessage(), e);
         }
-
-        subject.getCheckIns().add(check);
-        subjectRepository.save(subject);
-        return check;
     }
 
     @Transactional

@@ -14,7 +14,7 @@ public class webClientManageService {
     @Autowired
     private final WebClient webClient;
 
-    public webClientManageService(WebClient webClient){
+    public webClientManageService(WebClient webClient) {
         this.webClient = webClient;
     }
 
@@ -26,15 +26,6 @@ public class webClientManageService {
                 .uri("/students/{id}", studentId)
                 .retrieve()
                 .bodyToMono(Student.class);
-    }
-
-    // New method to submit attendance
-    public Mono<CheckIn> submitAttendance(CheckIn checkIn) {
-        return webClient.post()
-                .uri("/subjects/{id}/checkin", checkIn.getSubject().getSbjID())
-                .bodyValue(checkIn)
-                .retrieve()
-                .bodyToMono(CheckIn.class);
     }
 
     // ManageController APIs
