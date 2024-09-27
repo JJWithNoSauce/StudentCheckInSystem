@@ -1,6 +1,9 @@
 package com.principle.checkinproject.restController;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.principle.checkinproject.model.Attendance;
 import com.principle.checkinproject.model.CheckIn;
 import com.principle.checkinproject.model.Student;
@@ -43,23 +47,50 @@ public class SubjectController {
     }
 
     @GetMapping("/{subjectId}")
-    public Subject getSubject(@PathVariable String subjectId){
+    public ResponseEntity<Subject> getSubject(@PathVariable String subjectId){
        Subject subject = subjectManage.getSubjectById(subjectId);
-       return subject;
+       if (subject == null) {
+           return ResponseEntity.notFound().build();
+       }
+       return ResponseEntity.ok(subject);
     }
 
+    @SuppressWarnings("unchecked")
     @PostMapping("/{subjectId}/checking")
-    public CheckIn checking(@PathVariable String subjectId, @RequestBody List<Attendance> attendances) {
-        logger.info("Received checking request for subject: {}", subjectId);
-        System.out.println("9+9+6+85+54+598595    "+attendances.get(0).getStudent().getStdID());
-        CheckIn check = subjectManage.checkInStudent(subjectId, attendances);
-        return check;
+    public CheckIn checking(@PathVariable String subjectId, @RequestBody Map<String, Object> requestBody) {
+  ObjectMapper mapper = new ObjectMapper();
+
+    // Convert the list of attendances
+    List<LinkedHashMap<String, Object>> attendanceMaps = (List<LinkedHashMap<String, Object>>) requestBody.get("attendances");
+    List<Attendance> attendances = attendanceMaps.stream()
+            .map(map -> mapper.convertValue(map, Attendance.class))
+            .collect(Collectors.toList());
+
+    // Convert the list of students
+    List<LinkedHashMap<String, Object>> studentMaps = (List<LinkedHashMap<String, Object>>) requestBody.get("students");
+    List<Student> students = studentMaps.stream()
+            .map(map -> mapper.convertValue(map, Student.class))
+            .collect(Collectors.toList());
+
+    // Assign students to attendances
+    for (int i = 0; i < attendances.size(); i++) {
+        attendances.get(i).setStudent(students.get(i));
+        System.out.println(attendances.get(i)+"1 2121212121");
+    }
+
+        return subjectManage.checkInStudent(subjectId, attendances);
+
     }
 
     @GetMapping("/{subjectId}/students")
-    public List<Student> getSubjectStudents(@PathVariable String subjectId){
+    public ResponseEntity<List<Student>> getSubjectStudents(@PathVariable String subjectId){
+        try {
             List<Student> students = subjectManage.getAllStudentsInSubject(subjectId);
-            return students;
+            return ResponseEntity.ok(students);
+        } catch (Exception e) {
+            logger.error("Error retrieving students for subject {}: {}", subjectId, e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     @GetMapping("/{subjectId}/checkins")
@@ -83,6 +114,9 @@ public class SubjectController {
     public ResponseEntity<CheckIn> getSubjectCheckIn(@PathVariable String subjectId, @PathVariable int period){
         try {
             CheckIn checkIn = subjectManage.getCheckInInSubject(subjectId, period);
+            if (checkIn == null) {
+                return ResponseEntity.notFound().build();
+            }
             return ResponseEntity.ok(checkIn);
         } catch (RuntimeException e) {
             logger.error("Error retrieving check-in for subject {} and period {}: {}", subjectId, period, e.getMessage());

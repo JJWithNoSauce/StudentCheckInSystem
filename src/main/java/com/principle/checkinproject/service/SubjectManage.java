@@ -14,9 +14,14 @@ import com.principle.checkinproject.model.CheckIn;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
 public class SubjectManage {
+    private static final Logger logger = LoggerFactory.getLogger(SubjectManage.class);
+
     @Autowired
     CheckInRepository checkInRepository;
     @Autowired
@@ -42,6 +47,7 @@ public class SubjectManage {
 
     @Transactional
     public CheckIn checkInStudent(String sbjId, List<Attendance> attendances) {
+        logger.info("Starting checkInStudent for subject: {}", sbjId);
         try {
             Subject subject = subjectRepository.findById(sbjId)
                 .orElseThrow(() -> new RuntimeException("Subject not found with id: " + sbjId));
@@ -54,20 +60,17 @@ public class SubjectManage {
             checkInRepository.save(check);
 
             for (Attendance attendance : attendances) {
-                if (attendance == null) {
-                    throw new IllegalArgumentException("Attendance object is null");
-                }
                 attendance.setCheckIn(check);
+                logger.debug("Saving attendance: {}", attendance);
                 attendanceRepository.save(attendance);
             }
 
             subject.getCheckIns().add(check);
             subjectRepository.save(subject);
+            logger.info("CheckIn completed successfully for subject: {}", sbjId);
             return check;
         } catch (Exception e) {
-            // Log the exception
-            e.printStackTrace();
-            // Rethrow as RuntimeException to be handled by global exception handler
+            logger.error("Error during check-in process for subject {}: {}", sbjId, e.getMessage(), e);
             throw new RuntimeException("Error during check-in process: " + e.getMessage(), e);
         }
     }
@@ -101,7 +104,7 @@ public class SubjectManage {
     public List<Student> getAllStudentsInSubject(String subjectId) {
         Subject subject = subjectRepository.findById(subjectId)
             .orElseThrow(() -> new RuntimeException("Subject not found with id: " + subjectId));
-        System.out.println(subject.getSbjID() + "999999999999999999999999999");
+        logger.debug("Found {} students for subject: {}", subject.getStudents().size(), subjectId);
         return subject.getStudents();
     }
 
@@ -116,5 +119,4 @@ public class SubjectManage {
             .orElseThrow(() -> new RuntimeException("Subject not found with id: " + subjectId));
         return subject.getCheckIns().get(period - 1);
     }
-
 }

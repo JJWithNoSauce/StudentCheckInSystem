@@ -3,6 +3,7 @@ package com.principle.checkinproject.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -12,13 +13,11 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 
 @Entity
-@JsonIgnoreProperties("attendance")
+@JsonIgnoreProperties({"attendance", "subject"})
 public class Student {
     @Id
     @Column(name="stdID")
@@ -28,7 +27,7 @@ public class Student {
     private String name;
 
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonManagedReference("student-attendance")
+    @JsonManagedReference("student-attendance") 
     private List<Attendance> attendance;
     
     @ManyToMany(mappedBy = "students", fetch = FetchType.LAZY)
@@ -70,5 +69,13 @@ public class Student {
 
     public void setSubject(List<Subject> subject) {
         this.subject = subject;
+    }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "stdID='" + stdID + '\'' +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

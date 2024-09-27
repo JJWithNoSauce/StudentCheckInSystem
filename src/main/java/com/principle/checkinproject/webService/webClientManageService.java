@@ -5,14 +5,23 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 import com.principle.checkinproject.model.*;
 import reactor.core.publisher.Mono;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
 public class webClientManageService {
+    private static final Logger logger = LoggerFactory.getLogger(webClientManageService.class);
+
     @Autowired
     private final WebClient webClient;
 
@@ -138,32 +147,45 @@ public class webClientManageService {
                         Subject subject = objectMapper.readValue(jsonString, Subject.class);
                         return Mono.just(subject);
                     } catch (JsonProcessingException e) {
-                        System.err.println("Error parsing subject JSON: " + e.getMessage());
+                        logger.error("Error parsing subject JSON: {}", e.getMessage());
                         return Mono.empty();
                     }
                 })
                 .onErrorResume(e -> {
-                    System.err.println("Error fetching subject: " + e.getMessage());
+                    logger.error("Error fetching subject: {}", e.getMessage());
                     return Mono.empty();
                 });
     }
 
-    public Mono<CheckIn> checking(String sbjId, List<Attendance> attendances) {
+    public Mono<CheckIn> checking(String sbjId, List<Attendance> attendances,List<Student> students) {
+        logger.info("Checking attendances for subject: {}", sbjId);
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("attendances", attendances);
+        requestBody.put("students", students);
+
         return webClient.post()
                 .uri("/subjects/{id}/checking", sbjId)
-                .bodyValue(attendances)
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(requestBody)
                 .retrieve()
-                .bodyToMono(CheckIn.class);
-    }
-
-    public Mono<List<Student>> getSubjectStudents(String subjectId) {
-        return webClient.get()
-                .uri("/subjects/{id}/students", subjectId)
-                .accept(MediaType.APPLICATION_JSON)
-                .retrieve()
-                .bodyToFlux(new ParameterizedTypeReference<Student>() {})
-                .collectList()
-                ;
+                .bodyToMono(CheckIn.class)
+                .doOnNext(checkIn -> logger.info("Received CheckIn: {}", checkIn))
+                .doOnError(error -> {
+                    if (error instanceof WebClientResponseException) {
+                        WebClientResponseException wcre = (WebClientResponseException) error;
+                        logger.error("Error during checking: Status: {}, Body: {}", wcre.getStatusCode(), wcre.getResponseBodyAsString());
+                    } else {
+                        logger.error("Error during checking: ", error);
+                    }
+                })
+                .onErrorResume(error -> {
+                    if (error instanceof WebClientResponseException) {
+                        WebClientResponseException wcre = (WebClientResponseException) error;
+                        return Mono.error(new RuntimeException("Error during checking: Status: " + wcre.getStatusCode() + ", Body: " + wcre.getResponseBodyAsString()));
+                    } else {
+                        return Mono.error(error);
+                    }
+                });
     }
 
     public Mono<List<CheckIn>> getAllSubjectCheckIn(String subjectId) {
@@ -172,10 +194,17 @@ public class webClientManageService {
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<List<CheckIn>>() {})
-                .onErrorResume(e -> {
-                    System.err.println("Error fetching check-ins: " + e.getMessage());
-                    return Mono.empty();
-                });
+                .doOnError(error -> logger.error("Error fetching check-ins for subject {}: {}", subjectId, error.getMessage()));
+    }
+
+    public Mono<List<Student>> getSubjectStudents(String subjectId) {
+        return webClient.get()
+                .uri("/subjects/{id}/students", subjectId)
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToFlux(Student.class)
+                .collectList()
+                .doOnError(error -> logger.error("Error fetching students for subject {}: {}", subjectId, error.getMessage()));
     }
 
     public Mono<CheckIn> getSubjectCheckIn(String subjectId, int period) {

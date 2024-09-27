@@ -1,6 +1,9 @@
 package com.principle.checkinproject.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,6 +14,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Attendance {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,9 +33,9 @@ public class Attendance {
 	private CheckIn checkIn;
 
 	@ManyToOne
-	@JoinColumn(name = "stdID")
-	@JsonBackReference("student-attendance")
-	private Student student;
+    @JoinColumn(name = "stdID")
+    @JsonBackReference("student-attendance")  // Change this to JsonManagedReference for correct serialization
+    private Student student;
 
 	public Attendance() {
 	}
@@ -80,5 +84,15 @@ public class Attendance {
 
 	public void setStudent(Student student) {
 		this.student = student;
+	}
+
+	@Override
+	public String toString() {
+		return "Attendance{" +
+				"id=" + id +
+				", status='" + status + '\'' +
+				", note='" + note + '\'' +
+				", student=" + (student != null ? student.getStdID() : "null") +
+				'}';
 	}
 }
