@@ -98,24 +98,47 @@
         <h3>Register new student (note : pressing register button will add new student and refresh the page)</h3>
         <button type="button" onclick="window.location.href='/studentmanager/studentadd'">New Student</button>
     
-
-    <h4>List of all students</h4>
-    <table>
-        <thead>
-            <tr>
-                <th>Student ID</th>
-                <th>Student Name</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Iterate over the teachers list and display each teacher -->
-            <tr th:each="students : ${students}">
-                <td th:text="${students.stdID}"></td>
-                <td th:text="${students.name}"></td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-
-</body>
-</html>
+    
+        <h4>List of all students</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th>Student ID</th>
+                    <th>Student Name</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="student : ${students}">
+                    <td th:text="${student.stdID}"></td>
+                    <td th:text="${student.name}"></td>
+                    <td>
+                        <button type="button" data-student-id="${student.stdID}" onclick="removeStudent(this)" style="background-color: red;">Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script>
+        function removeStudent(button) {
+            if (confirm('Are you sure you want to delete this student?')) {
+                const studentid = encodeURIComponent(button.getAttribute('data-student-id'));
+                console.log(studentid);
+                fetch(`/manage/remove?stdID=${studentid}`, {
+                    method: 'DELETE'
+                })
+                .then(response => {
+                    if (response.ok) {
+                        // Remove the row from the DOM
+                        const row = button.closest('tr');
+                        row.parentNode.removeChild(row);
+                    } else {
+                        console.error('Failed to delete student');
+                    }
+                });
+            }
+        }
+    </script>
+    
+    </body>
+    </html>

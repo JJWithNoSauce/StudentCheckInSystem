@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 
 import com.principle.checkinproject.webService.webClientManageService;
 
+import reactor.core.publisher.Mono;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
@@ -206,7 +208,9 @@ public class webManageController {
     }
 
     @GetMapping("/studentmanager")
-    public String go_studentmanager() {
+    public String go_studentmanager(Model model) {
+        List<Student> students = webClientManageService.getAllStudents().block();
+        model.addAttribute("students", students);
         return "studentmanager";
     }
 
