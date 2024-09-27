@@ -26,7 +26,7 @@ public class CheckIn {
 	private int classPeriod;
 
 	@OneToMany(mappedBy = "checkIn", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonManagedReference
+    @JsonManagedReference("checkIn-attendance")
     private List<Attendance> attendances;
 
     @ManyToOne

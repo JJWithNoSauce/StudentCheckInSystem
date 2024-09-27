@@ -28,7 +28,7 @@ public class Student {
     private String name;
 
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonManagedReference
+    @JsonManagedReference("student-attendance")
     private List<Attendance> attendance;
     
     @ManyToMany(mappedBy = "students", fetch = FetchType.LAZY)

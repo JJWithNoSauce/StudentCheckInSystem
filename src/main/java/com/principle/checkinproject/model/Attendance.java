@@ -25,12 +25,12 @@ public class Attendance {
 
 	@ManyToOne
 	@JoinColumn(name = "checkIn_id")
-	@JsonBackReference
+	@JsonBackReference("checkIn-attendance")
 	private CheckIn checkIn;
 
 	@ManyToOne
 	@JoinColumn(name = "stdID")
-	@JsonBackReference
+	@JsonBackReference("student-attendance")
 	private Student student;
 
 	public Attendance() {

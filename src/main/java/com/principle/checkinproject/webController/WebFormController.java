@@ -31,42 +31,60 @@ public class WebFormController {
     webClientManageService webClientManageService;
 
     @PostMapping("/submitattendance")
-    public String submitAttendance(@RequestParam String teacherId,
-            @RequestParam String subjectId,
-            @RequestParam Map<String, String> formData,
-            Model model) {
-        // Fetch the subject
-        System.out.println("+5+5+5+5+5+5+5+5+5+5+5"+subjectId);
-        Subject subject = webClientManageService.getSubject(subjectId).block();
-        if (subject == null) {
-            model.addAttribute("error", "Subject not found");
-            return "failed";
+        public String submitAttendance(@RequestParam String teacherId,
+                @RequestParam String subjectId,
+                @RequestParam Map<String, String> formData,
+                Model model) {
+            logger.info("Submitting attendance for subject: {}", subjectId);
+    
+            return webClientManageService.getSubject(subjectId)
+                .switchIfEmpty(Mono.error(new RuntimeException("Subject not found")))
+                .flatMap(subject -> {
+                    List<Mono<Attendance>> attendanceMonos = new ArrayList<>();
+    
+                    for (Map.Entry<String, String> entry : formData.entrySet()) {
+                        if (entry.getKey().startsWith("attendanceStatus_")) {
+                            String studentId = entry.getKey().substring("attendanceStatus_".length());
+                            String status = entry.getValue();
+                            String note = formData.get("note_" + studentId);
+                            System.out.println("000000000000000   "+studentId);
+                            System.out.println("000000000000000   "+webClientManageService.getStudentById(studentId));
+                            Mono<Attendance> attendanceMono = webClientManageService.getStudentById(studentId)
+                                .map(student -> {
+                                    Attendance attendance = new Attendance();
+                                    attendance.setStudent(student);
+                                    attendance.setStatus(status);
+                                    attendance.setNote(note);
+                                    System.out.println(student.getStdID()+"111111111111111111");
+                                    return attendance;
+                                });
+    
+                            attendanceMonos.add(attendanceMono);
+                        }
+                    }
+    
+                    return Mono.zip(attendanceMonos, objects -> {
+                        List<Attendance> attendances = new ArrayList<>();
+                        for (Object obj : objects) {
+                            attendances.add((Attendance) obj);
+                        }
+                        return attendances;
+                    });
+                })
+                .flatMap(attendances -> webClientManageService.checking(subjectId, attendances))
+                .doOnSuccess(checkIn -> logger.info("Successfully submitted attendance for subject: {}", subjectId))
+                .doOnError(error -> {
+                    logger.error("Error submitting attendance for subject {}: {}", subjectId, error.getMessage());
+                    model.addAttribute("error", "Failed to submit attendance: " + error.getMessage());
+                })
+                .thenReturn("redirect:/teacher/" + teacherId)
+                .onErrorResume(e -> {
+                    model.addAttribute("error", "An error occurred: " + e.getMessage());
+                    return Mono.just("failed");
+                })
+               .block(); // We still need to block here as Spring MVC expects a synchronous return
         }
-
-        List<Attendance> attendances = new ArrayList<>();
-
-        // Process form data
-                for (Map.Entry<String, String> entry : formData.entrySet()) {
-                    if (entry.getKey().startsWith("attendanceStatus_")) {
-                        String studentId = entry.getKey().substring("attendanceStatus_".length());
-                        String status = entry.getValue();
-                        String note = formData.get("note_" + studentId);
-
-                // Create Attendance object
-                                Attendance attendance = new Attendance();
-                attendance.setStudent(webClientManageService.getStudentById(studentId).block());
-                                attendance.setStatus(status);
-                                attendance.setNote(note);
-
-                attendances.add(attendance);
-            }
-        }
-        
-        // Call the checking API to save the attendance data
-        webClientManageService.checking(subjectId, attendances).block();
-
-        return "redirect:/teacher/" + teacherId;
-    }
+    
 
     @GetMapping("/studentmanager/studentadd")
     public String showAddStudentForm(Model model) {

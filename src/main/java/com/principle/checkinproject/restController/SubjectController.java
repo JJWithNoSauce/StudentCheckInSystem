@@ -49,17 +49,11 @@ public class SubjectController {
     }
 
     @PostMapping("/{subjectId}/checking")
-    public ResponseEntity<?> checking(@PathVariable String subjectId, @RequestBody List<Attendance> attendances) {
+    public CheckIn checking(@PathVariable String subjectId, @RequestBody List<Attendance> attendances) {
         logger.info("Received checking request for subject: {}", subjectId);
-        System.out.println("9+9+6+85+54+598595    "+attendances.get(0));
-        try {
-            CheckIn check = subjectManage.checkInStudent(subjectId, attendances);
-            return ResponseEntity.ok(check);
-        } catch (RuntimeException e) {
-            logger.error("Error during check-in process for subject {}: {}", subjectId, e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body("Error during check-in process: " + e.getMessage());
-        }
+        System.out.println("9+9+6+85+54+598595    "+attendances.get(0).getStudent().getStdID());
+        CheckIn check = subjectManage.checkInStudent(subjectId, attendances);
+        return check;
     }
 
     @GetMapping("/{subjectId}/students")
