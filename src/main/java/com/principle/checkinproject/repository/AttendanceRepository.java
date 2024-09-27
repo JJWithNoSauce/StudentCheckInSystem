@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.principle.checkinproject.model.Attendance;
 
 
-public interface AttendanceRepository extends JpaRepository<Attendance,String>{
+public interface AttendanceRepository extends JpaRepository<Attendance,Long>{
     
 }

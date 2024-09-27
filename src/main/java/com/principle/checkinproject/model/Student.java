@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -16,6 +18,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 
 @Entity
+@JsonIgnoreProperties("attendance")
 public class Student {
     @Id
     @Column(name="stdID")
@@ -25,15 +28,8 @@ public class Student {
     private String name;
 
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<Attendance> attendance;
-    
-    // @ManyToMany
-    // @JoinTable(
-    //     name = "student_subject",
-    //     joinColumns = @JoinColumn(name = "stdID"),
-    //     inverseJoinColumns = @JoinColumn(name = "sbjID")
-    // )
-    // private List<Subject> subject;
     
     @ManyToMany(mappedBy = "students", fetch = FetchType.LAZY)
     @JsonIgnore

@@ -3,7 +3,7 @@ package com.principle.checkinproject.model;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,28 +20,31 @@ public class Subject {
     @Id
     @Column(name="sbjID")
     private String sbjID;
+    
     @Column(name="name")
     private String name;
+    
     @Column(name="time")
     private String time;
 
     @OneToMany(mappedBy = "subject")
+    @JsonManagedReference
+    @JsonIgnore
     private List<CheckIn> checkIns;
-
-    // @OneToMany(mappedBy = "subject", fetch = FetchType.LAZY)
-    // private List<Student> students;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-        name = "student_subject", // ชื่อตารางเชื่อม
-        joinColumns = @JoinColumn(name = "sbjID"), // คอลัมน์ของ Subject
-        inverseJoinColumns = @JoinColumn(name = "stdID") // คอลัมน์ของ Student
+        name = "student_subject",
+        joinColumns = @JoinColumn(name = "sbjID"),
+        inverseJoinColumns = @JoinColumn(name = "stdID")
     )
+    @JsonIgnore
+    @JsonManagedReference
     private List<Student> students;
 
     @ManyToOne
-    @JsonIgnore // This will exclude the classRoom attribute from JSON serialization
     @JoinColumn(name = "classID")
+    @JsonIgnore
     private ClassRoom classRoom;
 
     public Subject(){}
@@ -52,7 +55,7 @@ public class Subject {
 
     public Student getStudent(String stdID){
         for (Student student : students) {
-            if(student.getStdID() == stdID) 
+            if(student.getStdID().equals(stdID)) 
                 return student;
         }
         return null;
@@ -102,4 +105,3 @@ public class Subject {
         this.sbjID = sbjID;
     }
 }
-

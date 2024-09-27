@@ -81,8 +81,8 @@
 
 <header>
     <h1>Attendance History View</h1>
-    <h2 th:text="${checkin.classPeriod}"></h2>
-    <button class="logout" onclick="window.location.href='index.html'">Logout</button>
+    <h2 th:text="'Period: ' + ${checkin.classPeriod}"></h2>
+    <button class="logout" onclick="window.location.href='/index'">Logout</button>
 </header>
 
 <div class="container">
@@ -101,7 +101,7 @@
         </thead>
         <tbody>
             <tr th:each="attendance : ${attendant}">
-                <td th:text="${attendance.student.id}"></td>
+                <td th:text="${attendance.student.stdID}"></td>
                 <td th:text="${attendance.student.name}"></td>
                 <td th:text="${attendance.status}"></td>
                 <td th:text="${attendance.note}"></td>
@@ -109,7 +109,7 @@
         </tbody>
     </table>
     
-    <button th:onclick="|window.location.href='@{/teacher/{id}(id=${teacher.id})}'|">Back to Teacher's Page</button>
+    <button th:onclick="|window.location.href='@{/attendanthistory/{teacherId}/{subjectId}(teacherId=${teacher.teacherID},subjectId=${subject.sbjID})}'|">Back to Attendance History</button>
 </div>
 
 </body>

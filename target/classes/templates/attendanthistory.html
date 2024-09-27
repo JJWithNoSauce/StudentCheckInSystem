@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teacher List</title>
+    <title>Attendance History</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -81,37 +81,34 @@
             margin-top: 20px;
             text-align: center;
         }
-
     </style>
 </head>
 <body>
 
 <header>
-    <h1>Attendant's history</h1>
-    <button class="logout" onclick="window.location.href='index.html'">Logout</button>
+    <h1>Attendance History</h1>
+    <button class="logout" onclick="window.location.href='/index'">Logout</button>
 </header>
 
 <div class="container">
-    <h1>Attendant's history for subject : </h1>
+    <h1 th:text="'Attendance history for subject: ' + ${subject.name}"></h1>
     <button th:onclick="|window.location='@{/subject/{teacherId}/{subjectId}/attendantform(teacherId=${teacher.teacherID}, subjectId=${subject.sbjID})}'|">Go back!</button>
-    <h2 th:text="${subject.name}">Attendant's history for subject : ${subject.name}</h2>
+    
     <table>
         <thead>
             <tr>
-                <th>Present Status</th>
-                <th>Student ID</th>
-                <th>Student Name</th>
-                <th>Note</th>
+                <th>Period</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            <tr th:each="attendant : ${attendant}">
+            <tr th:each="checkin : ${checkin}">
+                <td th:text="${checkin.classPeriod}"></td>
                 <td>
-                    <td th:text="${attendant.status}"></td>
+                    <a th:href="@{/attendanthistoryview/{teacherId}/{subjectId}/{checkinId}(teacherId=${teacher.teacherID}, subjectId=${subject.sbjID}, checkinId=${checkin.id})}">
+                        <button>View Details</button>
+                    </a>
                 </td>
-                <td th:text="${student.stdID}"></td>
-                <td th:text="${student.name}"></td>
-                <td th:text="${attendant.note}"></td>
             </tr>
         </tbody>
     </table>
@@ -119,4 +116,3 @@
 
 </body>
 </html>
-

@@ -97,7 +97,7 @@
     
     <h3>Student check for attendant</h3>
     <form th:action="@{/submitattendance}" method="post">
-        <input type="hidden" name="teacherId" th:value="${teacher.teacherID}">
+        <input type="hidden" name="teacherId" th:value="${teacherId}">
         <input type="hidden" name="subjectId" th:value="${subject.sbjID}">
         <table>
             <thead>

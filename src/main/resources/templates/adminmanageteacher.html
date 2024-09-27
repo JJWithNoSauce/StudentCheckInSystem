@@ -51,7 +51,7 @@
         }
 
         button:hover {
-            background-color: #258292;
+            background-color: #1e6b78;
         }
 
         table {
@@ -103,8 +103,6 @@
             th:onclick="|window.location='@{/subject/{teacherId}/add(teacherId=${teacher.teacherID})}'|">
             Add Subject
         </button>
-
-        
     </div>
 
     <table>
@@ -116,13 +114,13 @@
             </tr>
         </thead>
         <tbody>
-            <tr th:each="subject: ${teacher.classRoom.subjects}">
+            <tr th:each="subject: ${subjects}">
               <td th:text="${subject.name}"></td>
               <td th:text="${subject.time}"></td>
-              <td><button th:onclick="|window.location='@{/subject/{id1}/manage(id1=${subject.sbjID})}'|">Manage Student</button>
+              <td>
+                <button th:onclick="|window.location='@{/subject/{id1}/manage(id1=${subject.sbjID})}'|">Manage Student</button>
                 <button type="button" th:data-teacher-id="${teacher.teacherID}" th:data-subject-id="${subject.sbjID}" onclick="removeSubject(this)">Remove Subject</button>
-            
-            </td>  
+              </td>  
             </tr>
         </tbody>
     </table>
@@ -144,4 +142,3 @@
 
 </body>
 </html>
-

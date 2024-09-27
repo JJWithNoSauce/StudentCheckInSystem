@@ -3,10 +3,10 @@ package com.principle.checkinproject.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,11 +23,12 @@ public class ClassRoom {
     
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "classID") 
-    @JsonIgnoreProperties({"classRoom"})
+    @JsonIgnoreProperties({"classRoom", "checkIns", "students"})
     private List<Subject> subjects;
 	
 	@OneToOne
 	@JoinColumn(name = "teacher",nullable = false,referencedColumnName = "teacherID")
+    @JsonBackReference
 	private Teacher teacher;
 
     public ClassRoom() {

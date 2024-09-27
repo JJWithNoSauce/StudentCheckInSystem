@@ -43,17 +43,15 @@ public class SubjectController {
     }
 
     @GetMapping("/{subjectId}")
-    public ResponseEntity<Subject> getSubject(@PathVariable String subjectId){
+    public Subject getSubject(@PathVariable String subjectId){
        Subject subject = subjectManage.getSubjectById(subjectId);
-       if (subject == null) {
-           return ResponseEntity.notFound().build();
-       }
-       return ResponseEntity.ok(subject);
+       return subject;
     }
 
     @PostMapping("/{subjectId}/checking")
     public ResponseEntity<?> checking(@PathVariable String subjectId, @RequestBody List<Attendance> attendances) {
         logger.info("Received checking request for subject: {}", subjectId);
+        System.out.println("9+9+6+85+54+598595    "+attendances.get(0));
         try {
             CheckIn check = subjectManage.checkInStudent(subjectId, attendances);
             return ResponseEntity.ok(check);
@@ -65,26 +63,25 @@ public class SubjectController {
     }
 
     @GetMapping("/{subjectId}/students")
-    public ResponseEntity<List<Student>> getSubjectStudents(@PathVariable String subjectId){
-        try {
+    public List<Student> getSubjectStudents(@PathVariable String subjectId){
             List<Student> students = subjectManage.getAllStudentsInSubject(subjectId);
-            return ResponseEntity.ok(students);
-        } catch (RuntimeException e) {
-            logger.error("Error retrieving students for subject {}: {}", subjectId, e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(null);
-        }
+            return students;
     }
 
     @GetMapping("/{subjectId}/checkins")
-    public ResponseEntity<List<CheckIn>> getAllSubjectCheckIn(@PathVariable String subjectId){
+    public ResponseEntity<?> getAllSubjectCheckIn(@PathVariable String subjectId){
+        logger.info("Fetching all check-ins for subject: {}", subjectId);
         try {
             List<CheckIn> checkIns = subjectManage.getAllCheckInInSubject(subjectId);
+            if (checkIns == null || checkIns.isEmpty()) {
+                logger.info("No check-ins found for subject: {}", subjectId);
+                return ResponseEntity.noContent().build();
+            }
             return ResponseEntity.ok(checkIns);
         } catch (RuntimeException e) {
             logger.error("Error retrieving check-ins for subject {}: {}", subjectId, e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(null);
+                .body("Error retrieving check-ins: " + e.getMessage());
         }
     }
 

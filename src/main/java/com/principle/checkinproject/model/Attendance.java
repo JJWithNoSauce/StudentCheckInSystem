@@ -14,31 +14,33 @@ import jakarta.persistence.ManyToOne;
 public class Attendance {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="id")
-    private Long id;
+	@Column(name = "id")
+	private Long id;
 
-	@Column(name="status")	
-    private String status;
+	@Column(name = "status")
+	private String status;
 
-	@Column(name="note")
-    private String note;
-	
+	@Column(name = "note")
+	private String note;
+
 	@ManyToOne
-    @JoinColumn(name = "checkIn_id")
-    @JsonBackReference
-    private CheckIn checkIn;
-    
-    @ManyToOne
-    @JoinColumn(name = "stdID")
-    private Student student;
+	@JoinColumn(name = "checkIn_id")
+	@JsonBackReference
+	private CheckIn checkIn;
 
-    public Attendance(){}
+	@ManyToOne
+	@JoinColumn(name = "stdID")
+	@JsonBackReference
+	private Student student;
 
-    public Attendance(Student std, String status, String note){
-        this.student = std;
-        this.status = status;
-        this.note = note;
-    }
+	public Attendance() {
+	}
+
+	public Attendance(Student std, String status, String note) {
+		this.student = std;
+		this.status = status;
+		this.note = note;
+	}
 
 	public Long getId() {
 		return id;

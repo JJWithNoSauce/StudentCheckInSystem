@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -29,17 +30,18 @@ public class CheckIn {
     private List<Attendance> attendances;
 
     @ManyToOne
-	@JoinColumn(name = "subject",nullable = false,referencedColumnName = "sbjID")	
+	@JoinColumn(name = "subject", nullable = false, referencedColumnName = "sbjID")	
+	@JsonBackReference
 	private Subject subject;
     
     public CheckIn(){
         this.attendances = new ArrayList<Attendance>();
     }
 
-	public CheckIn(List<Attendance> attendances,Subject subject){
+	public CheckIn(List<Attendance> attendances, Subject subject){
 		this.attendances = attendances;
 		this.subject = subject;
-		this.classPeriod = subject.getCheckIns().size()+1;
+		this.classPeriod = subject.getCheckIns().size() + 1;
 	}
 
     public List<Attendance> viewHistory(){

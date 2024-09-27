@@ -7,6 +7,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.JoinColumn;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Teacher extends AInstructor{
@@ -19,7 +20,8 @@ public class Teacher extends AInstructor{
 
     @OneToOne(mappedBy = "teacher", cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "classroom_id")
-    @JsonIgnoreProperties("teacher")
+    @JsonManagedReference
+    @JsonIgnoreProperties({"teacher", "subjects"})
     private ClassRoom classRoom;
     
     public Teacher() {}
@@ -59,4 +61,3 @@ public class Teacher extends AInstructor{
         }
     }
 }
-
