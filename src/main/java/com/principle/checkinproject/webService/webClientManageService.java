@@ -116,7 +116,7 @@ public class webClientManageService {
 
     public Mono<Student> registerStudentToSubject(String subjectId, String studentId) {
         return webClient.put()
-                .uri("/subjects/{subjectId}/students/{studentId}", subjectId, studentId)
+                .uri("/manage/subeject/{subjectId}/student/register/{studentId}", subjectId, studentId)
                 .retrieve()
                 .bodyToMono(Student.class);
     }
@@ -157,7 +157,7 @@ public class webClientManageService {
                 });
     }
 
-    public Mono<CheckIn> checking(String sbjId, List<Attendance> attendances,List<Student> students) {
+    public Mono<CheckIn> checking(String sbjId, List<Attendance> attendances, List<Student> students) {
         logger.info("Checking attendances for subject: {}", sbjId);
         Map<String, Object> requestBody = new HashMap<>();
         requestBody.put("attendances", attendances);
@@ -173,7 +173,8 @@ public class webClientManageService {
                 .doOnError(error -> {
                     if (error instanceof WebClientResponseException) {
                         WebClientResponseException wcre = (WebClientResponseException) error;
-                        logger.error("Error during checking: Status: {}, Body: {}", wcre.getStatusCode(), wcre.getResponseBodyAsString());
+                        logger.error("Error during checking: Status: {}, Body: {}", wcre.getStatusCode(),
+                                wcre.getResponseBodyAsString());
                     } else {
                         logger.error("Error during checking: ", error);
                     }
@@ -181,7 +182,8 @@ public class webClientManageService {
                 .onErrorResume(error -> {
                     if (error instanceof WebClientResponseException) {
                         WebClientResponseException wcre = (WebClientResponseException) error;
-                        return Mono.error(new RuntimeException("Error during checking: Status: " + wcre.getStatusCode() + ", Body: " + wcre.getResponseBodyAsString()));
+                        return Mono.error(new RuntimeException("Error during checking: Status: " + wcre.getStatusCode()
+                                + ", Body: " + wcre.getResponseBodyAsString()));
                     } else {
                         return Mono.error(error);
                     }
@@ -193,8 +195,10 @@ public class webClientManageService {
                 .uri("/subjects/{id}/checkins", subjectId)
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
-                .bodyToMono(new ParameterizedTypeReference<List<CheckIn>>() {})
-                .doOnError(error -> logger.error("Error fetching check-ins for subject {}: {}", subjectId, error.getMessage()));
+                .bodyToMono(new ParameterizedTypeReference<List<CheckIn>>() {
+                })
+                .doOnError(error -> logger.error("Error fetching check-ins for subject {}: {}", subjectId,
+                        error.getMessage()));
     }
 
     public Mono<List<Student>> getSubjectStudents(String subjectId) {
@@ -204,12 +208,13 @@ public class webClientManageService {
                 .retrieve()
                 .bodyToFlux(Student.class)
                 .collectList()
-                .doOnError(error -> logger.error("Error fetching students for subject {}: {}", subjectId, error.getMessage()));
+                .doOnError(error -> logger.error("Error fetching students for subject {}: {}", subjectId,
+                        error.getMessage()));
     }
 
     public Mono<CheckIn> getSubjectCheckIn(String subjectId, int period) {
         return webClient.get()
-                .uri("/subject/{id}/checkin/{period}", subjectId, period)
+                .uri("/subjects/{id}/checkins/{period}", subjectId, period)
                 .retrieve()
                 .bodyToMono(CheckIn.class);
     }

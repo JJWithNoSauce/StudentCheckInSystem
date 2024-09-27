@@ -94,34 +94,15 @@ public class SubjectController {
     }
 
     @GetMapping("/{subjectId}/checkins")
-    public ResponseEntity<?> getAllSubjectCheckIn(@PathVariable String subjectId){
-        logger.info("Fetching all check-ins for subject: {}", subjectId);
-        try {
-            List<CheckIn> checkIns = subjectManage.getAllCheckInInSubject(subjectId);
-            if (checkIns == null || checkIns.isEmpty()) {
-                logger.info("No check-ins found for subject: {}", subjectId);
-                return ResponseEntity.noContent().build();
-            }
-            return ResponseEntity.ok(checkIns);
-        } catch (RuntimeException e) {
-            logger.error("Error retrieving check-ins for subject {}: {}", subjectId, e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body("Error retrieving check-ins: " + e.getMessage());
-        }
+    public List<CheckIn> getAllSubjectCheckIn(@PathVariable String subjectId){
+        List<CheckIn> checkIns = subjectManage.getAllCheckInInSubject(subjectId);
+        return checkIns;
     }
 
     @GetMapping("/{subjectId}/checkins/{period}")
-    public ResponseEntity<CheckIn> getSubjectCheckIn(@PathVariable String subjectId, @PathVariable int period){
-        try {
-            CheckIn checkIn = subjectManage.getCheckInInSubject(subjectId, period);
-            if (checkIn == null) {
-                return ResponseEntity.notFound().build();
-            }
-            return ResponseEntity.ok(checkIn);
-        } catch (RuntimeException e) {
-            logger.error("Error retrieving check-in for subject {} and period {}: {}", subjectId, period, e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(null);
-        }
+    public CheckIn getSubjectCheckIn(@PathVariable String subjectId, @PathVariable int period){
+        CheckIn checkIn = subjectManage.getCheckInInSubject(subjectId, period);
+        System.out.println(checkIn.getAttendances().size() + "AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
+        return checkIn;
     }
 }

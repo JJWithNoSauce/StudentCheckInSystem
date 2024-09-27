@@ -94,11 +94,14 @@
 <div class="container">
     <h1>Attendant's submit system</h1>
     <button th:onclick="|window.location='@{/teacher/{id}(id=${teacherId})}'|">Go back to teacher's page</button>
+    <button th:onclick="|window.location='@{/attendanthistory/{teacherId}/{subjectId}(teacherId=${teacher.teacherID}, subjectId=${subject.sbjID})}'|">Go to History!</button>
     
     <h3>Student check for attendant</h3>
     <form th:action="@{/submitattendance}" method="post">
         <input type="hidden" name="teacherId" th:value="${teacherId}">
         <input type="hidden" name="subjectId" th:value="${subject.sbjID}">
+
+        
         <table>
             <thead>
                 <tr>

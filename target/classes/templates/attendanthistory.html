@@ -94,6 +94,8 @@
     <h1 th:text="'Attendance history for subject: ' + ${subject.name}"></h1>
     <button th:onclick="|window.location='@{/subject/{teacherId}/{subjectId}/attendantform(teacherId=${teacher.teacherID}, subjectId=${subject.sbjID})}'|">Go back!</button>
     
+
+    
     <table>
         <thead>
             <tr>
@@ -105,13 +107,10 @@
             <tr th:each="checkin : ${checkin}">
                 <td th:text="${checkin.classPeriod}"></td>
                 <td>
-                    <a th:href="@{/attendanthistoryview/{teacherId}/{subjectId}/{checkinId}(teacherId=${teacher.teacherID}, subjectId=${subject.sbjID}, checkinId=${checkin.id})}">
+                    <a th:href="@{/attendanthistoryview/{teacherId}/{subjectId}/{checkinId}(teacherId=${teacher.teacherID}, subjectId=${subject.sbjID}, checkinId=${checkin.classPeriod})}">
                         <button>View Details</button>
                     </a>
                 </td>
-                <td th:text="${student.stdID}"></td>
-                <td th:text="${student.name}"></td>
-                <td th:text="${attendant.note}"></td>
             </tr>
         </tbody>
     </table>

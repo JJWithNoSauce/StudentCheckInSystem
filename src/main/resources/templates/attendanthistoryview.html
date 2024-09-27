@@ -90,19 +90,33 @@
     <h3 th:text="'Teacher: ' + ${teacher.name}"></h3>
 
     <h3>Attendance List</h3>
+
     <table>
         <thead>
             <tr>
                 <th>Student ID</th>
                 <th>Student Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="student : ${students}">
+                <td th:text="${student.stdId}"></td>
+                <td th:text="${student.name}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table>
+        <thead>
+            <tr>
+                <th>attendance ID</th>
                 <th>Present Status</th>
                 <th>Note</th>
             </tr>
         </thead>
         <tbody>
             <tr th:each="attendance : ${attendant}">
-                <td th:text="${attendance.student.stdID}"></td>
-                <td th:text="${attendance.student.name}"></td>
+                <td th:text="${attendance.id}"></td>
                 <td th:text="${attendance.status}"></td>
                 <td th:text="${attendance.note}"></td>
             </tr>

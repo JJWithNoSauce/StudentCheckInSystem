@@ -136,21 +136,34 @@ public class webManageController {
         TeacherDTO teacher = webClientManageService.getTeacherById(teacherId).block();
         Subject subject = webClientManageService.getSubject(subjectId).block();
         CheckIn checkin = webClientManageService.getSubjectCheckIn(subjectId, checkinId).block();
-        List<Attendance> attendance = checkin.getAttendances();
+        List<Attendance> attendances = checkin.getAttendances();
+        List<Student> students = webClientManageService.getSubjectStudents(subjectId).block();
+        List<Student> studentsA = new ArrayList<Student>();
+        
+        for (Attendance attendance : attendances) {
+            for (Student student : students) {
+                if(student.getAttendance().contains(attendance)) {
+                    studentsA.add(student);
+                    System.out.println(student);
+                }
+            }
+        }
+
 
         System.out.println(teacher);
         System.out.println(subject);
         System.out.println(checkin);
-        System.out.println(attendance);
+        System.out.println(attendances);
 
-        if (subject == null || checkin == null || teacher == null || attendance == null) {
+        if (subject == null || checkin == null || teacher == null || attendances == null) {
             System.out.println("Required data not found");
             return "redirect:/failedNoCheckinList";
         } else {
             model.addAttribute("subject", subject);
             model.addAttribute("checkin", checkin);
             model.addAttribute("teacher", teacher);
-            model.addAttribute("attendant", attendance);
+            model.addAttribute("attendant", attendances);
+            model.addAttribute("students", studentsA);
         }
         return "attendanthistoryview";
     }

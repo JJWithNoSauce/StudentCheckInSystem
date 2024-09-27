@@ -17,7 +17,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 
 @Entity
-@JsonIgnoreProperties({"attendance", "subject"})
+@JsonIgnoreProperties({ "subject"})
 public class Student {
     @Id
     @Column(name="stdID")
